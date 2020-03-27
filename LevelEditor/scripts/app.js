@@ -109,7 +109,7 @@ export default class App {
 
         let levelData = this.gatherFormData( event );
         // Post a message to the server
-        $.post('/api/save_level', levelData )
+        $.post('/api/save', levelData )
             .then( responseData => {
 
                 // deal with a response
