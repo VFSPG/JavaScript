@@ -5,11 +5,9 @@ import App from './app.js';
 
 // MAIN
 (function Main() {
+  $(document).ready(() => {
+    const app = new App();
 
-    $(document).ready( event => {
-
-        let app = new App();
-        app.run();
-    })
-})()
-
+    app.run();
+  });
+})();

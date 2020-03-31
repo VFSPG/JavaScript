@@ -5,12 +5,13 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node -r esm server.js",
-    "serve": "nodemon -r esm --inspect ./server.js "
+    "start": "node -r esm app.js",
+    "serve": "nodemon -r esm --inspect app.js "
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "eslint": "^6.8.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
