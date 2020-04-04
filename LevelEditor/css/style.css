@@ -1,62 +1,243 @@
-/* Copyright (C) 2018 Scott Henshaw, All Rights Reserved */
-.hide { display:none; }
-.box-border {
-    border:1px solid black;
-}
-.box-dashed {
-    border:2px dashed red;
-}
-#object-list {
-    list-style-type: none;
-}
-.editor {
-    background-image: url('../images/my-background.jpg');
-    background-size: 100% 100%;
-    min-width: 50vw;
-    min-height: 90vh;
-}
-.debug {
-    border: dashed 1px red;
+/* Default values for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.library {
+body {
+    height: 100%;
+    font-size: 16px;
     position: relative;
+    background-color: #cecece;
+    color: white;
 }
 
-.obstacle {
-    display: inline-block;
+h1 {
+    text-align: center;
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.4em;
+    text-transform: uppercase;
+}
+
+header {
+    width: 100%;
+    height: 3em;
+    padding: 0.75em;
+    color: white;
+    background-color:  #021F59;
+}
+
+.options-container {
     position: relative;
-    background-image: url('../images/crate-one.png');
-    background-size: 100% 100%;
-    height: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1em;
+    background-color: #0A4273;
+}
+
+.options-container h2 {
+    margin-right: 20px;
+}
+
+.level-btns {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-right: 20px;
+    width: 160px;
+}
+
+.level-btns .btn-style:first-child{
+    margin-bottom: 10px;
+}
+
+.level-btns select {
+    height: 30px;
+}
+
+.btn-style {
+    padding: 0.8em;
+    text-transform: uppercase;
+    background-color: #077F8C;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-style:hover {
+    opacity: 80%;
+}
+
+.editor-form {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px 0;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8em;
+}
+
+.input-container label{
+    font-weight: bold;
+}
+
+.input-container .text-input {
+    font-size: 1em;
+    margin-left: 10px;
+    padding: 0.1em;
+    padding-left: 5px;
+}
+
+.editor-form .btn-style{
     width: 100px;
 }
 
-.placed {
+.main-section {
     position: relative;
-}
-
-.flex-container {
+    justify-content: center;
     display: flex;
-    flex-direction: row;
-    flex-wrap:nowrap;
-    justify-content:center;
-}
-.flex-item {
-    flex-grow: 1;
-}
-.flex-center-item {
-    flex-grow: 3;
-}
-.feedback {
-    height: 2em;
-    width: 100%;
+    flex-wrap: wrap;
+    height: 100%;
+    padding: 20px;
 }
 
-.info-form-area {
-    padding: 8px;
+.editor-screen {
+    width: 1280px;
+    height: 720px;
+    display: block;
+    position: relative;
+    box-sizing: content-box;
+    overflow: hidden;
+    border: 5px solid black;
 }
 
-input {
-    margin: 4px;
+.library-container {
+    width: 400px;
+    position: relative;
+    background-color: #0A4273;
+    border: 5px solid #021F59;
+    margin-left: 20px;
+}
+
+.editor-content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.editor-content h2 {
+    text-align: left;
+}
+
+/* Form New Entity */
+.new-entity-form-container {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.select-add-new-entity {
+    font-size: 1em;
+    margin-left: 10px;
+    padding: 0.1em;
+    padding-left: 5px;
+    width: 100px;
+}
+
+.new-entity-form-container .entity-form {
+    margin: 0;
+}
+
+.entity-form {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+}
+
+.entity-form .input-container {
+    margin-bottom: 10px;
+}
+
+.entities-list {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.entities-item-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.entities-item-list .draggable {
+    background-position:0;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.close-entity-form {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    display: block;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.close-entity-form::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    transform: rotate(45deg);
+    top: 0;
+    left: 50%;
+    background: white;
+}
+
+.close-entity-form::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    transform: rotate(-45deg);
+    top: 0;
+    left: 50%;
+    background: white;
+}
+
+.placed {
+    position: absolute;
+    background-size: contain;
+    background-position: center;
 }

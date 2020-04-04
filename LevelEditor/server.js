@@ -1,84 +1,40 @@
-// Copyright (C) 2020 Scott Henshaw, All Rights Reserved
+// Copyright (C) 2020 Jonathan Dean, All Rights Reserved
 'use strict';
 
-import Express from 'express'
-import Path from 'path'
-import HTTP from 'http'
-import FileSystem from 'fs'
-
+import Express from 'express';
+import Path from 'path';
+import HTTP from 'http';
 
 const PORT = 3000;
 
+import LevelAPI from "./scripts/levelAPI"
+
 class Server {
-
-    constructor() {
-
+    constructor () {
+        // Creating Express server
         this.api = Express();
-        this.api.use( Express.json() )
-                .use( Express.urlencoded({ extended: false }))
-                .use( Express.static( Path.join( __dirname, '.')));
-
-
-        this.api.get('/', ( request, response ) => {
-            response.render('index',{ title:'Greatest Form Demo Ever!'})
+        // Defining what express is going to use
+        this.api.use( Express.json()) 
+                .use( Express.urlencoded({ extended: false })) 
+                .use( Express.static( Path.join(__dirname, '.') ))
+                .use( '/api', LevelAPI );
+        
+        // Creting get method to render the index.html in the server path
+        // Server side renderer.
+        this.api.get('/', (request, response) => {
+            response.sendFile('index', {title: 'Game'})
         });
 
-        this.api.post('/api', ( request, response ) => {
-            // handle edges from form
-
-            let params = request.params; // data attached in the url /api/:name/:id
-            let query = request.query;   // data attached as a PHP param String
-            let data = request.body;     // data attached as JSON data
-
-
-            let result = this.handleActionQuery( request.query.action, request.query, request.body );
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
+        // Creting get method to render the editor.html in the server path
+        // Server side renderer.
+        this.api.get('/editor', (request, response) => {
+            response.sendFile(`${Path.join(__dirname, './')}editor.html`, {title: 'Level Editor'})
         });
 
-        this.api.post('/api/:action', ( request, response ) => {
-            // handle edges from form
-            let result = this.handleActionQuery( request.params.action, request.query, request.body );
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
-        });
-
-        this.api.post('/api/save', ( request, response ) => {
-            // handle edges from form
-            let result = this.handleActionQuery('save', request.query, request.body );
-
-            // Lets get some data to the client
-            // TODO: something with the form we got sent, like save the content as a file
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
-        });
-
-        this.run()
-    }
-
-    handleActionQuery( action, query, body ) {
-
-        let result = { error: -1 };
-        let command = (action == '' ? body.action : action);
-        switch (command) {
-            case 'Validate':
-                result.error = 0;
-                break;
-
-            case 'Submit':
-                result.error = 0;
-                break;
-
-            default:
-                result = { error: -2, ...body }
-                break;
-        }
-        // send the result back as JSON data
-        return result
+        this.run();
     }
 
     run() {
-
         this.api.set('port', PORT );
         this.listener = HTTP.createServer( this.api );
         this.listener.listen( PORT );
@@ -87,7 +43,7 @@ class Server {
             let addr = this.listener.address();
             let bind = typeof addr == `string` ? `pipe ${addr}`: `port ${addr.port}`;
 
-            console.log(`Listneing on ${bind}`)
+            console.log(`Listening on ${bind}`)
         });
     }
 }

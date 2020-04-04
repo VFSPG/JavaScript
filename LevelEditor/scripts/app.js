@@ -42,7 +42,7 @@ export default class App {
                 // debug stuff?
             })
             .on("dragend", event => {
-                // change the look,
+                console.log("dada")
             });
     }
 
@@ -104,51 +104,7 @@ export default class App {
         // TODO: Load a file with the given file name...
     }
 
-    saveLevel( event ) {
-        event.preventDefault();
-
-        let levelData = this.gatherFormData( event );
-        // Post a message to the server
-        $.post('/api/save_level', levelData )
-            .then( responseData => {
-
-                // deal with a response
-                let newData = JSON.parse( responseData );
-
-                // TODO: pop a dialog to tell the user that we saved OK
-            })
-            .catch( error => {
-                console.log( error )
-                // TODO: tell the user in a dialog that the save did not work
-            });
-    }
-
-    gatherFormData( event ) {
-        // TODO: gather all the data and send it off to the server
-        let baseData = $("#info-form").serializeArray();
-        /*
-        We have this...
-        let deleteMe = [{ name:"name", value:"level-1" },
-                        { name:"obstacleCount", value: "10" },
-                        {}, ...];
-
-        We want this...
-        let levelData = {
-            name: "level-1",
-            obstacleCount: 10,
-            ...
-        };
-        */
-        let levelData = {};
-        for (let field of baseData) {
-
-            levelData[field.name] = field.value;
-        }
-
-        //  TODO: Also add in the data representing the entities in the actual level
-
-        return levelData;
-    }
+    
 
     run() {
 

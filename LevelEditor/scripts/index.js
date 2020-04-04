@@ -1,15 +1,15 @@
-// Copyright (C) 2020 Scott Henshaw
+// Copyright (C) 2020 Jonathan Dean, All Rights Reserved
 'use strict';
 
-import App from './app.js';
+import App from './app.js'
 
-// MAIN
-(function Main() {
+(function() {
 
     $(document).ready( event => {
 
         let app = new App();
+
         app.run();
+
     })
 })()
-

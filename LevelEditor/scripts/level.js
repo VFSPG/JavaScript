@@ -54,3 +54,30 @@ export default class Level {
 
     }
 }
+app.post(
+    '/api/bookmarks',
+    (req, res) => {
+      const { url, tags } = req.body;
+      if (!url) {
+        res.status(400).send({error: "URL is missing"})
+        return;
+      }
+      if (!url.match(urlRegex) {
+        res.status(400).send({error: "URL is not valid"})
+        return;
+      }
+      const bookmark = new Bookmark({
+        url,
+        tags
+      });
+
+      bookmark.save()
+        .then(res => {
+          res.send(result)
+        })
+        .catch(error => {
+          console.log("err:", error);
+          res.status(500)
+        });
+    }
+  );

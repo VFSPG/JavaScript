@@ -1,0 +1,156 @@
+<!-- Copyright (C) 2020 Jonathan Dean, All Rights Reserved -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+        <link rel="stylesheet" href="./css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <title>Lever Editor</title>
+    </head>
+    <body>
+        <header>
+            <h1>Level Editor</h1>
+        </header>
+
+        <section class="options-container">
+            <h2>Options</h2>
+
+            <div class="level-btns">
+                <!-- Button to create new level -->
+                <button class="btn-style" id="new-level-btn">
+                    New Level
+                </button>
+                
+                <!-- Button to load level -->
+                <select class="btn-style" id="load-level-btn">
+                    <option value="Level1">Level 1</option>
+                    <option value="Level2">Level 2</option>
+                    <option value="Level3">Level 3</option>
+                    <option value="Level4">Level 4</option>
+                </select>
+
+            </div>
+            <!-- Form with values for the level -->
+            <form id="editor-form" class="editor-form">
+
+                <div class="input-container">
+                    <label for="level-name">Level Name:</label>
+                    <input class="text-input" type="text" name="level-name" id="level-name" value="">
+                </div>
+
+                <div class="input-container">
+                    <label for="level-background">Level Background:</label>
+                    <input class="text-input" type="text" name="level-background" id="level-background" value="">
+                </div>
+
+                <div class="input-container">
+                    <label for="max-shots">Max Shots:</label>
+                    <input class="text-input" type="number" name="max-shots" id="max-shots" value="0">
+                </div>
+
+                <div class="input-container">
+                    <label for="one-stars-core">One Star Score:</label>
+                    <input class="text-input" type="number" name="one-stars-score" id="one-stars-score" value="0">
+                </div>
+
+                <div class="input-container">
+                    <label for="two-stars-core">Two Stars Score:</label>
+                    <input class="text-input" type="number" name="two-stars-score" id="two-stars-score" value="0">
+                </div>
+
+                <div class="input-container">
+                    <label for="three-start-score">Three Stars Score:</label>
+                    <input class="text-input" type="number" name="three-stars-score" id="three-stars-score" value="0">
+                </div>
+
+                <input type="submit" value="save" class="btn-style btn-save">
+
+            </form>
+        </section>
+
+        <section class="main-section">
+            <div id="editor-screen" class="editor-screen">
+
+            </div>
+
+            <section id="editor-content" class="library-container">
+                <header class="editor-content-header">
+                    <h2>Assets</h2>
+                    <button id="new-entity-btn" class="btn-style">Add New</button>
+                </header>
+                <section class="content-container">
+                    <ul id="entities-list" class="entities-list"> 
+                        
+                    </ul>
+                </section>
+            </section>
+        </section>
+
+        <section id="new-entity-form-container" class="new-entity-form-container">
+            
+            <div class="library-container">
+                <header class="editor-content-header">
+                    <h2>Add New</h2>
+                    <button id="close-entity-form" class="close-entity-form"></button>
+                </header>    
+
+                <form id="new-entity-form" class="entity-form">
+                    <div class="input-container">
+                        <label for="type">Type:</label>
+                        <select class="select-add-new-entity" name="type" form="new-entity-form">
+                            <option value="obstacle">obstacle</option>
+                            <option value="target">target</option>
+                        </select>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="name">Entity Name:</label>
+                        <input class="text-input" type="text" name="name" id="entity-name" value="crate" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="height">Height:</label>
+                        <input class="text-input" type="number" name="height" id="height" value="50" required>
+                    </div>
+                    
+                    <div class="input-container">
+                        <label for="width">Width:</label>
+                        <input class="text-input" type="number" name="width" id="width" value="50" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="texture">Texture:</label>
+                        <input class="text-input" type="text" name="texture" id="texture" value="crate-one.png" required>
+                    </div>
+    
+                    <div class="input-container">
+                        <label for="shape">Shape:</label>
+                        <input class="text-input" type="text" name="shape" id="shape" value="square" required>
+                    </div>
+    
+                    <div class="input-container">
+                        <label for="friction">Friction:</label>
+                        <input class="text-input" type="number" name="friction" id="friction" value="1" required>
+                    </div>
+    
+                    <div class="input-container">
+                        <label for="mass">Mass:</label>
+                        <input class="text-input" type="number" name="mass" id="mass" value="90" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="restitution">Restitution:</label>
+                        <input class="text-input" type="number" name="restitution" id="restitution" value="0" required>
+                    </div>
+                    
+                    <input type="submit" value="save" class="btn-style btn-save">
+                </form>
+            </div>
+            
+        </section>
+
+    </body>
+    <script type="module" src="./scripts/index.js"></script>
+</html>
