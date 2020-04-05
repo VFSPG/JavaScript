@@ -1,3 +1,4 @@
+/* Copyright (C) 2020 Jonathan Dean, All Rights Reserved */
 /* Default values for all elements */
 * {
     margin: 0;
@@ -34,11 +35,12 @@ header {
     background-color:  #021F59;
 }
 
+/* Options containers */
 .options-container {
     position: relative;
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     padding: 1em;
     background-color: #0A4273;
@@ -47,13 +49,12 @@ header {
 .options-container h2 {
     margin-right: 20px;
 }
-
+/* Buttons container */
 .level-btns {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-right: 20px;
-    width: 160px;
+    padding: 0px 10px;
 }
 
 .level-btns .btn-style:first-child{
@@ -64,10 +65,14 @@ header {
     height: 30px;
 }
 
-.options-container .btn-save {
-    width: 200px;
+.level-btns button {
+    width: 150px;
 }
+.options-container .input-container {
+    margin: 5px 20px 5px 0;
+}  
 
+/* Buttons style */
 .btn-style {
     padding: 0.8em;
     text-transform: uppercase;
@@ -83,17 +88,21 @@ header {
     opacity: 80%;
 }
 
+/* Editor */
 .editor-form {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    width: 100%;
     padding: 5px 10px;
     border-top: 1px solid white;
     border-bottom: 1px solid white;
 }
 
+.editor-form .btn-style{
+    width: 100px;
+}
 
+/* Inputs */
 .input-container {
     display: flex;
     align-items: center;
@@ -111,14 +120,14 @@ header {
     padding: 0.1em;
     padding-left: 5px;
 }
-.options-container .input-container {
-    margin: 5px 20px 5px 0;
-}   
 
-.editor-form .btn-style{
-    width: 100px;
+/* Style for the select background */
+.select-background {
+    width: 120px;
+    margin-left: 10px;
 }
 
+/* Main section */
 .main-section {
     position: relative;
     justify-content: center;
@@ -128,6 +137,7 @@ header {
     padding: 20px;
 }
 
+/* EDITOR SCREEN */
 .editor-screen {
     width: 1280px;
     height: 720px;
@@ -140,15 +150,17 @@ header {
     background-repeat: no-repeat;
 }
 
-.library-container {
+/* Box Container */
+.box-container {
     width: 400px;
+    min-height: 200px;
     position: relative;
     background-color: #0A4273;
     border: 5px solid #021F59;
     margin-left: 20px;
 }
-
-.editor-content-header {
+/* Editor library header */
+.box-content-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -159,7 +171,7 @@ header {
 }
 
 /* Form New Entity */
-.new-entity-form-container {
+.modal-box {
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -213,7 +225,7 @@ header {
     background-size: contain;
 }
 
-.close-entity-form {
+.close-button {
     width: 20px;
     height: 20px;
     position: relative;
@@ -223,7 +235,7 @@ header {
     cursor: pointer;
 }
 
-.close-entity-form::after {
+.close-button::after {
     content: "";
     position: absolute;
     width: 3px;
@@ -234,7 +246,7 @@ header {
     background: white;
 }
 
-.close-entity-form::before {
+.close-button::before {
     content: "";
     position: absolute;
     width: 3px;
@@ -245,6 +257,7 @@ header {
     background: white;
 }
 
+/* Style for object placed in the level */
 .placed {
     position: absolute;
     background-size: contain;
@@ -252,6 +265,7 @@ header {
     background-repeat: no-repeat;
 }
 
+/* Cannon Styles */
 .cannon {
     background-image: url('../images/canon.png');
     width: 100px;
@@ -260,7 +274,21 @@ header {
     left: 65px;
 }
 
-.select-background {
-    width: 120px;
-    margin-left: 10px;
+/* Info box */
+
+#info-box  .box-container {
+
+    width: 700px;
+}
+
+.info-container {
+    padding: 30px;
+}
+
+.info-container ul {
+    padding-left: 20px;
+}
+
+.info-container li {
+    margin-bottom: 5px;
 }

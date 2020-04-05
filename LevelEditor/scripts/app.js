@@ -38,6 +38,10 @@ export default class App {
         this.idNumbers = 0;
 
     }
+    // New button clicked
+    newLevel() {
+        this.clearLevelData();
+    }
 
     // Method to generate level info from level loaded
     async generateLevelInfo ( event ) {
@@ -47,6 +51,9 @@ export default class App {
         // Get Data from the clientLoad class
         let levelData = await this.clientLoad.loadLevel(event);
         this.setLevelFormData(levelData.payload);
+
+        // Changing background
+        this.layoutController.changeBackground("#select-background");
 
         // Setting the number of obstacles and targets
         this.numberOfObstacles = levelData.payload.obstacles;
@@ -123,8 +130,6 @@ export default class App {
         $("#one-stars-score").val(parseInt(levelData.one_star));
         $("#two-stars-score").val(parseInt(levelData.two_stars));
         $("#three-stars-score").val(parseInt(levelData.three_stars));
-        // Changing background
-        this.layoutController.changeBackground("#select-background");
     }
 
     // Method to clear all level info
@@ -252,7 +257,7 @@ export default class App {
     // Method to create new item.
     createNewObject (data) {
         let $newObject;
-        console.log(data.entity.type);
+        
         // Verify what type of object is created
         if (data.entity.type == "obstacle") {
             $newObject = $(`<div id="obstacle-${this.idNumbers}" draggable="true"></div>`);
@@ -486,12 +491,6 @@ export default class App {
             "height": item.height * valueToMultiplyMeters,
             "background-image": `url("${imageUrl}")`,
         })
-    }
-
-
-    // Receive the click
-    newLevel() {
-        this.clearLevelData();
     }
 
     // Method to run app.

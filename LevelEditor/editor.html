@@ -1,20 +1,25 @@
 <!-- Copyright (C) 2020 Jonathan Dean, All Rights Reserved -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
+        <!-- Meta tags -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+        <!-- Import Styles -->
         <link rel="stylesheet" href="./css/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <title>Lever Editor</title>
     </head>
     <body>
+        <!-- Header -->
         <header>
             <h1>Level Editor</h1>
         </header>
 
+        <!-- Section with the options -->
         <section class="options-container">
+
             <h2>Options</h2>
 
             <div class="level-btns">
@@ -62,24 +67,37 @@
                     <label for="three_stars">Three Stars Score:</label>
                     <input class="text-input" type="number" name="three_stars" id="three-stars-score" value="0" required>
                 </div>
-            </form>
 
-            <button class="btn-style btn-save" type="submit" form="editor-form" id="save-btn" >
-                Save 
-            </button>
+            </form>
+            
+            <div class="level-btns">
+                <!-- Button to get form information and save everything -->
+                <button class="btn-style btn-save" type="submit" form="editor-form" id="save-btn" >
+                    Save 
+                </button>
+
+                <!-- Button to get information of how to use -->
+                <button class="btn-style btn-save" id="how-to-use-btn" >
+                    How to use 
+                </button>
+            </div>
         </section>
 
+        <!-- Main section -->
         <section class="main-section">
+            <!-- Editor screen -->
             <div id="editor-screen" class="editor-screen">
                 <div id="cannon" class="cannon placed draggable" draggable="true"></div>
-            </div>
-
-            <section id="editor-content" class="library-container">
-                <header class="editor-content-header">
+                </div>
+            
+            <!-- Assets Library -->
+            <section id="editor-content" class="library-container box-container">
+                <header class="editor-content-header box-content-header">
                     <h2>Assets</h2>
                     <button id="new-entity-btn" class="btn-style">Add New</button>
                 </header>
                 <section class="content-container">
+                    <!-- Items in the library, info comming from server -->
                     <ul id="entities-list" class="entities-list"> 
                         
                     </ul>
@@ -87,15 +105,17 @@
             </section>
         </section>
 
-        <section id="new-entity-form-container" class="new-entity-form-container">
+        <!-- Form to add library items, shows up when add new btn is clicked -->
+        <section id="new-entity-form-container" class="new-entity-form-container modal-box">
             
-            <div class="library-container">
-                <header class="editor-content-header">
+            <div class="library-container box-container">
+                <header class="editor-content-header box-content-header">
                     <h2>Add New</h2>
-                    <button id="close-entity-form" class="close-entity-form"></button>
+                    <button id="close-entity-form" class="close-entity-form close-button"></button>
                 </header>    
-
+                <!-- Form container -->
                 <form id="new-entity-form" class="entity-form">
+
                     <div class="input-container">
                         <label for="type">Type:</label>
                         <select id="entity-type-select" class="select-add-new-entity" name="type" form="new-entity-form">
@@ -150,11 +170,70 @@
                     </div>
                     
                     <input type="submit" value="save" class="btn-style btn-save">
+
                 </form>
             </div>
-            
         </section>
 
+        <!-- Info box -->
+        <section id="info-box" class="modal-box">
+            <div class="box-container">
+                <!-- Info Header -->
+                <header class="box-content-header">
+                    <h2>How to use</h2>
+                    <button id="close-info-button" class="close-button"></button>
+                </header>   
+
+                <div class="info-container">
+                    <ol>
+                        <li>New Level Button: Clear all the info to create new level from scratch.</li>
+                        <li>Load Button: Select levels saved on the serve and load them.</li>
+                        <li>Save: Save all level info in the serve.</li>
+                        <li>Add new: Open form to add new item to library 
+                            <ul>
+                                <li>Fill the form and click save</li>
+                                <li>The select of type determines it the item will be a target or a obstacle</li>
+                                <li>Target items has a value property that can be filled</li>
+                                <li>Images need to contain the extension(.jpg, .png)</li>
+                                <li>Images need to be on Images folder</li>
+                            </ul>
+                        </li>
+                        <li>How it works
+                            <ul>
+                                <li>Fill the form with the level info</li>
+                                <li>
+                                    The background field load all images on the
+                                    the directory. You just need to select one.
+                                </li>
+                                <li>
+                                    To add background image just save the file
+                                    on the images/backgrounds directory and 
+                                    refresh the page.
+                                </li>
+                                <li>
+                                    Drag and drop the items from the assets section
+                                    into the level screen
+                                </li>
+                                <li>To delete an item just double cliked it</li>
+                                <li>After finish just hit the save button</li>
+                            </ul>
+                        </li>
+                        <li> Editing Levels
+                            <ul>
+                                <li>Load the level from the select button.</li>
+                                <li>Just edit anything you want and save it</li>
+                                <li>To save as a new level just change the Level Name Field</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <b> 
+                        IF YOU SAVE A LEVEL WITH THE SAME NAME AS AN EXISTING ONE
+                        THE LEVEL WILL BE OVERWRITED
+                    </b>
+                </div>
+
+            </div>
+        </section>
     </body>
     <script type="module" src="./scripts/index.js"></script>
 </html>
