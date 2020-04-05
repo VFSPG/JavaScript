@@ -1,0 +1,97 @@
+{
+    "id": "level_01",
+    "name": "level_01",
+    "background": "airadventurelevel2.png",
+    "ammo": "20",
+    "obstacles": 3,
+    "targets": 1,
+    "one_star": "200",
+    "two_stars": "300",
+    "three_stars": "400",
+    "cannon": {
+        "id": "cannon",
+        "pos": {
+            "x": 65,
+            "y": 500
+        }
+    },
+    "collidableLists": {
+        "obstacleList": [
+            {
+                "id": "obstacle-0",
+                "pos": {
+                    "x": 700,
+                    "y": 80
+                },
+                "entity": {
+                    "type": "obstacle",
+                    "name": "crate",
+                    "height": "5",
+                    "width": "5",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "obstacle-1",
+                "pos": {
+                    "x": 558,
+                    "y": 310
+                },
+                "entity": {
+                    "type": "obstacle",
+                    "name": "crate",
+                    "height": "5",
+                    "width": "5",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "obstacle-3",
+                "pos": {
+                    "x": 181,
+                    "y": 71
+                },
+                "entity": {
+                    "type": "obstacle",
+                    "name": "crate",
+                    "height": "5",
+                    "width": "5",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            }
+        ],
+        "targetList": [
+            {
+                "id": "target-2",
+                "pos": {
+                    "x": 1005,
+                    "y": 303
+                },
+                "entity": {
+                    "type": "target",
+                    "name": "bird",
+                    "height": "1",
+                    "width": "1",
+                    "texture": "bird.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "50",
+                    "restitution": "0",
+                    "value": "100"
+                }
+            }
+        ]
+    }
+}

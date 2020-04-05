@@ -13,6 +13,7 @@ export default class Result {
     }
 
     serialized() {
+        // Set message by the error number
         switch (this.content.error) {
             case 0:
                 this.content.message = "Success"
@@ -30,7 +31,7 @@ export default class Result {
                 this.content.message = "Something is wrong"
                 break;
         }
-        
+        // returing the data to send as JSON
         return JSON.stringify( this.content );
     }
 }

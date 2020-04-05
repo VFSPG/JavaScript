@@ -1,11 +1,12 @@
 // Copyright (C) 2020 Jonathan Dean, All Rights Reserved
 'use strict';
 
-import Collidable from './collidable'
+import Entity from './entity'
 
-export default class Target extends Collidable {
+// Target class that extends entity
+export default class Target extends Entity {
     constructor() {
         super();
-        this.value = 300;
+        this.content = {...this.content, value: 0}
     }
 }

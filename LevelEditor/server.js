@@ -17,7 +17,7 @@ class Server {
         this.api.use( Express.json()) 
                 .use( Express.urlencoded({ extended: false })) 
                 .use( Express.static( Path.join(__dirname, '.') ))
-                .use( '/api', LevelAPI );
+                .use( '/api', LevelAPI ); //Using the Level API
         
         // Creting get method to render the index.html in the server path
         // Server side renderer.
@@ -34,10 +34,15 @@ class Server {
         this.run();
     }
 
+    // Run method of the serve
     run() {
+        // Setting the port to run
         this.api.set('port', PORT );
+        // Setting the listener 
         this.listener = HTTP.createServer( this.api );
+        // Listen to the port setted before
         this.listener.listen( PORT );
+        // On listening event  to create server
         this.listener.on('listening', event => {
 
             let addr = this.listener.address();

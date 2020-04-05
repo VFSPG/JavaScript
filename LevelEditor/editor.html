@@ -25,10 +25,7 @@
                 
                 <!-- Button to load level -->
                 <select class="btn-style" id="load-level-btn">
-                    <option value="Level1">Level 1</option>
-                    <option value="Level2">Level 2</option>
-                    <option value="Level3">Level 3</option>
-                    <option value="Level4">Level 4</option>
+                    <option value="default">Load Level</option>
                 </select>
 
             </div>
@@ -36,43 +33,45 @@
             <form id="editor-form" class="editor-form">
 
                 <div class="input-container">
-                    <label for="level-name">Level Name:</label>
-                    <input class="text-input" type="text" name="level-name" id="level-name" value="">
+                    <label for="name">Level Name:</label>
+                    <input class="text-input" type="text" name="name" id="level-name" value="" required>
                 </div>
 
                 <div class="input-container">
-                    <label for="level-background">Level Background:</label>
-                    <input class="text-input" type="text" name="level-background" id="level-background" value="">
+                    <label for="background">Level Background:</label>
+                    <select id="select-background" class="select-background" name="background" form="editor-form">
+                    </select>
                 </div>
 
                 <div class="input-container">
-                    <label for="max-shots">Max Shots:</label>
-                    <input class="text-input" type="number" name="max-shots" id="max-shots" value="0">
+                    <label for="ammo">Max Ammo:</label>
+                    <input class="text-input" type="number" name="ammo" id="ammo" value="0" required>
                 </div>
 
                 <div class="input-container">
-                    <label for="one-stars-core">One Star Score:</label>
-                    <input class="text-input" type="number" name="one-stars-score" id="one-stars-score" value="0">
+                    <label for="one_star">One Star Score:</label>
+                    <input class="text-input" type="number" name="one_star" id="one-stars-score" value="0" required>
                 </div>
 
                 <div class="input-container">
-                    <label for="two-stars-core">Two Stars Score:</label>
-                    <input class="text-input" type="number" name="two-stars-score" id="two-stars-score" value="0">
+                    <label for="two_stars">Two Stars Score:</label>
+                    <input class="text-input" type="number" name="two_stars" id="two-stars-score" value="0" required>
                 </div>
 
                 <div class="input-container">
-                    <label for="three-start-score">Three Stars Score:</label>
-                    <input class="text-input" type="number" name="three-stars-score" id="three-stars-score" value="0">
+                    <label for="three_stars">Three Stars Score:</label>
+                    <input class="text-input" type="number" name="three_stars" id="three-stars-score" value="0" required>
                 </div>
-
-                <input type="submit" value="save" class="btn-style btn-save">
-
             </form>
+
+            <button class="btn-style btn-save" type="submit" form="editor-form" id="save-btn" >
+                Save 
+            </button>
         </section>
 
         <section class="main-section">
             <div id="editor-screen" class="editor-screen">
-
+                <div id="cannon" class="cannon placed draggable" draggable="true"></div>
             </div>
 
             <section id="editor-content" class="library-container">
@@ -99,7 +98,7 @@
                 <form id="new-entity-form" class="entity-form">
                     <div class="input-container">
                         <label for="type">Type:</label>
-                        <select class="select-add-new-entity" name="type" form="new-entity-form">
+                        <select id="entity-type-select" class="select-add-new-entity" name="type" form="new-entity-form">
                             <option value="obstacle">obstacle</option>
                             <option value="target">target</option>
                         </select>
@@ -107,27 +106,32 @@
 
                     <div class="input-container">
                         <label for="name">Entity Name:</label>
-                        <input class="text-input" type="text" name="name" id="entity-name" value="crate" required>
+                        <input class="text-input" type="text" name="name" id="entity-name" value="" required>
+                    </div>
+
+                    <div id="value-input" class="input-container">
+                        <label for="value">Value: </label>
+                        <input class="text-input" type="number" name="value" value="0" required>
                     </div>
 
                     <div class="input-container">
                         <label for="height">Height:</label>
-                        <input class="text-input" type="number" name="height" id="height" value="50" required>
+                        <input class="text-input" type="number" name="height" id="height" value="2" required>
                     </div>
                     
                     <div class="input-container">
                         <label for="width">Width:</label>
-                        <input class="text-input" type="number" name="width" id="width" value="50" required>
+                        <input class="text-input" type="number" name="width" id="width" value="2" required>
                     </div>
 
                     <div class="input-container">
                         <label for="texture">Texture:</label>
-                        <input class="text-input" type="text" name="texture" id="texture" value="crate-one.png" required>
+                        <input class="text-input" type="text" name="texture" id="texture" value=".png" required>
                     </div>
     
                     <div class="input-container">
                         <label for="shape">Shape:</label>
-                        <input class="text-input" type="text" name="shape" id="shape" value="square" required>
+                        <input class="text-input" type="text" name="shape" id="shape" value="" required>
                     </div>
     
                     <div class="input-container">

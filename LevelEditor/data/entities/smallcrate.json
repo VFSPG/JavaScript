@@ -1,0 +1,11 @@
+{
+    "type": "obstacle",
+    "name": "smallcrate",
+    "height": "2",
+    "width": "2",
+    "texture": "crate-one.png",
+    "shape": "square",
+    "friction": "1",
+    "mass": "30",
+    "restitution": "0"
+}

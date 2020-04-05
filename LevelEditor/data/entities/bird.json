@@ -1,0 +1,12 @@
+{
+    "type": "target",
+    "name": "bird",
+    "height": "1",
+    "width": "1",
+    "texture": "bird.png",
+    "shape": "square",
+    "friction": "1",
+    "mass": "50",
+    "restitution": "0",
+    "value": "100"
+}

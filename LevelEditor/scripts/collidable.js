@@ -1,11 +1,13 @@
 // Copyright (C) 2020 Jonathan Dean, All Rights Reserved
 'use strict';
+// Collidable 
+export default class Collidable {
 
-class Collidable {
-
-    constructor() {
-        this.id = 0;
-        this.pos = { };
-        this.entity = new Entity();
+    constructor(id, pos, entity) {
+        this.content = {
+            id : id,
+            pos : pos,
+            entity : entity,
+        }
     }
 }

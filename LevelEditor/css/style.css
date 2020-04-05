@@ -64,6 +64,10 @@ header {
     height: 30px;
 }
 
+.options-container .btn-save {
+    width: 200px;
+}
+
 .btn-style {
     padding: 0.8em;
     text-transform: uppercase;
@@ -81,14 +85,14 @@ header {
 
 .editor-form {
     display: flex;
-    justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
-    padding: 10px 0;
+    padding: 5px 10px;
     border-top: 1px solid white;
     border-bottom: 1px solid white;
 }
+
 
 .input-container {
     display: flex;
@@ -107,6 +111,9 @@ header {
     padding: 0.1em;
     padding-left: 5px;
 }
+.options-container .input-container {
+    margin: 5px 20px 5px 0;
+}   
 
 .editor-form .btn-style{
     width: 100px;
@@ -129,6 +136,8 @@ header {
     box-sizing: content-box;
     overflow: hidden;
     border: 5px solid black;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .library-container {
@@ -240,4 +249,18 @@ header {
     position: absolute;
     background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
+}
+
+.cannon {
+    background-image: url('../images/canon.png');
+    width: 100px;
+    height: 100px;
+    top: 500px;
+    left: 65px;
+}
+
+.select-background {
+    width: 120px;
+    margin-left: 10px;
 }
