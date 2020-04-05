@@ -159,6 +159,13 @@ header {
     border: 5px solid #021F59;
     margin-left: 20px;
 }
+/* Adjust for small screen */
+@media only screen and (max-width: 1750px) {
+    .library-container { 
+        width: 80%;
+        margin-top: 20px;
+    }
+}
 /* Editor library header */
 .box-content-header {
     display: flex;
@@ -277,7 +284,6 @@ header {
 /* Info box */
 
 #info-box  .box-container {
-
     width: 700px;
 }
 

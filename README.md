@@ -8,6 +8,8 @@
 
 3. To run the node server without nodemon: **npm run start**
 
+4. Open it in: **localhost:3000/editor**
+
 ## How to use the editor
 
 1. New Level Button: Clear all the info to create new level from scratch.
@@ -17,17 +19,12 @@
 3. Save: Save all level info in the serve.
 
 4. Add new: Open form to add new item to library
-
     * Fill the form and click save
-
     * The select of type determines it the item will be a target or a obstacle
-
     * Target items has a value property that can be filled
-
     * Images need to contain the extension(.jpg, .png)
-
     * Images need to be on Images folder
-    
+
 5. How it works
     * Fill the form with the level info
     * The background field load all images on the the directory. You just need to select one.
@@ -35,6 +32,7 @@
     * Drag and drop the items from the assets section into the level screen
     * To delete an item just double cliked it
     * After finish just hit the save button
+
 6. Editing Levels
     * Load the level from the select button.
     * Just edit anything you want and save it
