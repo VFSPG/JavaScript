@@ -3,15 +3,8 @@
 
 // Client Load class
 export default class ClientLoad {
-    constructor() {
-        // Method to load level.
-        this.loadAllLevel();
-
-        // Load backgrounds
-        this.loadBackgrounds();
-    }
+    constructor() {}
     
-    // METHODS TO LOAD LEVELS
     // Method to load level. 
     // Receive the change event
     loadLevel( event ) {
@@ -34,9 +27,8 @@ export default class ClientLoad {
         });
     }
 
-    // Method to load level. 
-    // Receive the click event
-    loadAllLevel( event ) {
+    // Method to load all levels. 
+    loadAllLevel() {
         // Get all levels from server
         $.post('api/get_level_list/pg18jonathan')
         .then( response => {

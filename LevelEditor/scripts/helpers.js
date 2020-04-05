@@ -2,7 +2,7 @@
 'use strict';
 
 import FileSystem from 'fs'
-
+// Class to help with some reusable methods
 export default class Helpers {
     constructor() {}
 
