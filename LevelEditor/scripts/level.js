@@ -22,7 +22,7 @@ class Collidable {
 
     constructor() {
         this.id = 0;
-        this.pos = {"x = 471, "y = 225 };
+        this.pos = {x: 471, y: 225 };
         this.entity = new Entity();
     }
 }
@@ -37,20 +37,31 @@ class Target extends Collidable {
 
 export default class Level {
 
-    constructor() {
-        {
-            this.id =       0;
-            this.name =     "Level-1";
-            this.ammo =     15;
-            this.catapult = {
-                id: 0,
-                pos: { x: 471, y: 225 }
-            }
-            this.entityLists = {
-                collidableList: [],
-                targetList: []
+    constructor( name, fileSaved) {
+
+        this.content = {
+            id: fileSaved.id,
+            name: name,
+            ammo: fileSaved.ammo,
+            catapult: {
+                id: fileSaved.catapult.id,
+                pos: fileSaved.catapult.pos
+            },
+            entityLists: {
+                collidableList: fileSaved.entityLists.collidableList,
+                targetList: fileSaved.entityLists.targetList
             }
         }
 
+    }
+
+    save(){
+        const fs = require('fs');
+        fs.writeFile("/tmp/test", "Hey there!", ( err ) => {
+                if(err) {
+                    return console.log(err);
+                }
+                console.log("The file was saved!");
+            }); 
     }
 }

@@ -11,7 +11,7 @@
 
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 
-        <!-- <link rel="stylesheet" href="css/style.css">  -->
+        <link rel="stylesheet" href="css/style.css">
 
         <!-- This is the key CDN to pull jQuery from -->
         <!-- To operate offline we may want these to load from a local source -->
@@ -24,7 +24,91 @@
         </style>
     </head>
     <body>
-        <table class="container">
+
+            <!--1280 X 720-->
+            <!--960 X 640-->
+            <section>
+                
+                <!--Main Display-->
+                <div style="display: flex;">
+                    <div style="display: flex; flex-direction: column;">
+
+                        <div style="width: 960px; height: 640px;">
+                            
+                            <div style="display:flex; height: 100%;">
+
+                                <!--Left side-->
+                                <div style="display: flex; flex: 25%; height: 100%; flex-direction: column;">
+
+                                    <!--Current selected object details-->
+                                    <div class="infoContainer containerBorder" style="flex: 30%;">
+
+                                        <div class="adjustToParent" style="padding: 10%;">
+
+                                            <!--Current selected object name-->
+                                            <div style="display: flex;">
+                                                
+                                                <div style="flex: 50%;">
+                                                    Object Name:
+                                                </div>
+
+                                                <div id="currentObjectName" style="flex: 70%;">
+                                                    name
+                                                </div>
+
+                                            </div>
+
+                                            <!--Current selected object sprite name-->
+                                            <div style="display: flex;">
+                                                
+                                                <div style="flex: 50%;">
+                                                    Sprite:
+                                                </div>
+
+                                                <div id="currentObjectSprite" style="flex: 70%;">
+                                                    sprite.jpg
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Hierarchy-->
+                                    <div class="infoContainer containerBorder" style="flex: 70%;">
+
+                                        gameObjects
+                                    </div>
+
+                                </div>
+                                
+                                <div style="display: flex; flex: 75%; height: 100%; flex-direction: column;">
+
+                                    <div style="flex: 70%; background-color: rgb(63, 105, 197);">
+                                        
+                                        level
+
+                                    </div>
+
+                                    <div class="infoContainer containerBorder" style="flex: 30%;">
+
+                                        assets
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="loggerContainer containerBorder">
+                            logger
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+
+        <!--<table class="container">
             <tr>
                 <td>Text to Save:</td>
             </tr>
@@ -49,7 +133,7 @@
             <input type="text" name="fun-stuff" value="" placeholder="covid-19"><br>
             <input type="text" name="web-cam" value="" placeholder="What's that"><br>
             <input type="submit" name="action" value="Submit it All" >
-        </form>
+        </form>-->
         <script type="module" src="scripts/index.js"></script>
     </body>
 </html>
