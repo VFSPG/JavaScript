@@ -20,32 +20,34 @@ const UserID = "pg18jonathan"
 Router.post('/get_level_list/:userid?', async (request, response) => {
     let params = { ...request.params, ...request.query, ...request.body }
     // Creating instance of the entity and the result
-    let result = new Result();
-
+    let result = new Result ();
+    
     // Helpers instance
     let helpers = new Helpers();
     
     // Check if the userId is incorrect, if it is returt error 401
     if (params.userid != UserID) {
-        result.content.error = 401;
+        result.Error = 401;
     }
     else {
         // Create data that promise from helpers to load all files in the 
         // levels folder
         let dataToSend = await helpers.loadAll("./data/levels/");
-        result.content.payload = dataToSend; 
+        result.Error = 0;
+        result.Payload = dataToSend;
 
         // check if there are no results, if it is true send error 201
         if (Object.entries(dataToSend).length == 0)
         {
-            result.content.error = 201;
+            result.Error = 201;
         }
     }
+
     // Send response for client
     response.send (result.serialized())
 });
 
-// Get library post method to return all itens of the library
+// // Get library post method to return all itens of the library
 Router.post('/get_object_list/:userid?', async (request, response) => {
     let params = { ...request.params, ...request.query, ...request.body }
     // Creating instance of the entity and the result
@@ -56,7 +58,7 @@ Router.post('/get_object_list/:userid?', async (request, response) => {
 
     // Check if the userId is incorrect, if it is returt error 401
     if (params.userid != UserID) {
-        result.content.error = 401;
+        result.Error = 401;
     }
     // If the user is correct
     else {
@@ -64,11 +66,11 @@ Router.post('/get_object_list/:userid?', async (request, response) => {
         // a single json
         let dataToSend = await helpers.loadAll("./data/entities/");
         // set the data to the payload
-        result.content.payload = dataToSend;
+        result.Payload = dataToSend;
 
         // check if there are no results, if it is true send error 201
         if (Object.entries(dataToSend).length == 0) {
-            result.content.error = 201;
+            result.Error = 201;
         }
     }
     // Send response to client
@@ -92,15 +94,15 @@ Router.post('/save/:userid?', async (request, response) => {
     // send different errors for different parameters 
     if (params.userid != UserID)
     {
-        result.content.error = 401
+        result.Error = 401
     }
     else if (params.name == undefined || params.name == "")
     {
-        result.content.error = 101
+        result.Error = 101
     }
     else if (!types.includes(params.type))
     {
-        result.content.error = 201
+        result.Error = 201
     }
     else
     {
@@ -124,7 +126,7 @@ Router.post('/save/:userid?', async (request, response) => {
                 } 
             })
             // As result pass the entity to the payload to send back to the client
-            result.content.payload = newEntity.content
+            result.Payload = newEntity.content
             // save the file using save method from helpers
             await helpers.save("./data/entities/", newEntity.content)   
         }
@@ -141,7 +143,7 @@ Router.post('/save/:userid?', async (request, response) => {
             let fileSize = await helpers.fileSize("./data/levels/", 
                         level.content.name);
             // setting the result to send to the client
-            result.content.payload = {
+            result.Payload = {
                 "name" : level.content.name,
                 "bytes" : fileSize
             }
@@ -162,7 +164,7 @@ Router.post('/load/:userid?', async (request, response) => {
     
     // Check if user ID is valid
     if (params.userid != UserID) {
-        result.content.error = 401;
+        result.Error = 401;
     }
     // Getting the level data to send to client
     else {
@@ -173,10 +175,10 @@ Router.post('/load/:userid?', async (request, response) => {
             // load the level using load method from helpers
             let dataToSend = await helpers.load("./data/levels/", params.name);
             // setting the paylaod as the data to send
-            result.content.payload = dataToSend; 
+            result.Payload = dataToSend; 
         }
         else {
-            result.content.error = 201
+            result.Error = 201
         }
     }
     // Sendind data
@@ -195,12 +197,12 @@ Router.get('/background_images', async (request, response) =>{
     // if there are no images send error, with msg of no items found 
     if (images.length == 0) 
     {
-        result.content.error = 201;
+        result.Error = 201;
     }
     // Send the images file names
     else
     {
-        result.content.payload = images;
+        result.Payload = images;
     }
     // Send response
     response.send (result.serialized())
