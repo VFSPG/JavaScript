@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Scott Henshaw
+// Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict';
 
 import App from './app.js';

@@ -5,6 +5,7 @@
     color: chartreuse; 
     background-color: black;
     margin-top: 50px;
+    padding: 20px;
 }
 .containerBorder{
     border-style: ridge; 
