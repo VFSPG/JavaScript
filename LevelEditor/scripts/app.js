@@ -92,7 +92,7 @@ export default class App {
         // attach properties to newObject, width, height, background-image...after
 
         // attach $newObject to our editor-wrapper
-        $("#editor-wrapper").addChild( $newObject );
+        $("#editor-wrapper").append( $newObject );
         $obj = $newObject;
     }
 
@@ -108,13 +108,17 @@ export default class App {
         event.preventDefault();
 
         let levelData = this.gatherFormData( event );
+        levelData = JSON.stringify(levelData);
+        
+        console.log(levelData);
+        
         // Post a message to the server
-        $.post('/api/save_level', levelData )
+        $.post('/api/save/pg18pedro', levelData )
             .then( responseData => {
 
                 // deal with a response
                 let newData = JSON.parse( responseData );
-
+                console.log(newData);
                 // TODO: pop a dialog to tell the user that we saved OK
             })
             .catch( error => {
@@ -139,6 +143,9 @@ export default class App {
             ...
         };
         */
+
+        
+        console.log(baseData);
         let levelData = {};
         for (let field of baseData) {
 
