@@ -1,27 +1,43 @@
-/* Copyright (C) 2018 Scott Henshaw, All Rights Reserved */
+/* Copyright (C) 2020 Alejandro Lopez, All Rights Reserved */
 .hide { display:none; }
-.box-border {
-    border:1px solid black;
-}
-.box-dashed {
-    border:2px dashed red;
-}
-#object-list {
-    list-style-type: none;
-}
-.editor {
-    background-image: url('../images/my-background.jpg');
-    background-size: 100% 100%;
-    min-width: 50vw;
-    min-height: 90vh;
-}
-.debug {
-    border: dashed 1px red;
+.zone{
+    border:2px solid black;
 }
 
-.library {
-    position: relative;
+.editor{
+    height: 720px;
+    width: 1280px;
+    background-size: 100% 100%;
+    background-image: url('../images/my-background.jpg');
 }
+
+.grid-container{
+    display: grid;
+    grid-template-columns: auto 1284px auto;
+    grid-template-rows: 1fr;
+}
+
+.parameters{
+    grid-row: 1;
+    grid-column: 1;
+    padding: 8px;
+}
+
+.windows{
+    grid-row: 1;
+    grid-column: 2;
+}
+
+.objects{
+    grid-row: 1;
+    grid-column: 3;
+    padding: 6px;
+}
+
+body{
+    height: 100%;
+}
+
 
 .obstacle {
     display: inline-block;
@@ -30,33 +46,4 @@
     background-size: 100% 100%;
     height: 100px;
     width: 100px;
-}
-
-.placed {
-    position: relative;
-}
-
-.flex-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap:nowrap;
-    justify-content:center;
-}
-.flex-item {
-    flex-grow: 1;
-}
-.flex-center-item {
-    flex-grow: 3;
-}
-.feedback {
-    height: 2em;
-    width: 100%;
-}
-
-.info-form-area {
-    padding: 8px;
-}
-
-input {
-    margin: 4px;
 }

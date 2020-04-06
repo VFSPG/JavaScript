@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+        <!-- This is the key CDN to pull jQuery from -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="grid-container">   
+            <div class="parameters zone" >
+                <form id="info-form">
+                    Level:
+                        <select id="level-list" name="Level">
+                            <option value="Level-1">Level 1</option>
+                            <option value="Level-2">Level 2</option>
+                        </select></br>
+                        <div id="new-level-button"><button>Create Level</button></div></br>
+                    
+                    Background:
+                        <select id="background-list" name="Background">
+                            <option value="my-background">My Background</option>
+                        </select></br></br>
+
+                    Max Shots:
+                    <input type="text" name="maxShots" value="1"></br></br>
+
+                    One Star Score:
+                    <input type="text" name="oneStarScore" value="100"></br>
+                    Two Star Score:
+                    <input type="text" name="twoStarScore" value="100"></br>
+                    Three Star Score:
+                    <input type="text" name="threeStarScore" value="100"></br>
+
+                </form>
+
+                <div id="save-button"><button>Save</button></div>
+            </div>
+            <div class="windows zone">
+                <div class="editor zone">
+
+                </div>
+                <div class="zone">
+
+
+                </div>
+            </div>
+            <div class="objects zone">
+                <ul id="object-list">
+                    <li name="obj1" value="obj1">
+                        <div id="library-01" class="obstacle debug" draggable="true"></div>
+                    </li>
+                    <div id="add-object-button"><button>Add Object</button></div></br>
+                    <div id="coords-info" class="zone" style="width: 20em;;"></div>
+                </ul>
+            </div>
+        </div>
+    </body>
+    <script type="module" src="scripts/index.js"></script>
+</html>
