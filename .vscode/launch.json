@@ -14,6 +14,21 @@
                 "<node_internals>/**"
             ]
         },
+        {
+            "name": "Node: node server",
+            "type": "node",
+            "runtimeArgs": [
+                "-r",
+                "esm",
+            ],
+            "request": "launch",
+            "cwd": "${fileDirname}",
+            "program": "${file}",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+
 
         
         {

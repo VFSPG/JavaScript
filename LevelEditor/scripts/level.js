@@ -40,11 +40,11 @@ class Target extends Collidable {
 
 export default class Level {
 
-    constructor() {
+    constructor( parameters ) {
         
         this.content = {
             id: 0,
-            name: "Level-1",
+            name: parameters.name,
             ammo: 15,
 
             catapult: {

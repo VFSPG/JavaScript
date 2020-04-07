@@ -27,27 +27,6 @@ class Server {
         this.run()
     }
 
-    handleActionQuery( action, query, body ) {
-
-        let result = { error: -1 };
-        let command = (action == '' ? body.action : action);
-        switch (command) {
-            case 'Validate':
-                result.error = 0;
-                break;
-
-            case 'Submit':
-                result.error = 0;
-                break;
-
-            default:
-                result = { error: -2, ...body }
-                break;
-        }
-        // send the result back as JSON data
-        return result
-    }
-
     run() {
 
         this.api.set('port', PORT );

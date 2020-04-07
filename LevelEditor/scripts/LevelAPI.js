@@ -22,6 +22,32 @@ Router.post(`/get_level_list/:userid?`, (request, response) => {
     //do something to fulfill the request
     let result = new Result(201, "Couldn't find level list");
 
+    let myPath = `${__dirname}/data/${params.userid}    `;
+
+    let fullPathName = Path.dirname(FileSystem.realpathSync( myPath )) + `/${params.userid}`;
+    //Generate List of files
+    FileSystem.readdir( fullPathName, { withFiletypes: true})
+        .then( (err, fileNameList) => {
+            if (!err) 
+            {
+                let fileList = [];
+
+                for (let name of fileNameList) 
+                {
+                    if (name.endsWith(".json"))
+                    {
+                        fileList.push( name.replace(".json", "") );
+                    }
+                }
+
+                result.payload = fileList;
+                result.error = 0;
+            }
+
+            response.send( result.serialized() );
+        })
+        .catch( error => console.log ( error ));
+
     //TODO: Do actual work here
     //TODO: Update the result Object
 
@@ -54,14 +80,14 @@ Router.post(`/save/:userid?`, async (request, response) => {
     //TODO: Actually save the file
     let fileSaved = `${params}.json`;
 
-    let level = new Level( params.name, fileSaved);
+    let level = new Level( params, fileSaved);
     
     level.save()
         .then( fileWritten => {
             //Level data
             let result = new Result(0, "Saved A-OK");
 
-            result.content.payload = `${level.content.name}.json`;
+            //result.content.payload = `${level.content.name}.json`;
 
             //Goes to Client
             response.send( result.serialized() );
@@ -91,7 +117,8 @@ Router.post(`/load/:userid?`, (request, response) => {
 
     let result = new Result( 301, "Couldn't Load level oops")
 
-    result.content.payload = params;
+    //result.payload = ""string we got from the file"";
+    //result.error = 0;
 
     //params -> payload -> return to front
 

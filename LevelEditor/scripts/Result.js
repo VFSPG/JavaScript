@@ -4,6 +4,22 @@ export default class Result {
 
     constructor( code, msg) {
 
+        /*
+            contructor ( error, userid, name, type, payload){
+                this.__private__ = {
+                    userid, 
+                    name, 
+                    type, 
+                    payload, 
+                    error,
+                }
+            } 
+
+            set payload( value ) { this.__private__.payload = value }
+            set error( value ) { this.__private__.error = value }
+         */
+
+         
         //Do Something to funfill the request
         this.content = {
             payload: {

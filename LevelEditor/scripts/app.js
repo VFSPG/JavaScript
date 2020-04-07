@@ -110,7 +110,7 @@ export default class App {
         let levelData = this.gatherFormData( event );
         levelData = JSON.stringify(levelData);
         
-        console.log(levelData);
+        console.log(levelData + "From save level");
         
         // Post a message to the server
         $.post('/api/save/pg18pedro', levelData )
@@ -118,7 +118,7 @@ export default class App {
 
                 // deal with a response
                 let newData = JSON.parse( responseData );
-                console.log(newData);
+                console.log(newData + "Response from the server");
                 // TODO: pop a dialog to tell the user that we saved OK
             })
             .catch( error => {
@@ -128,7 +128,6 @@ export default class App {
     }
 
     gatherFormData( event ) {
-        // TODO: gather all the data and send it off to the server
         let baseData = $("#info-form").serializeArray();
         /*
         We have this...
@@ -143,18 +142,36 @@ export default class App {
             ...
         };
         */
-
-        
-        console.log(baseData);
-        let levelData = {};
-        for (let field of baseData) {
-
-            levelData[field.name] = field.value;
+       let levelData = {};
+       for (let field of baseData) {
+           
+           levelData[field.name] = field.value;
         }
-
+        
+        console.log(levelData + "Hehe");
         //  TODO: Also add in the data representing the entities in the actual level
 
         return levelData;
+    }
+
+    populateLevelList() 
+    {
+        let $list = $('#level-list');
+        $list.html("");
+
+        $.post('/api/get_level_list/:userid?', { userid: "pg18pedro"})
+            .then( resultString => $.parseJSON( resultString ))
+            .then( result => result.payload )
+            .then( levelList => {
+                let $opt = $('<option></option>');
+
+                for(let level of levelList)
+                {
+                    $opt = $(`<option value="${level.filename}"> ${level.name}</option>`);
+                    $list.append( $opt );
+                }
+            })
+            .catch( error => console.log( error ))
     }
 
     run() {
