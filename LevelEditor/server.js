@@ -33,6 +33,7 @@ class Server {
             var user_id = request.body.userid;
             var path = "/data/" + user_id + "/levels";
 
+            //call method that gives files by user in that path
             var result = this.giveAllByUser(path);
             response.send(result);
 
@@ -44,65 +45,40 @@ class Server {
             var user_id = request.body.userid;
             var path = "/data/" + user_id + "/objects";
 
+            //call method that gives files by user in that path
             var result = this.giveAllByUser(path);
             response.send(result);
 
         });
 
-        this.api.post('/api', ( request, response ) => {
-            // handle edges from form
+        this.api.get('/api/load', ( request, response ) => {
 
-            let params = request.params; // data attached in the url /api/:name/:id
-            let query = request.query;   // data attached as a PHP param String
-            let data = request.body;     // data attached as JSON data
+            //get the user_id
+            var user_id = request.body.userid;
+            var path = "/data/" + user_id;
 
+            if(request.body.type =="object"){
 
-            let result = this.handleActionQuery( request.query.action, request.query, request.body );
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
-        });
+                path+= "/objects/";
+            }
+            else{
+                path+= "/levels/";
+            }
+            
+            path += request.body.name + ".json";
 
-        this.api.post('/api/:action', ( request, response ) => {
-            // handle edges from form
-            let result = this.handleActionQuery( request.params.action, request.query, request.body );
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
+            //call method that loads files
+            var result = this.loadFile(path,request.body.name);
+            response.send(result);
+
         });
 
         this.api.post('/api/save', ( request, response ) => {
-            // handle edges from form
-            let result = this.handleActionQuery('save', request.query, request.body );
 
-            // Lets get some data to the client
-            // TODO: something with the form we got sent, like save the content as a file
-            let JSONString = JSON.stringify( result );
-            response.send( JSONString )
         });
 
         this.run()
     }
-
-    handleActionQuery( action, query, body ) {
-
-        let result = { error: -1 };
-        let command = (action == '' ? body.action : action);
-        switch (command) {
-            case 'Validate':
-                result.error = 0;
-                break;
-
-            case 'Submit':
-                result.error = 0;
-                break;
-
-            default:
-                result = { error: -2, ...body }
-                break;
-        }
-        // send the result back as JSON data
-        return result
-    }
-
 
     giveAllByUser(path){
         
@@ -120,31 +96,66 @@ class Server {
             //get all the files in the directory
             var files=fs.readdirSync(path);
 
-            //create a string to store them
-            let payload = "[";
-
-            //add them to the string one by one
-            for(var i=0;i<files.length;i++){
-
-                var name = files[i].split(".json")[0];
-
-                payload =  payload.concat('{"' , name , '" : "' , files[i] ,'"}');
-
-                //if there is more add the coma
-                if(i != files.length-1){
-                    payload += ","
-                }
-
-            };
-
-            payload +="]";
-
             //add the data
             result.error = 0;
-            result.payload = payload;
+            result.payload = this.listFilesInString(files);
         }   
         
         return result;
+    }
+
+    //list files in a string following api documentation
+    // {"actualname" : "actualname.json"}
+    listFilesInString(files){
+        
+        //create a string to store them
+        let string = "[";
+        
+        //add them to the string one by one
+        for(var i=0;i<files.length;i++){
+
+            var name = files[i].split(".json")[0];
+            string =  string.concat('{"' , name , '" : "' , files[i] ,'"}');
+
+            //if there is more add the coma
+            if(i != files.length-1){
+                    string += ","
+            }
+        };
+        string +="]";
+
+        return string;
+    }
+
+    loadFile(path, name){
+
+        let result = { error: -1 };
+
+        //the actual path
+        path = Path.join( __dirname, path)
+
+        //if there is no dir with that user id then return error
+        if (!fs.existsSync(path)){
+            result.error = 1;
+        }
+        else{
+
+            //get all the files in the directory
+            let rawdata = fs.readFileSync(path);
+            let object = JSON.parse(rawdata);
+
+            //add the data
+            result.error = 0;
+            result.name = name;
+            result.bytes = fs.statSync(path)["size"];
+            result.payload = JSON.stringify(object);
+        }   
+        
+        return result;
+    }
+
+    createResponseLoad(object){
+        
     }
 
     run() {
