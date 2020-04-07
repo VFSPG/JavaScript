@@ -32,7 +32,7 @@ Router.post('/get_level_list/:userid?', async (request, response) => {
     else {
         // Create data that promise from helpers to load all files in the 
         // levels folder
-        let dataToSend = await helpers.loadAll("./data/levels/");
+        let dataToSend = await helpers.loadAll(`./data/${params.userid}/levels/`);
         result.Error = 0;
         result.Payload = dataToSend;
 
@@ -138,9 +138,9 @@ Router.post('/save/:userid?', async (request, response) => {
             level = payloadData;
 
             // save the file using the save method from helpers
-            await helpers.save("./data/levels/", level.content)  
+            await helpers.save(`./data/${params.userid}/levels/`, level.content)  
             // get the file size in bytes usinng the method from helpers
-            let fileSize = await helpers.fileSize("./data/levels/", 
+            let fileSize = await helpers.fileSize(`./data/${params.userid}/levels/`, 
                         level.content.name);
             // setting the result to send to the client
             result.Payload = {
@@ -169,11 +169,11 @@ Router.post('/load/:userid?', async (request, response) => {
     // Getting the level data to send to client
     else {
         // Get all files in folder
-        let filesInFolder = await helpers.filesInFolder("./data/levels/");
+        let filesInFolder = await helpers.filesInFolder(`./data/${params.userid}/levels/`);
         // check if there is files to load if not send error to client
         if (filesInFolder.length > 0 ) {
             // load the level using load method from helpers
-            let dataToSend = await helpers.load("./data/levels/", params.name);
+            let dataToSend = await helpers.load(`./data/${params.userid}/levels/`, params.name);
             // setting the paylaod as the data to send
             result.Payload = dataToSend; 
         }

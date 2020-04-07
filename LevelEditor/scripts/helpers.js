@@ -14,6 +14,10 @@ export default class Helpers {
             let jsonString = JSON.stringify(content)
             let name  = content.name.toLowerCase();
             name = name.replace(/[- ]/g,'_');
+            if (!FileSystem.existsSync(path)){
+                console.log(path)
+                FileSystem.mkdirSync(path, { recursive: true });
+            }
             FileSystem.writeFile(`${path}${name}.json`, 
                         jsonString, 
                         (err) => {
