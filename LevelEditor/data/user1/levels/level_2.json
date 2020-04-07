@@ -1,0 +1,73 @@
+{
+    "level": {
+        "id":       0,
+        "name":     "Level-1",
+        "ammo":     15,
+        "catapult": {
+            "id": 0,
+            "pos": {"x": 471, "y": 225 }
+        },
+        "entityLists":    {
+            "collidableList": [{
+                "id": 0,
+                "pos": {"x": 471, "y": 225 },
+                "entity": {
+                    "type": 0,
+                    "name":"Metal Crate",
+                    "height": 70,
+                    "width": 70,
+                    "texture": "images/metalBox.png",
+                    "shape": "square",
+                    "friction": 1,
+                    "mass": 90,
+                    "restitution": 0
+                }
+            }, {
+                "id": 1,
+                "pos": {"x": 289, "y": 448 },
+                "entity": {
+                    "type": 0,
+                    "name":"Stone Block",
+                    "height": 200,
+                    "width": 30,
+                    "texture": "images/stoneBox.png",
+                    "shape": "square",
+                    "friction": 1,
+                    "mass": 50,
+                    "restitution": 0
+                }
+            }],
+            "targetList": [{
+                "id":     3,            
+                "pos":    {"x": 480, "y": 601 },
+                "value":  300,
+                "entity": {
+                    "type": 0,
+                    "name":"Enemy Catapult",
+                    "height": 120,
+                    "width": 120,
+                    "texture": "images/catapult.png",
+                    "shape": "square",
+                    "friction": 1,
+                    "mass": 200,
+                    "restitution": 0
+                }
+            },{
+                "id":     4,            
+                "pos":    {"x": 483, "y": 172 },
+                "value":  300,
+                "entity": {
+                    "type": 0,
+                    "name":"Enemy Catapult",
+                    "height": 120,
+                    "width": 120,
+                    "texture": "images/catapult.png",
+                    "shape": "square",
+                    "friction": 1,
+                    "mass": 200,
+                    "restitution": 0
+                }
+            }]
+        }
+    }
+}

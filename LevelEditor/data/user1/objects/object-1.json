@@ -1,0 +1,11 @@
+{
+    "type": 0,
+    "name": "Metal Crate",
+    "height": 70,
+    "width": 70,
+    "texture": "images/metalCenter.png",
+    "shape": "square",
+    "friction": 1,
+    "mass": 90,
+    "restitution": 0
+}
