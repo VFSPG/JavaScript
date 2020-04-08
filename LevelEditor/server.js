@@ -30,11 +30,11 @@ class Server {
         this.api.get('/api/get_level_list', ( request, response ) => {
             
             //get the user_id and creates the path
-            var user_id = request.body.userid;
+            var user_id = request.query.userid;
             var path = "/data/" + user_id + "/levels";
 
             //call method that gives files by user in that path
-            var result = this.giveAllByUser(path);
+            var result = this.giveAllByUser(path);         
             response.send(result);
 
         });
@@ -64,6 +64,7 @@ class Server {
 
         this.api.post('/api/save', ( request, response ) => {
 
+
             //creates the path
             var path = this.givePathObject(request.body)
 
@@ -83,13 +84,11 @@ class Server {
         var path = "/data/" + body.userid;
 
         if(body.type =="object"){
-            path+= "/objects/";
+            path+= "/objects";
         }
         else{
-            path+= "/levels/";
+            path+= "/levels";
         }
-            
-        path += body.name + ".json";
         
         return path;
     }
@@ -172,22 +171,35 @@ class Server {
 
         let result = { error: -1 };
 
-        //the actual path
+        //the actual path of directory
         path = Path.join( __dirname, path)
 
+        //if the directory doesnt exist then i create it
+        if (!fs.existsSync(path)){
+
+            fs.promises.mkdir(path, {recursive: true})
+                .then(responseData =>{
+                    fs.promises.writeFile(path, payload);
+                })
+            result.error=1;
+        }
+
+        //now is the path of the file
+        path += "/" + name + ".json";
 
         try{
-            fs.writeFileSync(path, JSON.stringify(payload))
+            fs.writeFileSync(path, payload)
 
             result.error=0;
             result.bytes = fs.statSync(path)["size"];
             result.name = name;
 
         }
-        catch{
+        catch(err){
             result.error=1;
         }
 
+        console.log(result);
         return result;
     }
 

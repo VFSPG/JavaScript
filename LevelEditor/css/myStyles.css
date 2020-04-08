@@ -1,5 +1,221 @@
-html{
-    background: #000;
+html,body{
+    background: #fff;
     width: 100%;
     height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+}
+
+body{
+    display: grid;
+    grid-template-areas: 'left right right ';
+    grid-gap: 0px;
+}
+
+/*
+ ******************************************
+ *     THIS ARE THE LEFT PANEL STYLES     *
+ ******************************************
+ */
+
+#left-panel{
+
+    grid-area: left;
+    min-width: 22rem;
+
+    /*this si a gradient background, different browsers handle gradient different that´s why there are so much*/
+    /*in case a browser can´t handle gradient default is solid color*/
+    background: #10AEE8;   
+    background: -webkit-linear-gradient( top, #10AEE8, #BDE8F8);
+    background: -o-linear-gradient(bottom , #10AEE8, #BDE8F8); 
+    background: -moz-linear-gradient(bottom ,#10AEE8, #BDE8F8); 
+    background: linear-gradient(to bottom , #10AEE8, #BDE8F8); 
+
+}
+
+#logo{
+    background-image: url('../images/logo.png');
+    background-size: 100% 100%;
+
+    width: 100%;
+    height: 20%;
+}
+
+#user-info{
+    margin-top: 6%;
+    margin-left: 6%;
+}
+
+#user-info > span{
+    margin-right: 3%;
+}
+
+#user-info > .button{
+    background: #fff;
+    color: #aaa;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 1%;
+}
+
+/*levels styles*/
+
+#levels{
+    margin-top: 4%;
+    margin-left: 6%;
+    width: 90%;
+    height: 60%;
+}
+
+#level-list{
+
+    height: 90%;
+    width: 100%;
+    background: #fff;
+
+    margin-top: 2%;
+
+    direction: rtl;
+    overflow:auto;
+}
+
+.level-list-item{
+    width: 97%;
+
+    padding-left: 2%;
+    padding-right: 1%;
+    direction:ltr;
+}
+
+.level-list-item:hover{
+
+    background: #ddd;
+}
+
+.level-list-item > i{
+    display: none;
+    float: right;
+}
+
+.level-list-item:hover > i{
+    display: inline;
+}
+
+#level-buttons{
+    text-align: right;
+}
+
+#level-buttons > .button{
+    background: #fff;
+    padding: 2%;
+}
+
+/*
+ *******************************************
+ *     THIS ARE THE EDITOR PANEL STYLES    *
+ *******************************************
+ */
+
+ #right{
+
+    grid-area: right;
+    overflow-x: auto;
+ }
+
+ #editor {
+
+    min-width: 1280px;
+    min-height: 720px;
+
+    background-image: url('../images/my-background.png');
+    background-size: 100% 100%;
+
+}
+
+/*
+ ******************************************
+ *        THIS ARE THE MODAL STYLES       *
+ ******************************************
+ */
+ #modal-wrapper{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 99999;
+
+    height: 100%;
+    width: 100%;
+
+}
+
+#modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    padding: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+
+    background: #10AEE8	;
+    border-style: solid;
+    border-color: #000;
+    border-radius: 2%;
+
+    text-align: center;
+    color: #fff;
+}
+
+#modal-tittle{
+    font-size: 1.5em;
+    margin-bottom: 2%;
+}
+
+#modal > .button{
+
+    margin-top: 5%;
+    background: #d80026;
+    color: #fff;
+
+    padding:2%;
+    padding-left: 7%;
+    padding-right: 7%;
+    border-radius: 25px;
+
+}
+
+#modal > .button:hover{
+    border-style: solid;
+    border-color: #000;
+    border-width: thin;
+}
+
+/*
+ *******************************************
+ * THIS IS THE STYLES THAT WORK EVERYWHERE *
+ *******************************************
+ */
+
+.panel{
+    display: inline-block;
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.tittle{
+ 
+    font-family: 'Arvo', Georgia, Times, serif;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.2em;
+    letter-spacing: 0.1em;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;   
 }

@@ -1,6 +1,9 @@
 // Copyright (C) 2020 Scott Henshaw
 'use strict';
 
+//imports
+import {Entity, Level} from './entitiesFactory.js'
+
 // This controlls the User Interface
 export default class App {
 
@@ -21,9 +24,90 @@ export default class App {
         // create a new level/load existing level
 
         // Event handlers here
-        $('#level-dropdown').on('change', event => this.loadLevel( event ));
+        $('#search-btn').on('click', event => this.load( event));
+        $('#ok-modal').on('click', event => $("#modal-wrapper").hide());
         $('#new-level-btn').on('click', event => this.createLevel( event ));
         $('#save-btn').on('click', event => this.saveLevel( event ));
+    }
+
+    load( event ) {
+
+        let user = $("#userId").val();
+        if(user=="" || user==" "){
+            this.showModal("User no valid", "please write a valid user id");
+        }
+        else{
+            this.loadLevels(user)
+
+        }
+
+    }
+
+    loadLevels(userId){
+
+        //gets the list of levels by id
+        var query = {userid : userId};
+        
+        $.get('/api/get_level_list', query)     
+            .then( responseData => {
+
+
+                if(responseData.error==1){
+                    this.showModal("There is no record of the user " + userId, "we will create a new folder for the user now");
+                    this.saveDefaultCrate(userId);
+                }
+                else{
+
+                    for(var level of responseData.payload){
+                        
+                        var string = "<div class='level-list-item' id='"+level.name + "'> <span>" + level.name + "</span>";
+                        string += "<i class='fa fa-trash' id='" + level.name + "-remove' aria-hidden='true'></i></div>";
+                        
+                        $( "#level-list" ).append(string);
+                    }
+                }
+            })
+            .catch( error => {
+                console.log( error )
+                this.showModal("There was an error", "something went wrong while trying to load the levels");
+            });
+
+    }
+
+    showModal(tittle, message){
+
+        $("#modal-wrapper").show();
+        $("#modal-tittle").html(tittle);
+        $("#modal-message").html(message);
+    }
+
+    saveDefaultCrate(userId){
+
+        let object = {
+            userid: userId,
+            name: "default_obj",
+            type: "object",
+        }
+
+        object.payload = JSON.stringify(new Entity());
+
+        console.log(object);
+        this.save(object);
+    }
+
+    save(object){
+
+        $.post('/api/save', object )
+            .then( responseData => {
+
+                // deal with a response
+                //let newData = JSON.parse( responseData );
+                console.log(responseData);
+            })
+            .catch( error => {
+                console.log( error )
+                // TODO: tell the user in a dialog that the save did not work
+            });
     }
 
     addDraggableHandlers( $elementList ) {
@@ -99,11 +183,6 @@ export default class App {
     createLevel( event ) {
 
     }
-
-    loadLevel( event ) {
-        // TODO: Load a file with the given file name...
-    }
-
     saveLevel( event ) {
         event.preventDefault();
 
@@ -150,7 +229,7 @@ export default class App {
         return levelData;
     }
 
-    run() {
+    run(){
 
     }
 }
