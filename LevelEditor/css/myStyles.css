@@ -90,9 +90,20 @@ body{
     direction:ltr;
 }
 
+.level-list-item.selected{
+
+    background: #ddd;
+    font-weight: bold;
+}
+
 .level-list-item:hover{
 
     background: #ddd;
+    cursor: pointer;
+}
+
+.level-list-item:hover > i{
+    display: inline;
 }
 
 .level-list-item > i{
@@ -100,8 +111,9 @@ body{
     float: right;
 }
 
-.level-list-item:hover > i{
-    display: inline;
+.level-list-item > i:hover{
+
+    color: #d80026;
 }
 
 #level-buttons{

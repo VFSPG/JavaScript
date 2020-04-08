@@ -42,7 +42,7 @@ class Server {
         this.api.get('/api/get_object_list', ( request, response ) => {
             
             //get the user_id and creates the path
-            var user_id = request.body.userid;
+            var user_id = request.query.userid;
             var path = "/data/" + user_id + "/objects";
 
             //call method that gives files by user in that path
@@ -53,11 +53,14 @@ class Server {
 
         this.api.get('/api/load', ( request, response ) => {
 
+            console.log(request.query);
             //creates the path
-            var path = this.givePathObject(request.body)
+            var path = this.givePathObject(request.query)
+            //now is the path of the file
+            path += "/" + request.query.name + ".json";
 
             //call method that loads files
-            var result = this.loadFile(path,request.body.name);
+            var result = this.loadFile(path,request.query.name);
             response.send(result);
 
         });
@@ -65,7 +68,7 @@ class Server {
         this.api.post('/api/save', ( request, response ) => {
 
 
-            //creates the path
+            //creates the path to the folder
             var path = this.givePathObject(request.body)
 
             //call method that saves files
@@ -145,12 +148,14 @@ class Server {
         //the actual path
         path = Path.join( __dirname, path)
 
+        console.log(path);
         //if there is no dir with that user id then return error
         if (!fs.existsSync(path)){
             result.error = 1;
         }
         else{
 
+            console.log(path);
             //get all the files in the directory
             let rawdata = fs.readFileSync(path);
             let object = JSON.parse(rawdata);

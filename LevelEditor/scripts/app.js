@@ -10,6 +10,10 @@ export default class App {
     constructor() {
 
         // Initialize level data
+        this.userId ="";
+        this.levels=[];
+        this.objects=[];
+        this.currentLevel={};
 
         // fetch the list of library things
         // TODO: this.loadLibrary();
@@ -19,52 +23,55 @@ export default class App {
         // fetch the list of existing levels
         this.addDroppableHandlers();
 
-        // fill in the library,
 
-        // create a new level/load existing level
 
-        // Event handlers here
-        $('#search-btn').on('click', event => this.load( event));
+        // Event handlers to load stuff
+        $('#search-btn').on('click', e => this.load());
+        $('#userId').on('keypress', event => {if(event.which === 13){this.load( )}});
+
+        //click things that doesnt exist yet (levels)
+        $(document).on("click", ".level-list-item" , e => this.selectLevel(e));
+
+        //event handler to close modal
         $('#ok-modal').on('click', event => $("#modal-wrapper").hide());
+
+        //event handler to create new level
         $('#new-level-btn').on('click', event => this.createLevel( event ));
+
         $('#save-btn').on('click', event => this.saveLevel( event ));
     }
 
-    load( event ) {
+    load() {
 
         let user = $("#userId").val();
-        if(user=="" || user==" "){
+        if(user=="" || this.user==" "){
+
             this.showModal("User no valid", "please write a valid user id");
         }
         else{
-            this.loadLevels(user)
 
+            this.userId = user;
+            this.loadLevels();
         }
 
     }
 
-    loadLevels(userId){
+    loadLevels(){
 
         //gets the list of levels by id
-        var query = {userid : userId};
+        var query = {userid : this.userId};
         
         $.get('/api/get_level_list', query)     
             .then( responseData => {
 
-
                 if(responseData.error==1){
-                    this.showModal("There is no record of the user " + userId, "we will create a new folder for the user now");
-                    this.saveDefaultCrate(userId);
+                    this.showModal("There is no record of the user " + this.userId, "we will create a new folder for the user now");
+                    this.saveDefaultCrate();
                 }
                 else{
 
-                    for(var level of responseData.payload){
-                        
-                        var string = "<div class='level-list-item' id='"+level.name + "'> <span>" + level.name + "</span>";
-                        string += "<i class='fa fa-trash' id='" + level.name + "-remove' aria-hidden='true'></i></div>";
-                        
-                        $( "#level-list" ).append(string);
-                    }
+                    this.levels = responseData.payload;
+                    this.renderList();
                 }
             })
             .catch( error => {
@@ -81,17 +88,15 @@ export default class App {
         $("#modal-message").html(message);
     }
 
-    saveDefaultCrate(userId){
+    saveDefaultCrate(){
 
         let object = {
-            userid: userId,
+            userid: this.userId,
             name: "default_obj",
             type: "object",
         }
 
         object.payload = JSON.stringify(new Entity());
-
-        console.log(object);
         this.save(object);
     }
 
@@ -107,6 +112,37 @@ export default class App {
             .catch( error => {
                 console.log( error )
                 // TODO: tell the user in a dialog that the save did not work
+            });
+    }
+
+    renderList(){
+
+        for(var level of this.levels){
+                        
+            var string = "<div class='level-list-item' id='"+level.name + "'> <span>" + level.name + "</span>";
+            string += "<i class='fa fa-trash' id='" + level.name + "-remove' aria-hidden='true'></i></div>";
+            
+            $( "#level-list" ).append(string);
+        }
+    }
+
+    selectLevel(e){
+
+        $(e.target ).addClass("selected");
+        
+
+        var query = {
+            userid : this.userId,
+            name: e.target.id,
+            type: "level"
+        };
+        
+        $.get('/api/load', query)   
+            .then( responseData => {
+                console.log(responseData);
+            })
+            .catch( error => {
+                console.log( error )
             });
     }
 
