@@ -1,3 +1,4 @@
+/* Copyright (C) 2020 Pedro Avelino*/
 :root{
     font-size: 16px;
     font-family: 'Righteous', cursive;
@@ -147,6 +148,8 @@ main{
     margin-left: 0px;
     overflow: hidden;
     cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .frame{
@@ -187,4 +190,19 @@ input[type=submit]:hover{
     margin-left: auto;
     cursor: pointer;
     background-color: #3C444D;
+}
+
+#btn-add-item
+{
+    /*had to add the font family again because it's a button*/
+    font-family: 'Righteous', cursive;
+    height: 58px;
+    border-color: var(--bg-primary);
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/*Draggabble stuff*/
+.draggable{
+    cursor: progress;
 }

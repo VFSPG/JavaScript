@@ -1,56 +1,19 @@
-// Copyright (C) 2020 Scott Henshae
+// Copyright (C) 2020 Pedro Avelino
 'use strict';
 
 import FileSystem from 'fs'
 import { rejects } from 'assert';
 
-class Entity {
-
-    constructor() {
-        this.type = 0;
-        this.name = "Metal Crate";
-        this.height = 70;
-        this.width = 70;
-        this.texture = "images/metalBox.png";
-        this.shape = "square";
-        
-        this.friction = 1;
-        this.mass = 90;
-        this.restitution = 0;
-    }
-}
-
-class Collidable {
-
-    constructor() {
-        this.id = 0;
-        this.pos = {x:471 , y:225};
-        
-        this.entity = new Entity();
-    }
-}
-
-class Target extends Collidable {
-
-    constructor() {
-        super();
-        this.value = 300;
-    }
-}
-
 export default class Level {
 
-    constructor( parameters ) {
+    constructor( payload ) {
         
         this.content = {
             id: 0,
-            name: parameters.name,
-            ammo: 15,
+            name: payload.name,
+            ammo: payload.ammo,
 
-            catapult: {
-                id: 0,
-                pos: { x: 471, y: 225}
-            },
+            catapult: payload.catapult,
 
             entityLists:{
                 collidableList: [],
@@ -65,7 +28,7 @@ export default class Level {
         return new Promise(( resolve, rejects) => {
             //Actual Work here
 
-            FileSystem.writeFile(`${this.content.name}.json`, JSON.stringify(this.content), (err, content) => {
+            FileSystem.writeFile(`../LevelEditor/data/levels/${this.content.name}.json`, JSON.stringify(this.content), (err, content) => {
 
                 if(err) rejects( err );
                 resolve( content );

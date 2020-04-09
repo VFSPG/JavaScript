@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Scott Henshaw, All Rights Reserved
+// Copyright (C) 2020 Pedro Avelino
 'use strict';
 
 import Express from 'express'

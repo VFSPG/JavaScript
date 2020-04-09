@@ -10,13 +10,14 @@ export default class App {
 
         // fetch the list of library things
         // TODO: this.loadLibrary();
-        let $libraryElementList = $(".obstacle");
+        let $libraryElementList = $('#draggable');
         this.addDraggableHandlers( $libraryElementList );
 
         // fetch the list of existing levels
         this.addDroppableHandlers();
 
-        // fill in the library,
+        // fill in the library of backgrounds
+        this.populateBackgroundImageList();
 
         // create a new level/load existing level
 
@@ -24,6 +25,8 @@ export default class App {
         $('#level-dropdown').on('change', event => this.loadLevel( event ));
         $('#new-level-btn').on('click', event => this.createLevel( event ));
         $('#save-btn').on('click', event => this.saveLevel( event ));
+        $('#add-item-btn').on('click', event => this.addItem( event ));
+        $('#bg-list').on('change', event => this.changeBackground( event ));
     }
 
     addDraggableHandlers( $elementList ) {
@@ -107,18 +110,16 @@ export default class App {
     saveLevel( event ) {
         event.preventDefault();
 
-        let levelData = this.gatherFormData( event );
-        levelData = JSON.stringify(levelData);
-        
-        console.log(levelData + "From save level");
+        let levelData = {
+            "payload": JSON.stringify(this.gatherFormData(event))
+        };
         
         // Post a message to the server
-        $.post('/api/save/pg18pedro', levelData )
+        $.post('/api/save/:userid?', levelData )
             .then( responseData => {
 
                 // deal with a response
                 let newData = JSON.parse( responseData );
-                console.log(newData + "Response from the server");
                 // TODO: pop a dialog to tell the user that we saved OK
             })
             .catch( error => {
@@ -128,28 +129,29 @@ export default class App {
     }
 
     gatherFormData( event ) {
-        let baseData = $("#info-form").serializeArray();
-        /*
-        We have this...
-        let deleteMe = [{ name:"name", value:"level-1" },
-                        { name:"obstacleCount", value: "10" },
-                        {}, ...];
 
-        We want this...
-        let levelData = {
-            name: "level-1",
-            obstacleCount: 10,
-            ...
-        };
-        */
-       let levelData = {};
-       for (let field of baseData) {
-           
-           levelData[field.name] = field.value;
-        }
+        let baseData = $("#info-form").serializeArray();
+        let levelData = {};
         
-        console.log(levelData + "Hehe");
-        //  TODO: Also add in the data representing the entities in the actual level
+        let catapult = {
+            id: 1,
+            pos: { x: 1000, y: 1000}
+        }
+
+        let meuAmigoJonathan = {
+            "name": "catapult",
+            "value": catapult
+        }
+
+        baseData.push( meuAmigoJonathan )
+
+        for (let field of baseData) 
+        {    
+            levelData[field.name] = field.value;
+        }
+            //  TODO: Also add in the data representing the entities in the actual level
+            //  TODO: Add the background value
+
 
         return levelData;
     }
@@ -172,6 +174,44 @@ export default class App {
                 }
             })
             .catch( error => console.log( error ))
+          
+    }
+
+    populateBackgroundImageList()
+    {
+        let $list = $('#bg-options');
+
+        $.post('/api/get_background_list/:userid?')
+          .then( levelList => {
+            let $opt = $('<option></option>');
+
+                let list = JSON.parse(levelList);
+
+                for(let bg of list.payload)
+                {
+                    $opt = $(`<option value="${bg}"> ${bg}</option>`);
+                    $list.append( $opt );
+                }
+          })
+          .catch( error => {
+              alert( error )
+          });
+    }
+
+    changeBackground( event )
+    {
+        let $listItem = $(event.target).val();
+        let $editor = $('#editor');
+
+        console.log($listItem);
+        
+        $editor.css("background-image", `url("../images/bg/${$listItem}")`)
+
+    }
+
+    addItem( event )
+    {
+
     }
 
     run() {

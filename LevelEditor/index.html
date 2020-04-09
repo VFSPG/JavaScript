@@ -50,7 +50,6 @@
                     </li>
 
                     <li class="nav-item">
-                        
                         <div href="#" class="nav-link">
                             <!--Icon-->
                             <svg 
@@ -75,7 +74,6 @@
                                     class="fa-secondary">
                                 </path>
                             </svg>
-
                             <!--Submit button-->
                             <input type="submit" id="save-btn" value="Save" class="link-text">
                         </div>
@@ -104,7 +102,6 @@
                                 </path>
 
                             </svg>
-
                             <span class="link-text">Load</span>
                         </a>
                     </li>
@@ -114,7 +111,23 @@
                             <h3>Level Name</h3>
                             <input name="name" id="name" type="text" class="link-text">
                         </div>
-                        
+                    </li>
+
+                    <li class="nav-item">
+                        <div class="nav-link">
+                            <h3>Ammo</h3>
+                            <input name="ammo" id="ammo" type="text" class="link-text">
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <div class="nav-link">
+                            <h4>Background</h4>
+                            <input id="bg-list" name="background" list="bg-options" class="link-text">
+                            <datalist id="bg-options">
+                                <option value="Hello"></option>
+                            </datalist>
+                        </div>
                     </li>
 
                 </ul>
@@ -127,7 +140,13 @@
                 </div>
     
                 <div id="item-selector" class="frame">
+
+                    <ul class="item-list">
+                        <li class="draggable"></li>
+                    </ul>
                 </div>
+
+                <button type="button" id="btn-add-item">Add Item</button>
             </div>
             <!--Main canvas-->
         

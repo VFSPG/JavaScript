@@ -6,13 +6,12 @@ import Path from 'path'
 import FileSystem from 'fs'
 
 import Level from './level'
-
 import Result from './Result'
 
 const Router = Express.Router();
 
 //---------------------------------------
-//Get List of levels route handler
+//TODO:Get List of levels route handler
 //
 Router.post(`/get_level_list/:userid?`, (request, response) => {
     
@@ -22,7 +21,7 @@ Router.post(`/get_level_list/:userid?`, (request, response) => {
     //do something to fulfill the request
     let result = new Result(201, "Couldn't find level list");
 
-    let myPath = `${__dirname}/data/${params.userid}    `;
+    let myPath = `${__dirname}/data/${params.userid}`;
 
     let fullPathName = Path.dirname(FileSystem.realpathSync( myPath )) + `/${params.userid}`;
     //Generate List of files
@@ -55,7 +54,7 @@ Router.post(`/get_level_list/:userid?`, (request, response) => {
 });
 
 //---------------------------------------
-//Get List of Objects route handler
+//TODO:Get List of Objects route handler
 //
 Router.post(`/get_object_list/:userid?`, (request, responde) => {
     
@@ -72,30 +71,26 @@ Router.post(`/get_object_list/:userid?`, (request, responde) => {
 Router.post(`/save/:userid?`, async (request, response) => {
     
     let params = {...request.params,...request.query,...request.body};
-
-    
     //receber os dados do formulario do front
     //Criar um arquivo novo arquivo com os dados
 
     //TODO: Actually save the file
-    let fileSaved = `${params}.json`;
+    
+    let payload = JSON.parse(params.payload);
+    console.log(payload.name + "After payload on server");
 
-    let level = new Level( params, fileSaved);
+    let level = new Level( payload );
     
     level.save()
         .then( fileWritten => {
             //Level data
             let result = new Result(0, "Saved A-OK");
 
-            //result.content.payload = `${level.content.name}.json`;
-
             //Goes to Client
             response.send( result.serialized() );
         })
         .catch( err => {
             let result = new Result(101, "Not saved oops");
-
-            let JSONString = JSONString.stringify( result );
             response.send( result.serialized() );
         })
 
@@ -105,8 +100,8 @@ Router.post(`/save/:userid?`, async (request, response) => {
     // response.send ( result.serialized() )
 })
 
-//---------------------------------------
-//Load Level router handler
+//-----------------------------------------------------------------------------
+//TODO:Load Level router handler
 //
 Router.post(`/load/:userid?`, (request, response) => {
     let params = {...request.params,...request.query,...request.body};
@@ -123,6 +118,45 @@ Router.post(`/load/:userid?`, (request, response) => {
     //params -> payload -> return to front
 
     response.send ( result.serialized() )
+})
+
+// ----------------------------------------------------------------
+//Populate Background image list
+Router.post(`/get_background_list/:userid?`, (request, response) => {
+    
+    let params = {...request.params,...request.query,...request.body};
+    
+    let result = new Result( 401, "Couldn't retrive background oops")
+
+    let fullPathName = Path.join(__dirname, '../images/bg');
+
+    FileSystem.readdir( fullPathName, (err, fileNameList)=>{
+        if (!err) 
+        {
+            let fileList = [];
+
+            for (let name of fileNameList) 
+            {
+                // if (name.endsWith(".png"))
+                // {
+                //     fileList.push( name.replace(".png", "") );
+                // }else if(name.endsWith(".jpg")){
+                //     fileList.push( name.replace(".jpg", "") );
+                // }
+                fileList.push( name );
+            }
+
+            //Populate the response object with the files
+            result.content = {
+                payload: fileList,
+                error: 0
+            }
+            result.content.error = 0;
+        }
+
+        response.send( result.serialized() );
+    })
+
 })
 
 export default Router;
