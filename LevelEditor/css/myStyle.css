@@ -140,6 +140,12 @@ main{
     transform: rotate(-180deg);
 }
 
+.frame{
+    border: 1px solid black;
+    border-radius: 15px;
+    display: flex;
+}
+
 #editor{
     width: 62rem;
     height: 35rem;
@@ -150,13 +156,11 @@ main{
     cursor: pointer;
     background-size: contain;
     background-repeat: no-repeat;
+    display: block;
+    position: initial;
 }
 
-.frame{
-    border: 1px solid black;
-    border-radius: 15px;
-    display: flex;
-}
+
 
 /*Change style of the form tags*/
 input[type=submit]{
@@ -188,8 +192,8 @@ input[type=submit]:hover{
     width: 22rem;
     height: 35rem;
     margin-left: auto;
-    cursor: pointer;
     background-color: #3C444D;
+    
 }
 
 #btn-add-item
@@ -203,6 +207,16 @@ input[type=submit]:hover{
 }
 
 /*Draggabble stuff*/
+.draggable, .placed{
+    background-size: contain;
+    width: 90px;
+    height: 90px;
+    cursor: all-scroll;
+    background-repeat: no-repeat;
+}
+
 .draggable{
-    cursor: progress;
+    margin-bottom: 20px;
+    margin-left: 15px;
+    list-style-type: none;
 }

@@ -6,21 +6,21 @@ export default class App {
 
     constructor() {
 
-        // Initialize level data
+        this.populateLevelList();
 
-        // fetch the list of library things
-        // TODO: this.loadLibrary();
-        let $libraryElementList = $('#draggable');
-        this.addDraggableHandlers( $libraryElementList );
+        // Initialize level data
+        this.populateObjectList();
 
         // fetch the list of existing levels
         this.addDroppableHandlers();
-
+    
         // fill in the library of backgrounds
         this.populateBackgroundImageList();
 
-        // create a new level/load existing level
+        //Index to keep track of new objects
+        this.objIndex = 0;
 
+        // create a new level/load existing level
         // Event handlers here
         $('#level-dropdown').on('change', event => this.loadLevel( event ));
         $('#new-level-btn').on('click', event => this.createLevel( event ));
@@ -29,35 +29,53 @@ export default class App {
         $('#bg-list').on('change', event => this.changeBackground( event ));
     }
 
-    addDraggableHandlers( $elementList ) {
+    addDraggableHandlers() {
 
-        $elementList
-            .on("dragstart", event => {
-                // collect drag info, delta from top left, el id
-                let dragData = {
-                    dx: event.offsetX,
-                    dy: event.offsetY,
-                    id: `#${event.target.id}`,
-                };
-                this.storeData( event, dragData );
-            })
-            .on("drag", event => {
-                // debug stuff?
-            })
-            .on("dragend", event => {
-                // change the look,
-            });
+        let $draggable = $( ".draggable" );
+
+        $draggable
+        .on("dragstart", event => {
+
+            //collect drag info, delta from top left, el id
+            
+            let dragData = {
+                dx: event.offsetX,
+                dy: event.offsetY,
+                id: `#${event.target.id}`,
+                image: event.target.style.backgroundImage
+            };
+
+            this.storeData( event, dragData );
+
+            
+        })
+        .on("drag", event => {
+            // debug stuff?
+        })
+        .on("dragend", event => {
+            // change the look,
+        });
     }
 
+    //Store data to the object we are dragging
     storeData( event, data ) {
-        event.originalElement.dataTransfer.setData("text/plain", JSON.stringify( data ) );
+        event.originalEvent.dataTransfer.setData("text/plain", JSON.stringify( data ) );
     }
+
+    //Get event data of the object were interacting
+    eventData( event ) {
+        let dataString = event.originalEvent.dataTransfer.getData("text/plain");
+        return JSON.parse( dataString );
+    }
+
 
     addDroppableHandlers() {
-        let $editor = $("#editor-wrapper");
-        $editor.on("dragenter", event => { /* Do nothing - maybe change a cursor */ })
+        let $editor = $("#editor");
+
+        $editor.on("dragenter", event => { /* Do nothing - maybe change a cursor */  event.preventDefault();})
             .on("dragover", event => {
                 // change the cursor, maybe an outline on the object?
+                event.preventDefault();
             })
             .on("dragleave", event => {
                 // do nothing? undo what we did when we entered
@@ -69,18 +87,13 @@ export default class App {
 
                 // add a class to the new element to indicate it exists
                 if (!$obj.hasClass("placed"))
-                    $obj = this.generateNewObstacle( $oldObstacle )
+                    $obj = this.generateNewObstacle( dragData )
 
-                let editorPos = $editor.offset();
                 $obj.offset( this.offsetPosition( event, dragData ) );
             })
     }
 
-    eventData( event ) {
-        let dataString = event.originalEvent.dataTransfer.getData("text/plain");
-        return JSON.parse( dataString );
-    }
-
+    
     offsetPosition( event, offset ) {
         return {
             left: event.clientX - offset.dx,
@@ -88,15 +101,22 @@ export default class App {
         }
     }
 
-    generateNewObstacle( $old ) {
+    generateNewObstacle( dragData ) {
         // not placed yet...
-        let $newObject = $("<div></div>");
+        let $newObject = $(`<div draggable="true" id=${this.objIndex++}></div>`);
         $newObject.addClass('placed');
+        $newObject.addClass('draggable');
         // attach properties to newObject, width, height, background-image...after
+        
+        //Change it's background
+        $newObject.css('background-image', `${dragData.image}`);
+        
+        $newObject.data("box", "ice");
 
         // attach $newObject to our editor-wrapper
-        $("#editor-wrapper").append( $newObject );
-        $obj = $newObject;
+        $("#editor").append( $newObject );
+        this.addDraggableHandlers();
+        return $newObject;
     }
 
     createLevel( event ) {
@@ -161,15 +181,16 @@ export default class App {
         let $list = $('#level-list');
         $list.html("");
 
-        $.post('/api/get_level_list/:userid?', { userid: "pg18pedro"})
-            .then( resultString => $.parseJSON( resultString ))
-            .then( result => result.payload )
+        $.post('/api/get_level_list/:userid?')
             .then( levelList => {
+
+                let list = JSON.parse( levelList );
                 let $opt = $('<option></option>');
 
-                for(let level of levelList)
+                //Populate the list with the options
+                for(let level of list.payload)
                 {
-                    $opt = $(`<option value="${level.filename}"> ${level.name}</option>`);
+                    $opt = $(`<option value="${level}"> ${level}</option>`);
                     $list.append( $opt );
                 }
             })
@@ -179,7 +200,7 @@ export default class App {
 
     populateBackgroundImageList()
     {
-        let $list = $('#bg-options');
+        let $list = $('#bg-list');
 
         $.post('/api/get_background_list/:userid?')
           .then( levelList => {
@@ -198,17 +219,46 @@ export default class App {
           });
     }
 
+    //Gather from the server the list of objects
+    populateObjectList()
+    {   
+        //Get the list object
+        let $list = $('#item-list');
+
+        //Get the list from the server
+        $.post('/api/get_object_list/:userid?')
+          .then( levelList => {
+
+                let list = JSON.parse(levelList);
+
+                //Populate the list with the options
+                for(let object of list.payload)
+                {
+                    let $opt = $(`<li draggable="true" id= "${object}" class="draggable"></li>`);
+                    $opt.css("background-image", `url(../images/objs/${object})`)
+                    $list.append( $opt );
+                }
+
+            //Add the draggable handlers to the new objects
+            this.addDraggableHandlers( );
+          })
+          .catch( error => {
+              alert( error )  
+          });
+          
+    }
+    
+    //Change the Background of the editor
     changeBackground( event )
     {
         let $listItem = $(event.target).val();
         let $editor = $('#editor');
-
-        console.log($listItem);
         
         $editor.css("background-image", `url("../images/bg/${$listItem}")`)
 
     }
 
+    //TODO: Add Item
     addItem( event )
     {
 

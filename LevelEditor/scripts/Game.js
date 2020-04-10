@@ -10,7 +10,6 @@ export default class Game {
 
         //TODO:Load a level
         //TODO:Update the World View
-        //TODO:Update Entity List
     }
 
     update( deltaTime ) {

@@ -21,12 +21,13 @@ Router.post(`/get_level_list/:userid?`, (request, response) => {
     //do something to fulfill the request
     let result = new Result(201, "Couldn't find level list");
 
-    let myPath = `${__dirname}/data/${params.userid}`;
+    let myPath = `${__dirname}/data/levels`;
 
-    let fullPathName = Path.dirname(FileSystem.realpathSync( myPath )) + `/${params.userid}`;
+    //let fullPathName = Path.dirname(FileSystem.realpathSync( myPath )) + `/${params.userid}`;
+    let fullPathName = Path.join(__dirname, '../data/levels');
+
     //Generate List of files
-    FileSystem.readdir( fullPathName, { withFiletypes: true})
-        .then( (err, fileNameList) => {
+    FileSystem.readdir( fullPathName, (err, fileNameList) => {
             if (!err) 
             {
                 let fileList = [];
@@ -39,42 +40,61 @@ Router.post(`/get_level_list/:userid?`, (request, response) => {
                     }
                 }
 
-                result.payload = fileList;
-                result.error = 0;
+                //Populate the response object with the files
+                result.content = {
+                    payload: fileList,
+                    error: 0
+                }
             }
 
             response.send( result.serialized() );
         })
-        .catch( error => console.log ( error ));
-
-    //TODO: Do actual work here
-    //TODO: Update the result Object
-
-    response.send( result.serialized() )
 });
 
 //---------------------------------------
 //TODO:Get List of Objects route handler
 //
-Router.post(`/get_object_list/:userid?`, (request, responde) => {
+Router.post(`/get_object_list/:userid?`, (request, response) => {
     
+     
     let params = {...request.params,...request.query,...request.body};
+    
+    let result = new Result( 301, "Couldn't retrive object list")
 
-    let result = new Result( 301, "Couldn't retrieve Object List")
+    let fullPathName = Path.join(__dirname, '../images/objs');
 
-    response.send ( result.serialized() )
+    //Read the files stored in the images folder
+    FileSystem.readdir( fullPathName, (err, objectNameList)=>{
+        if (!err) 
+        {
+            let objectList = [];
+
+            //Add every image found in the selected folder
+            for (let name of objectNameList) 
+            {
+                objectList.push( name );
+            }
+
+            //Populate the response object with the files
+            result.content = {
+                payload: objectList,
+                error: 0
+            }
+            result.content.error = 0;
+        }
+
+        response.send( result.serialized() );
+    })
 })
 
 //-----------------------------------------------------------------------------------------------
-//Save level router handler
+///TODO: Save level router handler
 //
 Router.post(`/save/:userid?`, async (request, response) => {
     
     let params = {...request.params,...request.query,...request.body};
     //receber os dados do formulario do front
     //Criar um arquivo novo arquivo com os dados
-
-    //TODO: Actually save the file
     
     let payload = JSON.parse(params.payload);
     console.log(payload.name + "After payload on server");
@@ -137,12 +157,6 @@ Router.post(`/get_background_list/:userid?`, (request, response) => {
 
             for (let name of fileNameList) 
             {
-                // if (name.endsWith(".png"))
-                // {
-                //     fileList.push( name.replace(".png", "") );
-                // }else if(name.endsWith(".jpg")){
-                //     fileList.push( name.replace(".jpg", "") );
-                // }
                 fileList.push( name );
             }
 
