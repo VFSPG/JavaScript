@@ -9,7 +9,7 @@ export default class App {
 
     constructor() {
 
-        // Initialize level data
+        // Initialize game data
         this.userId ="";
         this.levels=[];
         this.objects=[];
@@ -34,9 +34,11 @@ export default class App {
 
         //event handler to close modal
         $('#ok-modal').on('click', event => $("#modal-wrapper").hide());
+        $('#dismiss-modal').on('click', event => $("#modal-wrapper").hide());
+        $('#create-modal').on('click', event => this.createLevel( ));
 
         //event handler to create new level
-        $('#new-level-btn').on('click', event => this.createLevel( event ));
+        $('#new-level-btn').on('click', event => this.showModalCreate( ));
 
         $('#save-btn').on('click', event => this.saveLevel( event ));
     }
@@ -46,7 +48,7 @@ export default class App {
         let user = $("#userId").val();
         if(user=="" || this.user==" "){
 
-            this.showModal("User no valid", "please write a valid user id");
+            this.showMessage("User no valid", "please write a valid user id");
         }
         else{
 
@@ -60,32 +62,74 @@ export default class App {
 
         //gets the list of levels by id
         var query = {userid : this.userId};
-        
+
         $.get('/api/get_level_list', query)     
             .then( responseData => {
 
                 if(responseData.error==1){
-                    this.showModal("There is no record of the user " + this.userId, "we will create a new folder for the user now");
+                    this.showMessage("There is no record of the user " + this.userId, "we will create a new folder for the user now");
                     this.saveDefaultCrate();
                 }
                 else{
 
                     this.levels = responseData.payload;
+                    console.log(this.levels);
                     this.renderList();
                 }
             })
             .catch( error => {
                 console.log( error )
-                this.showModal("There was an error", "something went wrong while trying to load the levels");
+                this.showMessage("There was an error", "something went wrong while trying to load the levels");
             });
+
 
     }
 
-    showModal(tittle, message){
+    showMessage(tittle, message){
+
+        $("#input-modal").hide();
+        $("#message-modal").show();
 
         $("#modal-wrapper").show();
         $("#modal-tittle").html(tittle);
         $("#modal-message").html(message);
+    }
+
+
+    showModalCreate( ) {
+        
+        let user = $("#userId").val();
+        if(user=="" || this.user==" "){
+
+            this.showMessage("User no valid", "please write a valid user id first");
+        }
+        else{
+
+            $("#message-modal").hide();
+            $("#input-modal").show();
+    
+            $("#modal-wrapper").show();
+            $("#modal-tittle").html("Please write a name for the level");
+            
+        }
+
+    }
+
+    createLevel(){
+
+        let object = {
+            userid: this.userId,
+            name: $("#modal-input").val(),
+            type: "level",
+        }
+
+        let level = {
+            level: new Level(this.levels.length, object.name)
+        }
+        object.payload = JSON.stringify(level);
+        console.log(object);
+        this.save(object);
+
     }
 
     saveDefaultCrate(){
@@ -105,18 +149,20 @@ export default class App {
         $.post('/api/save', object )
             .then( responseData => {
 
-                // deal with a response
-                //let newData = JSON.parse( responseData );
-                console.log(responseData);
+                this.showMessage("SAVED!", "the " + object.type + " was succesfully saved!");
+                if(object.type == "level"){
+                    this.loadLevels();
+                }
             })
             .catch( error => {
                 console.log( error )
-                // TODO: tell the user in a dialog that the save did not work
+                this.showMessage("There was an error", "something went wrong while trying to save the " + object.type);
             });
     }
 
     renderList(){
 
+        $( "#level-list" ).html("");
         for(var level of this.levels){
                         
             var string = "<div class='level-list-item' id='"+level.name + "'> <span>" + level.name + "</span>";
@@ -127,10 +173,7 @@ export default class App {
     }
 
     selectLevel(e){
-
-        $(e.target ).addClass("selected");
         
-
         var query = {
             userid : this.userId,
             name: e.target.id,
@@ -139,11 +182,29 @@ export default class App {
         
         $.get('/api/load', query)   
             .then( responseData => {
-                console.log(responseData);
+ 
+                console.log(this.responseData);
+                if(this.currentLevel.name!=null){
+
+                    let old = "#" + this.currentLevel.name;
+                    $(old).removeClass("selected");
+                }
+
+                $(e.target ).addClass("selected");
+                this.currentLevel = responseData.payload.level;
+                //here show the level
+
+                console.log(this.currentLevel);
             })
             .catch( error => {
                 console.log( error )
+                this.showMessage("There was an error", "something went wrong while trying to load the level");
             });
+    }
+
+    renderLevel(){
+
+        
     }
 
     addDraggableHandlers( $elementList ) {
@@ -216,9 +277,6 @@ export default class App {
         $obj = $newObject;
     }
 
-    createLevel( event ) {
-
-    }
     saveLevel( event ) {
         event.preventDefault();
 

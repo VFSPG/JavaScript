@@ -35,11 +35,11 @@ class Target extends Collidable {
 
 class Level {
 
-    constructor() {
+    constructor(id, name) {
         {
-            this.id =       0;
-            this.name =     "Level-1";
-            this.ammo =     15;
+            this.id = id;
+            this.name = name;
+            this.ammo = 15;
             this.catapult = {
                 id: 0,
                 pos: { x: 471, y: 225 }

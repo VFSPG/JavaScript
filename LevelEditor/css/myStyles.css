@@ -147,6 +147,7 @@ body{
 
 }
 
+
 /*
  ******************************************
  *        THIS ARE THE MODAL STYLES       *
@@ -189,7 +190,7 @@ body{
     margin-bottom: 2%;
 }
 
-#modal > .button{
+.modal-button{
 
     margin-top: 5%;
     background: #d80026;
@@ -202,10 +203,28 @@ body{
 
 }
 
-#modal > .button:hover{
+.modal-button:hover{
     border-style: solid;
     border-color: #000;
     border-width: thin;
+}
+
+#modal-input{
+
+    border-radius: 20px;
+    border-style: none;
+
+    font-size: 1.2em;
+    padding-left: 2%;
+    margin-bottom: 5%;
+
+}
+
+#input-modal > div > .button{
+
+    margin-right: 3%;
+    margin-left: 3%;
+    font-size: 1.2em;
 }
 
 /*
@@ -220,6 +239,7 @@ body{
 
 .button:hover{
     cursor: pointer;
+    font-weight: bold;
 }
 
 .tittle{

@@ -52,18 +52,33 @@
 
         </div>
 
-        <!--right panel-->
+        <!--level editor-->
         <div id="right">
             <div id="editor"></div>
         </div>
 
-
         <!--modal-->
         <div id="modal-wrapper">
             <div id="modal">
+
                 <h1 class="tittle" id="modal-tittle"></h1><br>
-                <p class="tittle" id="modal-message"></p>
-                <span class="button tittle" id="ok-modal"> OK </span>
+
+                <!--modal to show a message-->
+                <div id="message-modal">
+                    <p class="tittle" id="modal-message"></p>
+                    <span class="button tittle modal-button" id="ok-modal"> OK </span>
+                </div>
+
+                <!--modal to get an input-->
+                <div id="input-modal">
+                    <input type="text" id="modal-input" value="" placeholder="level name"></input>
+
+                    <div>
+                        <span class="button tittle modal-button" id="create-modal"> Create </span>
+                        <span class="button tittle modal-button" id="dismiss-modal"> Dismiss </span>
+                    </div>
+                </div>
+
             </div>
         </div>
 

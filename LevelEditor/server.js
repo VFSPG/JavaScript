@@ -15,8 +15,6 @@ class Server {
 
     constructor() {
 
-
-
         this.api = Express();
         this.api.use( Express.json() )
                 .use( Express.urlencoded({ extended: false }))
@@ -53,7 +51,6 @@ class Server {
 
         this.api.get('/api/load', ( request, response ) => {
 
-            console.log(request.query);
             //creates the path
             var path = this.givePathObject(request.query)
             //now is the path of the file
@@ -154,8 +151,6 @@ class Server {
             result.error = 1;
         }
         else{
-
-            console.log(path);
             //get all the files in the directory
             let rawdata = fs.readFileSync(path);
             let object = JSON.parse(rawdata);
@@ -166,7 +161,7 @@ class Server {
             result.bytes = fs.statSync(path)["size"];
             result.payload = object;
         }   
-        
+
         return result;
     }
 
