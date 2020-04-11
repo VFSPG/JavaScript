@@ -142,11 +142,98 @@ body{
     min-width: 1280px;
     min-height: 720px;
 
-    background-image: url('../images/my-background.png');
+    background-image: url('../images/backgrounds/snow-land.png');
     background-size: 100% 100%;
 
 }
 
+/*
+ *******************************************
+ *     THIS ARE THE INFO PANEL STYLES    *
+ *******************************************
+ */
+
+#right-panel{
+
+    position: absolute;
+    top: 0;
+    right: 2%;
+    min-width: 20%;
+
+}
+
+.panel{
+
+    background: #fff;  
+    border-style: solid;
+    border-width: thin;
+    border-color: #ddd;
+
+    margin-bottom: 2%;
+    width: 100%;
+}
+
+.panel-tittle{
+    width: 96%;
+    padding-left: 2%;
+    padding-right: 2%;
+
+    color: #fff;
+    background: #10AEE8; 
+
+    border-bottom-style: solid;
+    border-bottom-color: #ddd;
+}
+
+
+.panel-tittle > i{
+    float: right;
+
+}
+
+
+#info-panel > form{
+    padding: 2%;
+    width: 96%;
+}
+
+.form-item{
+    display: inline-block;
+    margin-bottom: 2%;
+}
+
+label.form-item{
+    min-width: 20%;
+}
+
+.form-item.stars{
+    min-width: 0;
+}
+
+#star1, #star2, #star3{
+
+    font-size: 0.8em;
+    width: 20%;
+}
+
+form div{
+    text-align: center;
+    width: 100%;
+
+}
+.info-button{
+
+    background: #d80026;
+    color: #fff;
+    font-family: 'Arvo', Georgia, Times, serif;
+    font-size: 0.8em;
+
+    min-width: 30%;
+    padding: 2%;
+    margin: 2%;
+    display: inline-block;
+    border-radius: 25px;
+}
 
 /*
  ******************************************
@@ -177,6 +264,11 @@ body{
     padding-right: 5%;
 
     background: #10AEE8	;
+    background: -webkit-linear-gradient( top, #10AEE8, #66CBF0);
+    background: -o-linear-gradient(bottom , #10AEE8, #66CBF0); 
+    background: -moz-linear-gradient(bottom ,#10AEE8, #66CBF0); 
+    background: linear-gradient(to bottom , #10AEE8, #66CBF0); 
+
     border-style: solid;
     border-color: #000;
     border-radius: 2%;

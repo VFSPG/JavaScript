@@ -40,7 +40,9 @@ export default class App {
         //event handler to create new level
         $('#new-level-btn').on('click', event => this.showModalCreate( ));
 
-        $('#save-btn').on('click', event => this.saveLevel( event ));
+        //event handler to edit level
+        $('#edit-button').on('click', event => this.editLevel());
+        $(document).on("click", "#save-button" , event => this.saveLevel( ));
     }
 
     load() {
@@ -192,6 +194,7 @@ export default class App {
 
                 $(e.target ).addClass("selected");
                 this.currentLevel = responseData.payload.level;
+                this.renderLevel();
                 //here show the level
 
                 console.log(this.currentLevel);
@@ -204,7 +207,36 @@ export default class App {
 
     renderLevel(){
 
+        $( "#level-name" ).val(this.currentLevel.name);
+        $( "#ammo" ).val(this.currentLevel.ammo);
         
+    }
+
+    editLevel(){
+        $('#level-form > input').prop("disabled", false);
+        $('#edit-button').html("Save");
+        $('#edit-button').attr("id","save-button");
+    }
+
+
+    saveLevel() {
+
+        console.log("aaa");
+        this.currentLevel.name = $("#level-name").val();
+        this.currentLevel.ammo = $("#ammo").val();
+
+        let object = {
+            userid: this.userId,
+            name:  this.currentLevel.name,
+            type: "level",
+        }
+
+        let level = {
+            level: this.currentLevel
+        }
+
+        object.payload = JSON.stringify(level);
+        this.save(object);
     }
 
     addDraggableHandlers( $elementList ) {
@@ -275,52 +307,6 @@ export default class App {
         // attach $newObject to our editor-wrapper
         $("#editor-wrapper").addChild( $newObject );
         $obj = $newObject;
-    }
-
-    saveLevel( event ) {
-        event.preventDefault();
-
-        let levelData = this.gatherFormData( event );
-        // Post a message to the server
-        $.post('/api/save_level', levelData )
-            .then( responseData => {
-
-                // deal with a response
-                let newData = JSON.parse( responseData );
-
-                // TODO: pop a dialog to tell the user that we saved OK
-            })
-            .catch( error => {
-                console.log( error )
-                // TODO: tell the user in a dialog that the save did not work
-            });
-    }
-
-    gatherFormData( event ) {
-        // TODO: gather all the data and send it off to the server
-        let baseData = $("#info-form").serializeArray();
-        /*
-        We have this...
-        let deleteMe = [{ name:"name", value:"level-1" },
-                        { name:"obstacleCount", value: "10" },
-                        {}, ...];
-
-        We want this...
-        let levelData = {
-            name: "level-1",
-            obstacleCount: 10,
-            ...
-        };
-        */
-        let levelData = {};
-        for (let field of baseData) {
-
-            levelData[field.name] = field.value;
-        }
-
-        //  TODO: Also add in the data representing the entities in the actual level
-
-        return levelData;
     }
 
     run(){

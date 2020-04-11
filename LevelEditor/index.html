@@ -47,14 +47,54 @@
                 <div id="level-buttons">
                     <span class="button" id="new-level-btn">new + </span>                  
                 </div>
-
             </div>
 
         </div>
 
         <!--level editor-->
         <div id="right">
-            <div id="editor"></div>
+            <div id="editor"><!--Creates later--></div>
+        </div>
+
+         <!--panel info-->
+        <div id="right-panel">
+
+            <div class="panel" id="info-panel">
+                <div class="panel-tittle tittle">Level Info <i class="fa fa-minus button" aria-hidden="true"></i></div>
+
+                <form id="level-form">
+
+                    
+                    <label class="form-item">Name: </label>
+                    <input class="form-item" type="text" id="level-name" value="" placeholder="level name" disabled></input><br>
+    
+                    <label class="form-item">Background:</label>
+                    <select class="form-item" id="cars" name="cars" disabled>
+                        <option value="volvo">Default</option>
+                        <option value="saab">Farm</option>
+                        <option value="fiat">Snow</option>
+                    </select>
+                    
+                    <label class="form-item">Ammo:</label>
+                    <input class="form-item" type="number" id="ammo" min="1" max="15" placeholder="0" disabled></input><br>
+
+                    <!--<label class="form-item stars"><i class="fa fa-star-o" aria-hidden="true"></i></label>
+                    <input class="form-item " type="number" id="star1"  min="0" max="50000" placeholder="0" disabled></input>
+
+                    <label class="form-item stars"><i class="fa fa-star-o" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i></label>
+                    <input class="form-item" type="number" id="star2"  min="0" max="50000" placeholder="0" disabled></input>
+
+                    <label class="form-item stars"><i class="fa fa-star-o" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i></label>
+                    <input class="form-item" type="number" id="star3" min="0" max="50000" placeholder="0" disabled></input><br>
+                    -->
+                    <div>
+                        <span class="info-button button" id="edit-button">Edit</span>
+                        <span class="info-button button" id="library-button">Add Object</span>
+                    </div>
+
+                </form>
+            </div>
+
         </div>
 
         <!--modal-->

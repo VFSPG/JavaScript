@@ -9,7 +9,6 @@ import App from './app.js';
     $(document).ready( event => {
 
         let app = new App();
-        app.run();
     })
 })()
 
