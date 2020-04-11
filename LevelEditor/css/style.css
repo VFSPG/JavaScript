@@ -1,8 +1,30 @@
 /* Copyright (C) 2018 Scott Henshaw, All Rights Reserved */
 .tab {
     overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
+    border-radius: 10px 10px 0px 0px;
+    
+  }
+  
+  /* Create an active/current tablink class */
+  .tab button.activeTab {
+    background-color: #0A2845;
+    color: #103E6B;
+  }
+
+  .tab button.inactiveTab{
+    background-color: #103E6B;
+    color: #0A2845;
+  }
+
+  label{
+    font-family: sanvito-pro-display, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    color: #103E6B;
+  }
+
+  .tabContent{
+    background-color: #0A2845;
   }
   
   /* Style the buttons inside the tab */
@@ -15,6 +37,10 @@
     padding: 14px 16px;
     transition: 0.3s;
     font-size: 17px;
+    
+    font-family: sanvito-pro-display, sans-serif;
+    font-style: normal;
+    font-weight: 700;
   }
   
 
@@ -26,8 +52,8 @@
 }
 
 .popUpContainer{
-     width: 640px; 
-     height: 480px; 
+     width: 480px; 
+     height: 320px; 
      background-color: #103E6B;
      border-color: #0A2845;
      border-width: 10px;

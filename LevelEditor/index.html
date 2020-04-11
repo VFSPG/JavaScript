@@ -27,6 +27,7 @@
     </head>
     <body>
         
+        <!--Top bar-->
         <section style="position: fixed; width: 100%;">
 
             <div class="topBar" style="display: flex; justify-content: center;">
@@ -41,18 +42,19 @@
                     <i class="fas fa-file-download barIcon"></i>
                 </div>
 
-                <div class="barButton buttonHoverOutColor" id="levelInfo-button" style="margin: 10px;">
+                <div class="barButton buttonHoverOutColor" id="level-info-button" style="margin: 10px;">
                     Level Info
                     <i class="fas fa-info-circle barIcon"></i>
                 </div>
 
-                <div class="barButton buttonHoverOutColor" id="levelInfo-button" style="margin: 10px;">
+                <div class="barButton buttonHoverOutColor" id="remove-element-button" style="margin: 10px;">
                     Remove Element
                     <i class="fas fa-trash-alt barIcon"></i>
                 </div>
                 
             </div>
 
+            <!--Game Display-->
             <div style="display: flex; width: 100%; justify-content: center;">
 
                 <div class="gameResolution" style="background-color: black; display: flex;">
@@ -78,47 +80,127 @@
 
         </section>
 
-        <section class="adjustToParent popUpSection">
+        <!--Pop Ups-->
+        <section id="popUpWindow" class="adjustToParent popUpSection hide">
             <div style="display: flex; flex-direction: column; justify-content: center;">
                 <div class="popUpContainer">
 
-                    <div style="position: relative; left: 600px; top: 20px;">
+                    <div style="position: relative; left: 400px; top: 20px;">
                         <i id="closePopUp" class="fas fa-times-circle barIcon barButton buttonHoverOutColor"></i>
                     </div>
 
                     <div style="display: flex; width: 100%; height: 100%; justify-content: center;">
                         <div style="display: flex; flex-direction: column; justify-content: center;">
 
-                            <div class="tab">
-                                <button id="levelTab" class="tabLinks">Level</button>
-                                <button id="backgroundTab" class="tabLinks">Background</button>
-                                <button id="gameObjectTab" class="tabLinks">Game Object</button>
+                            <!--Upload Menu-->
+                            <div id="upload-menu" class="popUpContent hide">
+                                <div class="tab">
+                                    <button id="upload-level" class="tabLinks uploadTab inactiveTab">Level</button>
+                                    <button id="upload-background" class="tabLinks uploadTab inactiveTab">Background</button>
+                                    <button id="upload-gameObject" class="tabLinks uploadTab inactiveTab">Game Object</button>
+                                </div>
+                                  
+                                <div id="upload-level-content" class="tabContent uploadContent hide">
+                                    <form id="upload-level-form">
+                                        <label>File Name: </label>
+                                        <input type="text" name="file-name" value="" placeholder="level-1..."><br>
+                                        <label>Level Position: </label>
+                                        <input type="text" name="level-position" value="" placeholder="1, 2, 3..."><br>
+                                        <label>3 stars score: </label>
+                                        <input type="text" name="three-starts-score" value="" placeholder="The highest score..."><br>
+                                        <label>2 stars score: </label>
+                                        <input type="text" name="two-starts-score" value="" placeholder="The 2nd highest score..."><br>
+                                        <label>Shots count: </label>
+                                        <input type="text" name="max-shots" value="" placeholder="Max shots per level"><br>
+                                        <input type="submit" name="action" value="Save level" >
+                                    </form>
+                                </div>
+                                
+                                <div id="upload-background-content" class="tabContent uploadContent hide">
+
+                                    <form id="upload-background-form">
+                                        <label>File Name: </label>
+                                        <input type="text" name="file-name" value="" placeholder="How will be stored..."><br>
+                                        <label>File: </label>
+                                        <input type="file" accept="image/*"><br>
+                                        <input type="submit" name="action" value="Save Background" >
+                                    </form>
+                                </div>
+                                
+                                <div id="upload-gameObject-content" class="tabContent uploadContent hide">
+
+                                    <form id="upload-gameObject-form">
+                                        <label>File Name: </label>
+                                        <input type="text" name="file-name" value="" placeholder="How will be stored..."><br>
+                                        <label>Sprite: </label>
+                                        <input type="file" name="sprite" accept="image/*"><br>
+                                        <input type="submit" name="action" value="Save GameObject" >
+                                    </form>
+                                </div>
                             </div>
-                              
-                            <div id="upload-levelTab" class="tabContent hide">
-                                <form id="test-form" class="container">
-                                    <label>File Name: </label>
-                                    <input type="text" name="fun-stuff" value="" placeholder="level-1..."><br>
-                                    <label>Level Position: </label>
-                                    <input type="text" name="web-cam" value="" placeholder="1, 2, 3..."><br>
-                                    <label>3 stars score: </label>
-                                    <input type="text" name="web-cam" value="" placeholder="The highest score..."><br>
-                                    <label>2 stars score: </label>
-                                    <input type="text" name="web-cam" value="" placeholder="The 2nd highest score..."><br>
-                                    <label>Shots count: </label>
-                                    <input type="text" name="web-cam" value="" placeholder="Max shots per level"><br>
-                                    <input type="submit" name="action" value="Submit it All" >
-                                </form>
+
+                            <!--Load Menu-->
+                            <div id="load-menu" class="popUpContent hide">
+                                <div class="tab">
+                                    <button id="load-level" class="tabLinks loadTab inactiveTab">Level</button>
+                                    <button id="load-background" class="tabLinks loadTab inactiveTab">Background</button>
+                                </div>
+                                  
+                                <div id="load-level-content" class="tabContent loadContent hide">
+                                    <form id="load-level-form">
+                                        <label>File: </label>
+                                        <select id="level-to-load">level</select><br>
+                                        <input type="submit" name="action" value="Load Level" >
+                                    </form>
+                                </div>
+                                
+                                <div id="load-background-content" class="tabContent loadContent hide">
+                                    <form id="load-background-form">
+                                        <label>File: </label>
+                                        <select id="background-to-load">background</select><br>
+                                        <input type="submit" name="action" value="Load Background" >
+                                    </form>
+                                </div>
                             </div>
-                            
-                            <div id="upload-backgroundTab" class="tabContent hide">
-                            <h3>Background</h3>
-                            <p>Background content</p> 
+
+                            <!--Level Info-->
+                            <div id="level-info-menu" class="popUpContent hide">
+
                             </div>
-                            
-                            <div id="upload-gameObjectTab" class="tabContent hide">
-                            <h3>Game Object</h3>
-                            <p>Game Object content.</p>
+
+                            <!--Remove Element-->
+                            <div id="remove-element-menu" class="popUpContent hide">
+                                <div class="tab">
+                                    <button id="remove-level" class="tabLinks removeElementTab inactiveTab">Level</button>
+                                    <button id="remove-background" class="tabLinks removeElementTab inactiveTab">Background</button>
+                                    <button id="remove-gameObject" class="tabLinks removeElementTab inactiveTab">Game Object</button>
+                                </div>
+                                  
+                                <div id="remove-level-content" class="tabContent removeElementContent hide">
+                                    <form id="remove-level-form">
+                                        <label>File: </label>
+                                        <select id="level-to-remove">level</select><br>
+                                        <input type="submit" name="action" value="Remove Level" >
+                                    </form>
+                                </div>
+                                
+                                <div id="remove-background-content" class="tabContent removeElementContent hide">
+
+                                    <form id="remove-background-form">
+                                        <label>File: </label>
+                                        <select id="background-to-remove">background</select><br>
+                                        <input type="submit" name="action" value="Remove Background" >
+                                    </form>
+                                </div>
+                                
+                                <div id="remove-gameObject-content" class="tabContent removeElementContent hide">
+
+                                    <form id="remove-gameObject-form">
+                                        <label>File: </label>
+                                        <select id="game-object-to-remove">gameObject</select><br>
+                                        <input type="submit" name="action" value="Remove GameObject" >
+                                    </form>
+                                </div>
                             </div>
 
                         </div>
@@ -127,33 +209,7 @@
                 </div>
             </div>
         </section>
-
-        <!--<table class="container">
-            <tr>
-                <td>Text to Save:</td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <textarea id="input-text-to-save" style="width: 512px; height: 256px"></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>Filename to Save As:</td>
-                <td><input id="inputFileNameToSaveAs"></input></td>
-                <td><button id='save-btn'>Save Text to File</button></td>
-            </tr>
-            <tr>
-                <td>Select a File to Load:</td>
-                <td><input type="file" id="fileToLoad">
-                <td><button id="load-file-btn">Load Selected File</button>
-                <td>
-            </tr>
-        </table>
-        <form id="test-form" class="container">
-            <input type="text" name="fun-stuff" value="" placeholder="covid-19"><br>
-            <input type="text" name="web-cam" value="" placeholder="What's that"><br>
-            <input type="submit" name="action" value="Submit it All" >
-        </form>-->
+        
         <script type="module" src="scripts/index.js"></script>
     </body>
 </html>

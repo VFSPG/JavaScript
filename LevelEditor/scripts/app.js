@@ -33,8 +33,16 @@ export default class App {
         })
 
         $('#closePopUp').on('click', event => {
-            let popUp = $('.popUpSection');
-            popUp.toggleClass('hide');
+            $('.popUpSection').toggleClass('hide');
+            let popUpContent = $('.popUpContent');
+
+            for (let i = 0; i < popUpContent.length; i++) {
+
+                let content = popUpContent[i];
+                if(!content.classList.contains('hide')){
+                    content.classList.add('hide')
+                }
+            }
         })
 
         $('#assetMenuButton').on('click', event => {
@@ -48,11 +56,20 @@ export default class App {
             menu.toggleClass("assetMenuOpened");
         })
 
-        let tabLinks = $('.tabLinks');
-        tabLinks.on('click' , function ( event ) {
+        this.intializePopUps();
+        
+    }
 
-            let tabContents = $('.tabContent');
-            let tag = `upload-${$(this).attr('id')}`;
+    intializePopUps() {
+        function setTabs( event ){
+            
+            let tabContents = $(`.${event.data.content}`);
+            let tag = `${$(this).attr('id')}-content`;
+
+            $('.activeTab').addClass('inactiveTab');
+            $('.activeTab').removeClass('activeTab');
+            $(this).addClass('activeTab')
+            $(this).removeClass('inactiveTab')
 
             for (let i = 0; i < tabContents.length; i++) {
 
@@ -68,7 +85,22 @@ export default class App {
                     }
                 }
             }
-        })
+        }
+
+        $('.uploadTab').on('click' , { content: "uploadContent" }, setTabs);
+        $('.loadTab').on('click' , { content: "loadContent" }, setTabs);
+        $('.removeElementTab').on('click' , { content: "removeElementContent" }, setTabs);
+
+        function hidePopUp( event ){
+            
+            $('#popUpWindow').toggleClass('hide');
+            $(`#${event.data.id}`).toggleClass('hide');
+        }
+
+        $('#upload-button').on('click', { id: "upload-menu" }, hidePopUp);
+        $('#load-button').on('click', { id: "load-menu" }, hidePopUp);
+        $('#level-info-button').on('click', { id: "level-info-menu" }, hidePopUp);
+        $('#remove-element-button').on('click', { id: "remove-element-menu" }, hidePopUp);
     }
 
     addDraggableHandlers( $elementList ) {
