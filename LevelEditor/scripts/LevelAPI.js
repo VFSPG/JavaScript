@@ -1,12 +1,13 @@
 // Copyright (C) 2020 Pedro Avelino, All Rights Reserved
 'use strict';
 
-import Express, { request, response } from 'express'
+import Express, { request, response, raw } from 'express'
 import Path from 'path'
 import FileSystem from 'fs'
 
 import Level from './level'
 import Result from './Result'
+import Entity from './assets/common/entity';
 
 const Router = Express.Router();
 
@@ -61,18 +62,20 @@ Router.post(`/get_object_list/:userid?`, (request, response) => {
     
     let result = new Result( 301, "Couldn't retrive object list")
 
-    let fullPathName = Path.join(__dirname, '../images/objs');
+    let fullPathName = Path.join(__dirname, '../data/objects/');
 
-    //Read the files stored in the images folder
+    //Read the files stored in the data folder
     FileSystem.readdir( fullPathName, (err, objectNameList)=>{
         if (!err) 
         {
             let objectList = [];
 
             //Add every image found in the selected folder
-            for (let name of objectNameList) 
+            for (let file of objectNameList) 
             {
-                objectList.push( name );
+                let stringObj = FileSystem.readFileSync( `../LevelEditor/data/objects/${file}` );
+                let parse = JSON.parse( stringObj );
+                objectList.push( parse );
             }
 
             //Populate the response object with the files
@@ -127,10 +130,35 @@ Router.post(`/load/:userid?`, (request, response) => {
     let params = {...request.params,...request.query,...request.body};
 
     //TODO: Actually load the file
-
     //Receives name -> returns level data
 
     let result = new Result( 301, "Couldn't Load level oops")
+    
+    let fullPathName = Path.join(__dirname, '../scripts/assets/objects');
+
+    //Read the files stored in the images folder
+    FileSystem.readdir( fullPathName, (err, objectNameList)=>{
+        if (!err) 
+        {
+            let objectList = [];
+
+            //Add every image found in the selected folder
+            for (let object of objectNameList) 
+            {
+
+                objectList.push( object );
+            }
+
+            //Populate the response object with the files
+            result.content = {
+                payload: objectList,
+                error: 0
+            }
+            result.content.error = 0;
+        }
+
+        response.send( result.serialized() );
+    })
 
     //result.payload = ""string we got from the file"";
     //result.error = 0;
@@ -171,6 +199,29 @@ Router.post(`/get_background_list/:userid?`, (request, response) => {
         response.send( result.serialized() );
     })
 
+})
+
+Router.post(`/save_object/:userid?`, async (request, response) => {
+    
+    let params = {...request.params,...request.query,...request.body};
+
+    //let payload = JSON.parse(params.payload);
+
+    let object = new Entity( params.payload );
+
+    object.save()
+        .then( fileWritten => {
+            //Object data
+            let result = new Result(0, "Saved A-OK");
+
+            //Goes to Client
+            response.send( result.serialized() );
+        })
+        .catch( err => {
+            let result = new Result(201, "Object Not saved oops");
+            response.send( result.serialized() );
+        })
+    
 })
 
 export default Router;

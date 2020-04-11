@@ -15,10 +15,9 @@ export default class Level {
 
             catapult: payload.catapult,
 
-            entityLists:{
-                collidableList: [],
-                targetList: []
-            }
+            background: payload.background,
+
+            entityList:payload.entityList,
         }
 
     }

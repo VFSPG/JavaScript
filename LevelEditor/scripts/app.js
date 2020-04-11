@@ -90,10 +90,15 @@ export default class App {
                     $obj = this.generateNewObstacle( dragData )
 
                 $obj.offset( this.offsetPosition( event, dragData ) );
+
+                $obj.data("x", $obj.offset().left);
+                $obj.data("y", $obj.offset().top);
+
+                console.log($obj.data("name"));
             })
     }
 
-    
+    //Calculate Position of the object inside the editor
     offsetPosition( event, offset ) {
         return {
             left: event.clientX - offset.dx,
@@ -101,6 +106,7 @@ export default class App {
         }
     }
 
+    //Create a copy of the selected object
     generateNewObstacle( dragData ) {
         // not placed yet...
         let $newObject = $(`<div draggable="true" id=${this.objIndex++}></div>`);
@@ -110,8 +116,14 @@ export default class App {
         
         //Change it's background
         $newObject.css('background-image', `${dragData.image}`);
+
+        if(dragData.id.startsWith("#"))
+        {
+            dragData.id = dragData.id.substring(1);
+            console.log( dragData.id );
+        }
         
-        $newObject.data("box", "ice");
+        $newObject.data("name", dragData.id);
 
         // attach $newObject to our editor-wrapper
         $("#editor").append( $newObject );
@@ -133,7 +145,7 @@ export default class App {
         let levelData = {
             "payload": JSON.stringify(this.gatherFormData(event))
         };
-        
+
         // Post a message to the server
         $.post('/api/save/:userid?', levelData )
             .then( responseData => {
@@ -150,20 +162,51 @@ export default class App {
 
     gatherFormData( event ) {
 
+        //Get all info from the form
         let baseData = $("#info-form").serializeArray();
-        let levelData = {};
         
+        //Create new object to 
+        let levelData = {};
+
+        //All items inside the editor
+        let $allItems = $(".placed");
+
+        let collidableList = [];
+
+        for (let object of $allItems)
+        {   
+            console.log( object );
+            let newObj = { 
+                pos: {x: $(object).data("x"), y: $(object).data("y")}
+            };
+
+            collidableList.push( $(object).data("name") );
+            collidableList.push( newObj );
+        }
+
         let catapult = {
             id: 1,
             pos: { x: 1000, y: 1000}
         }
 
-        let meuAmigoJonathan = {
+        let payload = {
             "name": "catapult",
-            "value": catapult
+            "value": catapult,
         }
 
-        baseData.push( meuAmigoJonathan )
+        
+        let collidables = {
+            "name": "collidableList",
+            "value": collidableList
+        }
+        
+        let entitiesList = {
+            "name": "entityList",
+            "value": collidables
+        }
+
+        baseData.push( payload );
+        baseData.push( entitiesList );
 
         for (let field of baseData) 
         {    
@@ -172,10 +215,11 @@ export default class App {
             //  TODO: Also add in the data representing the entities in the actual level
             //  TODO: Add the background value
 
-
+        console.log( baseData );
         return levelData;
     }
 
+    //Get all the levels and populate the list in the form
     populateLevelList() 
     {
         let $list = $('#level-list');
@@ -198,6 +242,7 @@ export default class App {
           
     }
 
+    //Get all the backgrounds and populate the list in the form
     populateBackgroundImageList()
     {
         let $list = $('#bg-list');
@@ -234,8 +279,9 @@ export default class App {
                 //Populate the list with the options
                 for(let object of list.payload)
                 {
-                    let $opt = $(`<li draggable="true" id= "${object}" class="draggable"></li>`);
-                    $opt.css("background-image", `url(../images/objs/${object})`)
+                    let $opt = $(`<li draggable="true" id="${object.name}" class="draggable ${object.type}"></li>`);
+                    $opt.css("background-image", `url(../images/objs/${object.texture})`)
+                    $($opt).data("name", object.name);
                     $list.append( $opt );
                 }
 
