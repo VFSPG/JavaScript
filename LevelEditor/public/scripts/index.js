@@ -6,8 +6,7 @@ import App from './app.js';
 // MAIN
 (function Main() {
   $(document).ready(() => {
-    const app = new App();
 
-    app.run();
+    App.run();
   });
 })();

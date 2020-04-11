@@ -5,11 +5,10 @@ import Express from 'express';
 import Path from 'path';
 import HTTP from 'http';
 
-
 const PORT = 3000;
 
-// TODO Open and close principle fopr routes
-import LevelAPI from './server/routes/LevelAPI';
+import LevelRoutes from './server/routes/LevelRoutes';
+import EntityRoutes from './server/routes/EntityRoutes';
 class Server {
 
   constructor() {
@@ -17,9 +16,9 @@ class Server {
     // eslint-disable-next-line new-cap
     this.api = Express();
     this.api.use( Express.json() )
-      .use( Express.urlencoded({ extended: false }))
-      .use( Express.static(Path.join( __dirname, '.')))
-      .use('/api/level', LevelAPI)
+      .use( Express.urlencoded({ extended: true }))
+      .use('/api/level', LevelRoutes)
+      .use('/api/entity', EntityRoutes)
       .use(Express.static(`${__dirname}/public`));
 
     this.api.get('/', (request, response) => {
