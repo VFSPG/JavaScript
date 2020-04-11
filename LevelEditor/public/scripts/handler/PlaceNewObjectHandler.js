@@ -65,7 +65,8 @@ class PlaceNewObjectHandler {
         x: offsetX,
         y: offsetY
       },
-      entity: entityData
+      entity: entityData,
+      elementRepresentation: elementClone
     };
 
     app.addCollidableToCurrentLevel(new Collidable(collidableData));

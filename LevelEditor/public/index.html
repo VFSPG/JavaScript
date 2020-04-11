@@ -32,6 +32,10 @@
             <label for="background-selection-id">Ammo for current level</label>
             <input type="text" name="background" id="background-selection-id" placeholder="my-background.jpg" value="my-background.jpg">
           </div>
+          <div id="current-user-container" class="text-field">
+            <label for="current-user-container-id">Current user</label>
+            <input type="text" name="user" id="current-user-container-id" placeholder="pg18alex" value="pg18alex">
+          </div>
         </div>
         <div id="wrapper">
             <div id="editor" class="frame">
@@ -48,9 +52,12 @@
       <div class="modal-content">
         <span class="modal-close">&times;</span>
         <form id="save-level-form">
-          <input type="text" name="name" placeholder="name" id="name-level">
+          <label for="name">Level name</label>
+          <input type="text" name="name" placeholder="Level-1" id="name-level">
         </form>
-        <button id='save-btn'>Save level</button>
+        <div id="save-btn" class="button modal-button">
+          <span>Save level</span>
+        </div>
       </div>
     </div>
 
@@ -117,12 +124,16 @@
       <div class="modal-content">
         <span class="modal-close">&times;</span>
         <form id="load-level-form" class="modal-form">
-          <label for="levels-names">Level to load</label>
-          <select name="levels-names" id="levels-names">
+          <div class="text-field">
+            <label for="levels-names">Level to load</label>
+            <select name="levels-names" id="levels-names">
+          </div>
 
           </select>
         </form>
-        <button id='load-level-btn'>Load level</button>
+        <div id="load-level-btn" class="button modal-button">
+          <span>Save object</span>
+        </div>
       </div>
     </div>
 

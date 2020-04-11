@@ -9,14 +9,6 @@ import saveDataFile from '../utils/saveDataFile.js';
 const Router = Express.Router();
 
 Router.get('/', async(request, response) => {
-  // const { params: queryParams, query, body } = request;
-  // const params = {
-  //   ...queryParams,
-  //   ...query,
-  //   ...body
-  // };
-
-  // const { userid } = params; 
 
   const entitiesList = fs.readdirSync(`${__dirname}/../data/entities/`)
     .filter(file => file.includes('.json'))
@@ -41,12 +33,14 @@ Router.post('/save', async(request, response) => {
   };
 
   const data = JSON.stringify(params);
-  const name = params.name.toLowerCase().split(' ').join('-');
+  const fileName = params.name.toLowerCase().split(' ').join('-');
+
+  const fileUrl = `${__dirname}/../data/entities/${fileName}.json`;
 
   let res = {};
 
   try {
-    await saveDataFile(name, data, 'entities');
+    await saveDataFile(name, data, fileUrl);
   } catch (error) {
     res = { error: 1, msg: 'Error when saving' };
     return;

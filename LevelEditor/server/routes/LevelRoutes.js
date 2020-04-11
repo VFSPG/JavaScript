@@ -19,7 +19,7 @@ Router.get('/:userid?', ( request, response ) => {
 
   const { userid } = params;
 
-  const fileNameList = fs.readdirSync(`${__dirname}/../data/levels/`)
+  const fileNameList = fs.readdirSync(`${__dirname}/../data/levels/${userid}`)
     .filter(file => file.includes('.json'))
     .map(file => ([ file.split('.')[0] ]));
 
@@ -33,7 +33,7 @@ Router.get('/:userid?', ( request, response ) => {
   response.json(result);
 });
 
-Router.post('/load', (request, response) => {
+Router.post('/load/:userid?', (request, response) => {
   const { params: queryParams, query, body } = request;
   const params = {
     ...queryParams,
@@ -41,9 +41,10 @@ Router.post('/load', (request, response) => {
     ...body
   };
 
-  const { fileName } = params;
+  const { fileName, userid } = params;
+  const fileUrl = `${__dirname}/../data/levels/${userid}/${fileName}.json`;
 
-  const levelData = JSON.parse(fs.readFileSync(`${__dirname}/../data/levels/${fileName}.json`));
+  const levelData = JSON.parse(fs.readFileSync(fileUrl));
 
   const result = {
     payload: {
@@ -55,7 +56,7 @@ Router.post('/load', (request, response) => {
   response.json(result);
 });
 
-Router.post('/save', async(request, response) => {
+Router.post('/save/:userid?', async(request, response) => {
   const { params: queryParams, query, body } = request;
   const params = {
     ...queryParams,
@@ -63,17 +64,28 @@ Router.post('/save', async(request, response) => {
     ...body
   };
 
+  const { userid } = params;
+  const savingPath = `${__dirname}/../data/levels/${userid}`;
+
+  if (!fs.existsSync(savingPath)) {
+    fs.mkdirSync(savingPath);
+  }
+
   const name = params.name.toLowerCase().split(' ').join('-');
   const data = JSON.stringify(params);
 
+  let res = {};
+
   try {
-    await saveDataFile(name, data, 'levels');
+    await saveDataFile(name, data, savingPath);
   } catch (error) {
-    response.json({ error: 1, msg: 'Error when saving' });
+    res = { error: 1, msg: 'Error when saving' };
     return;
   }
 
-  response.json({ error: 0, msg: 'Succcess object saved' });
+  res = { error: 0, msg: 'Succcess object saved' };
+
+  response.json(res);
 });
 
 export default Router;

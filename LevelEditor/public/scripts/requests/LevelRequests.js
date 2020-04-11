@@ -20,7 +20,9 @@ class LevelRequests {
   }
 
   loadLevelOpenModal() {
-    $.get('api/level')
+    const currentUser = $('#current-user-container-id').val();
+
+    $.get(`api/level/${currentUser}`)
       .then(responseData => {
         $('#load-level-modal').css('display', 'block');
         const { payload = {} } = responseData;
@@ -54,12 +56,15 @@ class LevelRequests {
       levelData[field.name] = field.value;
     }
 
+    const currentUser = $('#current-user-container-id').val();
+
     // Post a message to the server
-    $.post('/api/level/load', { fileName: levelData['levels-names'] })
+    $.post(`/api/level/load/${currentUser}`, { fileName: levelData['levels-names'] })
       .then( responseData => {
         const { payload: { levelData } } = responseData;
 
         app.setCurrentLevel(new Level(levelData));
+        app.closeModal();
       })
       .catch(error => {
         console.log(error);
@@ -70,20 +75,13 @@ class LevelRequests {
   saveLevel( event ) {
     event.preventDefault();
 
-    if (!app.currentLevel.checkForCatapultPlacement()) {
-      alert('You havent placed a catapult yet though!');
-      return;
-    }
-
     const baseData = $('#save-level-form').serializeArray();
     const levelAmmo = $('#ammo-amount-id').val();
+    const currentUser = $('#current-user-container-id').val();
+
+    this.validateLevelData(levelAmmo, currentUser);
 
     const levelData = {};
-
-    if (!levelAmmo) {
-      alert('No ammo specified');
-      return;
-    }
 
     for (const field of baseData) {
       levelData[field.name] = field.value;
@@ -92,13 +90,32 @@ class LevelRequests {
     app.currentLevel.name = levelData.name;
 
     // Post a message to the server
-    $.post('/api/level/save', app.currentLevel.getRaw())
+    $.post(`/api/level/save/${currentUser}`, app.currentLevel.getRaw())
       .then( responseData => {
-        const newData = JSON.parse( responseData );
+        app.closeModal();
       })
       .catch( error => {
-        console.log( error );
+        alert('Could not save level.');
+        console.log(error);
+
+        app.closeModal();
       });
+  }
+
+  validateLevelData(levelAmmo, currentUser) {
+    if (!app.currentLevel.checkForCatapultPlacement()) {
+      alert('You havent placed a catapult yet though!');
+      return;
+    }
+
+    if (!levelAmmo) {
+      alert('No ammo specified');
+      return;
+    }
+
+    if (!currentUser) {
+      alert('No user selected');
+    }
   }
 
   updateLevelAmmo(event) {

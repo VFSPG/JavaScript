@@ -65,14 +65,12 @@ class EntityRequest {
     $.post('/api/entity/save', entityData)
       .then(() => {
         window.alert('Success');
-        $('#save-object-form').trigger('reset');
-        $('#new-object-modal').css('display', 'none');
         this.getAvailableEntities();
+        app.closeModal();
       })
       .catch(() => {
         window.alert('Failed');
-        $('#save-object-form').trigger('reset');
-        $('#new-object-modal').css('display', 'none');
+        app.closeModal();
       });
   }
 

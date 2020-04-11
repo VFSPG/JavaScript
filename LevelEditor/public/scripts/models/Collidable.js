@@ -6,12 +6,14 @@ export default class Collidable {
     const {
       id = 0,
       pos,
-      entity
+      entity,
+      elementRepresentation
     } = params;
 
     this.id = id;
     this.pos = pos;
     this.entity = new Entity(entity);
+    this.elementRepresentation = elementRepresentation;
   }
 
   render() {

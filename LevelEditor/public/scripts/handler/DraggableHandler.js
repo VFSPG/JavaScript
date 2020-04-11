@@ -1,5 +1,7 @@
 'use strict';
 
+import app from "../app";
+
 const DEFAULT_Z = 1;
 
 class DraggableHandler {
@@ -80,6 +82,12 @@ class DraggableHandler {
   up() {
     this.mouseDown = false;
     if (this._draggable$) {
+
+      const { targetList = [], collidableList = [] } = app.currentLevel.entityLists;
+
+      const objectList = [ ...targetList, collidableList ];
+
+      objectList.find(object);
 
       // reset the styles and z index
       this._draggable$.css( { cursor: 'pointer', zindex: this.zIndex } );
