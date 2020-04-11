@@ -64,8 +64,8 @@ Router.post('/api/save/:userid?/:name?/:type?/:payload?', ( request, response ) 
         .then( fileWritten => {
 
             result = {
-                name: "requested entity name",
-                bytes: "actual bytes written",
+                name: fileWritten.name,
+                bytes: fileWritten.lenght,
                 error: 0
             }
         })

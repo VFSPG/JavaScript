@@ -24,6 +24,51 @@ export default class App {
         $('#level-dropdown').on('change', event => this.loadLevel( event ));
         $('#new-level-btn').on('click', event => this.createLevel( event ));
         $('#save-btn').on('click', event => this.saveLevel( event ));
+
+        //I'm using 'function' to preserve the value of 'this' 
+        $('.barButton, .assetMenuButton').hover ( function () {
+
+            $( this ).toggleClass( "buttonHoverInColor" );
+            $( this ).toggleClass( "buttonHoverOutColor" );
+        })
+
+        $('#closePopUp').on('click', event => {
+            let popUp = $('.popUpSection');
+            popUp.toggleClass('hide');
+        })
+
+        $('#assetMenuButton').on('click', event => {
+
+            let icon = $("#assetMenuButtonIcon");
+            icon.toggleClass("fa-arrow-circle-up");
+            icon.toggleClass("fa-arrow-circle-down");
+
+            let menu = $("#assetMenu");
+            menu.toggleClass("assetMenuClosed");
+            menu.toggleClass("assetMenuOpened");
+        })
+
+        let tabLinks = $('.tabLinks');
+        tabLinks.on('click' , function ( event ) {
+
+            let tabContents = $('.tabContent');
+            let tag = `upload-${$(this).attr('id')}`;
+
+            for (let i = 0; i < tabContents.length; i++) {
+
+                let tabContent = tabContents[i];
+                if (tabContent.id == tag) {
+
+                    tabContent.classList.remove( 'hide' );
+                }
+                else {
+
+                    if(!tabContent.classList.contains( tag )) {
+                        tabContent.classList.add( 'hide' );
+                    }
+                }
+            }
+        })
     }
 
     addDraggableHandlers( $elementList ) {

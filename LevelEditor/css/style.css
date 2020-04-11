@@ -1,19 +1,108 @@
 /* Copyright (C) 2018 Scott Henshaw, All Rights Reserved */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+  
+  /* Style the buttons inside the tab */
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+  }
+  
 
-.loggerContainer{
-    height: 200px; 
-    color: chartreuse; 
-    background-color: black;
-    margin-top: 50px;
-    padding: 20px;
-}
-.containerBorder{
-    border-style: ridge; 
-    border-width: 5px;
+.popUpSection{
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    display: flex;
+    justify-content: center;
 }
 
-.infoContainer{
-    background-color: darkgrey;
+.popUpContainer{
+     width: 640px; 
+     height: 480px; 
+     background-color: #103E6B;
+     border-color: #0A2845;
+     border-width: 10px;
+     border-style: solid;
+     border-radius: 30px;
+}
+
+body{
+    background-color: #0A2845;
+}
+
+.topBar{
+    background-color: #103E6B;
+    margin-bottom: 10px; 
+    
+    font-family: sanvito-pro-display, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.buttonHoverOutColor{
+    color: #0A2845;
+    transition: 0.2s;
+}
+
+.buttonHoverInColor{
+    cursor: pointer;
+    color: #2387EB;
+    transition: 0.2s;
+}
+
+.barIcon{
+    margin: 5px;
+}
+
+.assetMenu{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.assetMenuClosed{
+    top: 610px;
+    transition: 0.5s;
+}
+
+.assetMenuOpened{
+    top: 400px;
+    transition: 0.5s;
+}
+
+.assetContainer{
+    height: 210px;
+    border-top: 5px;
+    border-radius: 0px 0px 30px 30px;
+    border-color:  #103E6B;
+    border-style: solid;
+    background-color: rgb(56, 98, 139);
+}
+
+.assetMenuButton{
+    background-color: #103E6B;
+    width: 100px;
+    height: 30px;
+    border-radius: 30px 30px 0px 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.gameResolution{
+    width: 960px;
+    height: 640px;
+    border-radius: 30px;
 }
 
 .adjustToParent{
@@ -22,6 +111,7 @@
 }
 
 .hide { display:none; }
+
 .box-border {
     border:1px solid black;
 }

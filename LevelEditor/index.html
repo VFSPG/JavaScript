@@ -22,100 +22,111 @@
                 margin: 0.25em;
             }
         </style>
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
     </head>
     <body>
-            <section>
+        
+        <section style="position: fixed; width: 100%;">
+
+            <div class="topBar" style="display: flex; justify-content: center;">
                 
-                <!--Main Display-->
-                <div style="display: flex; flex-direction: row;">
-                    <div style="display: flex; flex-direction: column;">
-
-                        <!--1280 X 720-->
-                        <!--960 X 640-->
-                        <div style="width: 960px; height: 640px;">
-                            
-                            <div style="display:flex; height: 100%;">
-
-                                <!--Left side-->
-                                <div style="display: flex; flex: 25%; height: 100%; flex-direction: column;">
-
-                                    <!--Current selected object details-->
-                                    <div class="infoContainer containerBorder" style="flex: 30%;">
-
-                                        <div class="adjustToParent" style="padding: 10%;">
-
-                                            <!--Current selected object name-->
-                                            <div style="display: flex;">
-                                                
-                                                <div style="flex: 50%;">
-                                                    Object Name:
-                                                </div>
-
-                                                <div id="currentObjectName" style="flex: 70%;">
-                                                    name
-                                                </div>
-
-                                            </div>
-
-                                            <!--Current selected object sprite name-->
-                                            <div style="display: flex;">
-                                                
-                                                <div style="flex: 50%;">
-                                                    Sprite:
-                                                </div>
-
-                                                <div id="currentObjectSprite" style="flex: 70%;">
-                                                    sprite.jpg
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--Hierarchy-->
-                                    <div class="infoContainer containerBorder" style="flex: 70%;">
-
-                                        gameObjects
-                                    </div>
-
-                                </div>
-                                
-                                <div style="display: flex; flex: 75%; height: 100%; flex-direction: column;">
-
-                                    <div style="flex: 70%; background-color: rgb(63, 105, 197);">
-                                        
-                                        level
-
-                                    </div>
-
-                                    <div class="infoContainer containerBorder" style="flex: 30%;">
-
-                                        assets
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="loggerContainer containerBorder">
-                            logger
-                        </div>
-
-                    </div>
-
-                    <div style="display: flex;">
-                        <div style="display: flex; margin: 25px;">
-
-                            <div>
-                                hola
-                            </div>
-
-                        </div>
-                    </div>
+                <div class="barButton buttonHoverOutColor" id="upload-button" style="margin: 10px;">
+                    Upload
+                    <i class="fas fa-file-upload barIcon"></i>
                 </div>
 
-            </section>
+                <div class="barButton buttonHoverOutColor" id="load-button" style="margin: 10px;">
+                    Load
+                    <i class="fas fa-file-download barIcon"></i>
+                </div>
+
+                <div class="barButton buttonHoverOutColor" id="levelInfo-button" style="margin: 10px;">
+                    Level Info
+                    <i class="fas fa-info-circle barIcon"></i>
+                </div>
+
+                <div class="barButton buttonHoverOutColor" id="levelInfo-button" style="margin: 10px;">
+                    Remove Element
+                    <i class="fas fa-trash-alt barIcon"></i>
+                </div>
+                
+            </div>
+
+            <div style="display: flex; width: 100%; justify-content: center;">
+
+                <div class="gameResolution" style="background-color: black; display: flex;">
+
+                    <!--Asset menu-->
+                    <div class="assetMenu assetMenuClosed" id="assetMenu">
+                        <div style="display: flex; flex-direction: row; justify-content: center;">
+                            <div id="assetMenuButton" class="assetMenuButton">
+                                <i id="assetMenuButtonIcon" class="fas fa-arrow-circle-up barIcon barButton buttonHoverOutColor"></i>
+                                <!--<i class="fas fa-arrow-circle-down"></i>-->
+                            </div>
+                        </div>
+
+                        <!--Asset container-->
+                        <div id="assetContainer" class="assetContainer">
+                            
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="adjustToParent popUpSection">
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="popUpContainer">
+
+                    <div style="position: relative; left: 600px; top: 20px;">
+                        <i id="closePopUp" class="fas fa-times-circle barIcon barButton buttonHoverOutColor"></i>
+                    </div>
+
+                    <div style="display: flex; width: 100%; height: 100%; justify-content: center;">
+                        <div style="display: flex; flex-direction: column; justify-content: center;">
+
+                            <div class="tab">
+                                <button id="levelTab" class="tabLinks">Level</button>
+                                <button id="backgroundTab" class="tabLinks">Background</button>
+                                <button id="gameObjectTab" class="tabLinks">Game Object</button>
+                            </div>
+                              
+                            <div id="upload-levelTab" class="tabContent hide">
+                                <form id="test-form" class="container">
+                                    <label>File Name: </label>
+                                    <input type="text" name="fun-stuff" value="" placeholder="level-1..."><br>
+                                    <label>Level Position: </label>
+                                    <input type="text" name="web-cam" value="" placeholder="1, 2, 3..."><br>
+                                    <label>3 stars score: </label>
+                                    <input type="text" name="web-cam" value="" placeholder="The highest score..."><br>
+                                    <label>2 stars score: </label>
+                                    <input type="text" name="web-cam" value="" placeholder="The 2nd highest score..."><br>
+                                    <label>Shots count: </label>
+                                    <input type="text" name="web-cam" value="" placeholder="Max shots per level"><br>
+                                    <input type="submit" name="action" value="Submit it All" >
+                                </form>
+                            </div>
+                            
+                            <div id="upload-backgroundTab" class="tabContent hide">
+                            <h3>Background</h3>
+                            <p>Background content</p> 
+                            </div>
+                            
+                            <div id="upload-gameObjectTab" class="tabContent hide">
+                            <h3>Game Object</h3>
+                            <p>Game Object content.</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
 
         <!--<table class="container">
             <tr>

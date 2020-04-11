@@ -56,12 +56,22 @@ export default class Level {
     }
 
     save(){
-        const fs = require('fs');
-        fs.writeFile("/tmp/test", "Hey there!", ( err ) => {
-                if(err) {
-                    return console.log(err);
-                }
-                console.log("The file was saved!");
-            }); 
+        let promise = new Promise( ( resolve, reject ) => {
+
+            const fs = require('fs');
+            fs.writeFile(`./GameContent/Data/${this.content.name}.json`, JSON.stringify(this.content), ( err ) => {
+                    if(err) {
+
+                        promise.reject( { error: 101} );
+                    }
+                    else{
+                        
+                        promise.resolve( data );
+                    }
+                    console.log("The file was saved!");
+                }); 
+        })
+
+        return promise;
     }
 }
