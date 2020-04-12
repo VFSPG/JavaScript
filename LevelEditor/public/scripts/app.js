@@ -1,7 +1,6 @@
 // Copyright (C) 2020 Scott Henshaw
 'use strict';
 
-import draggableHandler from './handler/DraggableHandler.js';
 import entityRequest from './requests/EntityRequests.js';
 import levelRequest from './requests/LevelRequests.js';
 import Level from './models/Level.js';
@@ -21,10 +20,6 @@ class App {
     entityRequest.getAvailableEntities();
 
     $('.modal-close').on('click', event => this.closeModal( event ));
-  }
-
-  setEditorDraggableHandler() {
-    draggableHandler.setHandlers($('.draggable'));
   }
 
   closeModal() {

@@ -2,7 +2,6 @@
 'use strict';
 
 import Express from 'express';
-import Path from 'path';
 import HTTP from 'http';
 
 const PORT = 3000;

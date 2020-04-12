@@ -1,6 +1,6 @@
 'use strict';
 
-import app from '../app.js';
+import app, { texturesImagesPath } from '../app.js';
 import placeNewObjectHandler from '../handler/PlaceNewObjectHandler.js';
 import Entity from '../models/Entity.js';
 
@@ -34,7 +34,7 @@ class EntityRequest {
     $newEntityRepresentation.css('padding', `${height}px ${width}px`);
 
     if (texture) {
-      $newEntityRepresentation.css('background', `url('../${texture}')`);
+      $newEntityRepresentation.css('background', `url('../${texturesImagesPath}/${texture}')`);
       $newEntityRepresentation.css('background-repeat', 'no-repeat');
       $newEntityRepresentation.css('background-size', 'contain');
     }
@@ -63,13 +63,15 @@ class EntityRequest {
 
     // Post a message to the server
     $.post('/api/entity/save', entityData)
-      .then(() => {
-        window.alert('Success');
+      .then(responseData => {
+        const { msg } = responseData;
+
+        alert(msg);
         this.getAvailableEntities();
         app.closeModal();
       })
       .catch(() => {
-        window.alert('Failed');
+        alert('Failed to save new object.');
         app.closeModal();
       });
   }

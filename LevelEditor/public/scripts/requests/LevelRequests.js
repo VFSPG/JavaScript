@@ -79,7 +79,9 @@ class LevelRequests {
     const levelAmmo = $('#ammo-amount-id').val();
     const currentUser = $('#current-user-container-id').val();
 
-    this.validateLevelData(levelAmmo, currentUser);
+    if (!this.validateLevelData(levelAmmo, currentUser)) {
+      return;
+    }
 
     const levelData = {};
 
@@ -89,15 +91,18 @@ class LevelRequests {
 
     app.currentLevel.name = levelData.name;
 
+    const levelPayload = app.currentLevel.getRaw();
+
     // Post a message to the server
-    $.post(`/api/level/save/${currentUser}`, app.currentLevel.getRaw())
+    $.post(`/api/level/save/${currentUser}`, levelPayload)
       .then( responseData => {
         app.closeModal();
-      })
-      .catch( error => {
-        alert('Could not save level.');
-        console.log(error);
+        const { msg } = responseData;
 
+        alert(msg);
+      })
+      .catch(() => {
+        alert('Could not save level.');
         app.closeModal();
       });
   }
@@ -105,17 +110,20 @@ class LevelRequests {
   validateLevelData(levelAmmo, currentUser) {
     if (!app.currentLevel.checkForCatapultPlacement()) {
       alert('You havent placed a catapult yet though!');
-      return;
+      return false;
     }
 
     if (!levelAmmo) {
       alert('No ammo specified');
-      return;
+      return false;
     }
 
     if (!currentUser) {
       alert('No user selected');
+      return false;
     }
+
+    return true;
   }
 
   updateLevelAmmo(event) {

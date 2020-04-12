@@ -3,12 +3,12 @@
 
 import Collidable from './Collidable.js';
 import Target from './Target.js';
-import { texturesImagesPath } from '../app.js';
-import draggableHandler from '../handler/DraggableHandler.js';
 
 export default class Level {
 
   constructor(params = {}) {
+    $('#editor').empty();
+
     const {
       id = 0,
       name,
@@ -28,44 +28,51 @@ export default class Level {
       targetList: targetList.map(target => new Target(target))
     };
 
-    $('#editor').empty();
+    $('#ammo-amount-id').val(ammo);
 
-    this.renderLevel();
-
-    draggableHandler.setHandlers($('.draggable'));
+    this.createCatapult();
   }
 
-  renderLevel() {
-    const { entityLists: { collidableList = [], targetList = [] } } = this;
-    const levelObjects = [ ...collidableList, ...targetList ];
-
-    const objectsElementRepresentation = levelObjects
-      .map(collidable => collidable.render());
-
-    objectsElementRepresentation.push(this.createCatapultElement());
-
-    $('#editor').append(objectsElementRepresentation);
-  }
-
-  createCatapultElement() {
+  createCatapult() {
     const { catapult: { pos: { x, y } } } = this;
 
-    const objectRepresentation = $('<div></div>');
+    const data = {
+      pos: { x, y },
+      entity: { height: 78, width: 70, texture: 'catapult.png' }
+    };
 
-    objectRepresentation.addClass('item');
-    objectRepresentation.css('padding', '78px 70px');
-    objectRepresentation.addClass('draggable');
-    objectRepresentation.css('left', `${x}px`);
-    objectRepresentation.css('top', `${y}px`);
-    objectRepresentation.css('background', `url('../${texturesImagesPath}/catapult.png')`);
-    objectRepresentation.css('background-repeat', 'no-repeat');
-    objectRepresentation.css('background-size', 'contain');
-
-    return objectRepresentation;
+    this.catapult = new Collidable(data);
   }
 
   checkForCatapultPlacement() {
     return this.catapult && Object.entries(this.catapult).length;
+  }
+
+  removeObjectFromLevel(object) {
+    const {
+      catapult,
+      entityLists = { }
+    } = this;
+
+    if (object === catapult) {
+      return false;
+    }
+
+    const { collidableList = [], targetList = [] } = entityLists;
+    const collidableIndex = collidableList.indexOf(object);
+    const targetIndex = targetList.indexOf(object);
+
+    if (collidableIndex > -1) {
+      collidableList.splice(collidableIndex, 1);
+      return true;
+    }
+
+    if (targetIndex > -1) {
+      targetList.splice(targetIndex, 1);
+      return true;
+    }
+
+    return false;
   }
 
   getRaw() {
@@ -77,13 +84,17 @@ export default class Level {
       entityLists = { }
     } = this;
 
+    const { id: catapultId, pos: catapultPos } = catapult.getRaw();
     const { collidableList = [], targetList = [] } = entityLists;
 
     return {
       id,
       name,
       ammo,
-      catapult,
+      catapult: {
+        id: catapultId,
+        pos: catapultPos
+      },
       entityLists: {
         collidableList: collidableList.map(collidable => collidable.getRaw()),
         targetList: targetList.map(collidable => collidable.getRaw())

@@ -1,3 +1,5 @@
+import { texturesImagesPath } from '../app.js';
+
 export default class Entity {
 
   constructor(data) {
@@ -33,7 +35,7 @@ export default class Entity {
 
 
     if (texture) {
-      entityRepresentation.css('background', `url('../${texture}')`);
+      entityRepresentation.css('background', `url('../${texturesImagesPath}/${texture}')`);
       entityRepresentation.css('background-repeat', 'no-repeat');
       entityRepresentation.css('background-size', 'contain');
     }

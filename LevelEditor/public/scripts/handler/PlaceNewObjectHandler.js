@@ -1,4 +1,3 @@
-import DraggableHandler from './DraggableHandler.js';
 import app from '../app.js';
 import Collidable from '../models/Collidable.js';
 
@@ -44,20 +43,8 @@ class PlaceNewObjectHandler {
       .find(entity => entity.entityRepresentation === this.draggedObject)
       .getRaw();
 
-    const elementClone = $(this.draggedObject).clone();
-
     const offsetX = event.clientX - currentTarget.offsetLeft - this.mouseOffsetX;
     const offsetY = event.clientY - currentTarget.offsetTop - this.mouseOffsetY;
-
-    elementClone.removeAttr('draggable');
-    elementClone.removeClass('item-placeholder');
-    elementClone.addClass('item');
-    elementClone.addClass('draggable');
-    elementClone.css('left', `${offsetX}px`);
-    elementClone.css('top', `${offsetY}px`);
-
-    $(currentTarget).append(elementClone);
-    DraggableHandler.setHandlers(elementClone);
 
     const collidableData = {
       id: 0,
@@ -65,8 +52,7 @@ class PlaceNewObjectHandler {
         x: offsetX,
         y: offsetY
       },
-      entity: entityData,
-      elementRepresentation: elementClone
+      entity: entityData
     };
 
     app.addCollidableToCurrentLevel(new Collidable(collidableData));
