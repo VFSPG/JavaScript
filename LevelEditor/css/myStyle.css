@@ -217,6 +217,10 @@ input[type=submit]:hover{
     background-repeat: no-repeat;
 }
 
+.placed{
+    position: absolute;
+}
+
 .draggable{
     margin-bottom: 20px;
     margin-left: 15px;
