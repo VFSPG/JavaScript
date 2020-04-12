@@ -15,16 +15,6 @@ export default class App {
         this.objects=[];
         this.currentLevel={};
 
-        // fetch the list of library things
-        // TODO: this.loadLibrary();
-        let $libraryElementList = $(".obstacle");
-        this.addDraggableHandlers( $libraryElementList );
-
-        // fetch the list of existing levels
-        this.addDroppableHandlers();
-
-
-
         // Event handlers to load stuff
         $('#search-btn').on('click', e => this.load());
         $('#userId').on('keypress', event => {if(event.which === 13){this.load( )}});
@@ -45,6 +35,7 @@ export default class App {
         $(document).on("click", "#save-button" , event => this.saveLevel( ));
     }
 
+    //loads the info of the user
     load() {
 
         let user = $("#userId").val();
@@ -60,31 +51,32 @@ export default class App {
 
     }
 
+    //gets the list of levels by id
     loadLevels(){
 
-        //gets the list of levels by id
         var query = {userid : this.userId};
+        //tries a get to the server apo
+        $.get('/api/get_level_list', query)
 
-        $.get('/api/get_level_list', query)     
             .then( responseData => {
-
+                //if it worked then see if the error is 1 (no user) or not
                 if(responseData.error==1){
-                    this.showMessage("There is no record of the user " + this.userId, "we will create a new folder for the user now");
-                    this.saveDefaultCrate();
+                    this.showMessage("There is no record of the user " + this.userId, "you can still can create a level if you want, we will save it with the new user id");
+                    this.levels = [];
+                    this.renderList();
                 }
                 else{
 
+                    //if the userid has level then render the list of levels
                     this.levels = responseData.payload;
-                    console.log(this.levels);
                     this.renderList();
                 }
             })
             .catch( error => {
+                //if there was an error then show the message
                 console.log( error )
                 this.showMessage("There was an error", "something went wrong while trying to load the levels");
             });
-
-
     }
 
     showMessage(tittle, message){
@@ -129,21 +121,8 @@ export default class App {
             level: new Level(this.levels.length, object.name)
         }
         object.payload = JSON.stringify(level);
-        console.log(object);
         this.save(object);
 
-    }
-
-    saveDefaultCrate(){
-
-        let object = {
-            userid: this.userId,
-            name: "default_obj",
-            type: "object",
-        }
-
-        object.payload = JSON.stringify(new Entity());
-        this.save(object);
     }
 
     save(object){
@@ -207,21 +186,29 @@ export default class App {
 
     renderLevel(){
 
+        //change the name and ammo to the ones on the level
         $( "#level-name" ).val(this.currentLevel.name);
         $( "#ammo" ).val(this.currentLevel.ammo);
         
+        //creates the catapult and places it
+        var catapult = $("<div></div>");
+        catapult.addClass("draggable");;
+        catapult.attr('id', 'catapult');
+        catapult.css("top",0);
+        catapult.css("left",0);
+
+        $( "#editor" ).append(catapult);
     }
 
     editLevel(){
-        $('#level-form > input').prop("disabled", false);
-        $('#edit-button').html("Save");
-        $('#edit-button').attr("id","save-button");
+        $('.temp').prop("disabled", false);
+        $('#edit-button').hide();
+        $("#save-button").css("display", "inline-block");
     }
 
 
     saveLevel() {
 
-        console.log("aaa");
         this.currentLevel.name = $("#level-name").val();
         this.currentLevel.ammo = $("#ammo").val();
 
@@ -237,80 +224,10 @@ export default class App {
 
         object.payload = JSON.stringify(level);
         this.save(object);
-    }
 
-    addDraggableHandlers( $elementList ) {
-
-        $elementList
-            .on("dragstart", event => {
-                // collect drag info, delta from top left, el id
-                let dragData = {
-                    dx: event.offsetX,
-                    dy: event.offsetY,
-                    id: `#${event.target.id}`,
-                };
-                this.storeData( event, dragData );
-            })
-            .on("drag", event => {
-                // debug stuff?
-            })
-            .on("dragend", event => {
-                // change the look,
-            });
-    }
-
-    storeData( event, data ) {
-        event.originalElement.dataTransfer.setData("text/plain", JSON.stringify( data ) );
-    }
-
-    addDroppableHandlers() {
-        let $editor = $("#editor-wrapper");
-        $editor.on("dragenter", event => { /* Do nothing - maybe change a cursor */ })
-            .on("dragover", event => {
-                // change the cursor, maybe an outline on the object?
-            })
-            .on("dragleave", event => {
-                // do nothing? undo what we did when we entered
-            })
-            .on("drop", event => {
-                // On drop, clone the object, add to this div as a child
-                let dragData = this.eventData( event );
-                let $obj = $(dragData.id);
-
-                // add a class to the new element to indicate it exists
-                if (!$obj.hasClass("placed"))
-                    $obj = this.generateNewObstacle( $oldObstacle )
-
-                let editorPos = $editor.offset();
-                $obj.offset( this.offsetPosition( event, dragData ) );
-            })
-    }
-
-    eventData( event ) {
-        let dataString = event.originalEvent.dataTransfer.getData("text/plain");
-        return JSON.parse( dataString );
-    }
-
-    offsetPosition( event, offset ) {
-        return {
-            left: event.clientX - offset.dx,
-            top: event.clientY - offset.dy,
-        }
-    }
-
-    generateNewObstacle( $old ) {
-        // not placed yet...
-        let $newObject = $("<div></div>");
-        $newObject.addClass('placed');
-        // attach properties to newObject, width, height, background-image...after
-
-        // attach $newObject to our editor-wrapper
-        $("#editor-wrapper").addChild( $newObject );
-        $obj = $newObject;
-    }
-
-    run(){
-
+        $('.temp').prop("disabled", true);
+        $('#edit-button').show();
+        $('#save-button').hide();
     }
 }
 
