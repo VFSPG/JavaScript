@@ -1,0 +1,83 @@
+{
+    "id": 0,
+    "type": "level",
+    "name": "Pedro",
+    "ammo": "123",
+    "catapult": {
+        "id": 1,
+        "pos": {
+            "x": 1000,
+            "y": 1000
+        }
+    },
+    "background": "seaside.png",
+    "entityList": {
+        "collidableList": [
+            {
+                "name": "crate",
+                "id": "0",
+                "texture": "url(\"../images/objs/crate-one.png\")",
+                "dimensions": {
+                    "height": "90px",
+                    "width": "90px"
+                },
+                "pos": {
+                    "x": 591,
+                    "y": 184
+                }
+            },
+            {
+                "name": "crate",
+                "id": "1",
+                "texture": "url(\"../images/objs/crate-one.png\")",
+                "dimensions": {
+                    "height": "90px",
+                    "width": "90px"
+                },
+                "pos": {
+                    "x": 358,
+                    "y": 361
+                }
+            },
+            {
+                "name": "IceBlock",
+                "id": "2",
+                "texture": "url(\"../images/objs/ice-block.png\")",
+                "dimensions": {
+                    "height": "70px",
+                    "width": "70px"
+                },
+                "pos": {
+                    "x": 819,
+                    "y": 306
+                }
+            },
+            {
+                "name": "IceBlock",
+                "id": "3",
+                "texture": "url(\"../images/objs/ice-block.png\")",
+                "dimensions": {
+                    "height": "70px",
+                    "width": "70px"
+                },
+                "pos": {
+                    "x": 841,
+                    "y": 40
+                }
+            },
+            {
+                "name": "IceBlock",
+                "id": "4",
+                "texture": "url(\"../images/objs/ice-block.png\")",
+                "dimensions": {
+                    "height": "70px",
+                    "width": "70px"
+                },
+                "pos": {
+                    "x": 825,
+                    "y": 137
+                }
+            }
+        ]
+    }
+}

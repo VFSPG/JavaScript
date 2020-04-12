@@ -160,8 +160,9 @@ main{
     position: initial;
 }
 
-
-
+.form-item{
+    flex-direction: column;
+}
 /*Change style of the form tags*/
 input[type=submit]{
 

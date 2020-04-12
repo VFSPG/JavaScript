@@ -10,6 +10,7 @@ export default class Level {
         
         this.content = {
             id: 0,
+            type: "level",
             name: payload.name,
             ammo: payload.ammo,
 

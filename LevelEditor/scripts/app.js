@@ -24,6 +24,7 @@ export default class App {
         // Event handlers here
         $('#level-dropdown').on('change', event => this.loadLevel( event ));
         $('#new-level-btn').on('click', event => this.createLevel( event ));
+        $('#load-level-btn').on('click', event => this.loadLevel( event ));
         $('#save-btn').on('click', event => this.saveLevel( event ));
         $('#add-item-btn').on('click', event => this.addItem( event ));
         $('#bg-list').on('change', event => this.changeBackground( event ));
@@ -35,13 +36,13 @@ export default class App {
 
         $draggable
         .on("dragstart", event => {
-
             //collect drag info, delta from top left, el id
-            
             let dragData = {
                 dx: event.offsetX,
                 dy: event.offsetY,
                 id: `#${event.target.id}`,
+                width: event.target.style.width,
+                height: event.target.style.height,
                 image: event.target.style.backgroundImage
             };
 
@@ -91,10 +92,9 @@ export default class App {
 
                 $obj.offset( this.offsetPosition( event, dragData ) );
 
-                $obj.data("x", $obj.offset().left);
-                $obj.data("y", $obj.offset().top);
+                $obj.data('pos', { x:$obj.offset().left, y: $obj.offset().top})
 
-                console.log($obj.data("name"));
+                console.log( $obj.data() );
             })
     }
 
@@ -116,14 +116,19 @@ export default class App {
         
         //Change it's background
         $newObject.css('background-image', `${dragData.image}`);
+        $newObject.css('width', dragData.width);
+        $newObject.css('height', dragData.height);
 
         if(dragData.id.startsWith("#"))
         {
             dragData.id = dragData.id.substring(1);
-            console.log( dragData.id );
         }
         
-        $newObject.data("name", dragData.id);
+        $newObject.data('name', dragData.id);
+        $newObject.data('id', $newObject.attr('id'));
+        $newObject.data('texture', dragData.image);
+        $newObject.data('dimensions', { height: dragData.height, width: dragData.width});
+        //$newObject.data('pos', {})
 
         // attach $newObject to our editor-wrapper
         $("#editor").append( $newObject );
@@ -131,14 +136,94 @@ export default class App {
         return $newObject;
     }
 
+    //Create New Level
     createLevel( event ) {
+        //Clean the level first
+        this.cleanLevel();
 
+        let $form = $('#info-form');
+
+        //Clean the form
+        $form[0].reset();
     }
 
     loadLevel( event ) {
-        // TODO: Load a file with the given file name...
+
+        this.cleanLevel();
+
+        let $selectedLevel = $('#level-list').val();
+
+        let payload = {
+            "levelName": $selectedLevel
+        }
+
+        $.post('/api/load/:userid?', payload)
+            .then( level => {
+                let levelData = JSON.parse( level );
+
+
+                this.updateEditor( levelData.payload );
+            })
+            .catch( error => console.log( error ))
     }
 
+    cleanLevel( ) 
+    {
+        $( 'div' ).remove( '.placed' );
+
+        //reet the object index
+        this.objIndex = 0;
+    }
+
+    //Update editor after loading a level
+    updateEditor( levelData ){
+
+        //Update fields in the form
+        let $levelName = $('#name');
+        $levelName.val(levelData.name);
+
+        //Ammo
+        let $ammoField = $('#ammo');
+        $ammoField.val(levelData.ammo);
+
+        //Editor
+        let $background = $('#bg-list');
+        $background.val( levelData.background );
+
+        let $editor = $('#editor');
+        $editor.css("background-image", `url("../images/bg/${levelData.background}")`)
+
+        //Objects in editor
+        for( let object of levelData.entityList.collidableList)
+        {
+            console.log( object.pos.x );
+            let $newObject = $(`<div id ="${object.id}" class="placed draggable" draggable="true"></div>`)
+            $newObject.css('background-image', object.texture);
+            $newObject.css('background-size', 'contain');
+            $newObject.css('width', object.dimensions.width);
+            $newObject.css('height', object.dimensions.height);
+            
+            //add the object data to this new object
+            $newObject.data( object );
+
+            let offset= {
+                top: object.pos.y,
+                left: object.pos.x
+            }
+            console.log($newObject.data());
+            //Put in the editor
+            $editor.append($newObject);
+
+            //Set the offset
+            $newObject.offset( offset );
+
+            this.objIndex++;
+        }
+
+        this.addDraggableHandlers();
+    }
+
+    //Saves the level
     saveLevel( event ) {
         event.preventDefault();
 
@@ -160,6 +245,7 @@ export default class App {
             });
     }
 
+    //Gather the information in the form
     gatherFormData( event ) {
 
         //Get all info from the form
@@ -175,12 +261,15 @@ export default class App {
 
         for (let object of $allItems)
         {   
-            console.log( object );
+            console.log( $(object).data() );
             let newObj = { 
-                pos: {x: $(object).data("x"), y: $(object).data("y")}
+                name: $(object).data('name'),
+                id: $(object).data('id'),
+                texture: $(object).data('texture'),
+                dimensions: $(object).data('dimensions'),
+                pos: $(object).data('pos')
             };
 
-            collidableList.push( $(object).data("name") );
             collidableList.push( newObj );
         }
 
@@ -196,8 +285,7 @@ export default class App {
 
         
         let collidables = {
-            "name": "collidableList",
-            "value": collidableList
+            "collidableList": collidableList
         }
         
         let entitiesList = {
@@ -279,9 +367,15 @@ export default class App {
                 //Populate the list with the options
                 for(let object of list.payload)
                 {
+                    
+                    if( object.name == "catapult")
+                    {
+                        this.addCatapult( object );
+                        continue;
+                    }
+
                     let $opt = $(`<li draggable="true" id="${object.name}" class="draggable ${object.type}"></li>`);
-                    $opt.css("background-image", `url(../images/objs/${object.texture})`)
-                    $($opt).data("name", object.name);
+                    this.updateObjectCSS( $opt, object );
                     $list.append( $opt );
                 }
 
@@ -292,6 +386,23 @@ export default class App {
               alert( error )  
           });
           
+    }
+
+    addCatapult( object ){
+
+    }
+
+    updateObjectCSS( $item, object )
+    {
+        //Add texture
+        $item.css("background-image", `url(../images/objs/${object.texture})`);
+
+        //Set the name of the object
+        $($item).data("name", object.name);
+
+        //Set width and height
+        $item.css("width", object.width);
+        $item.css("height", object.height);
     }
     
     //Change the Background of the editor

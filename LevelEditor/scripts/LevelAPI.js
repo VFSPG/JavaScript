@@ -12,7 +12,7 @@ import Entity from './assets/common/entity';
 const Router = Express.Router();
 
 //---------------------------------------
-//TODO:Get List of levels route handler
+//:Get List of levels route handler
 //
 Router.post(`/get_level_list/:userid?`, (request, response) => {
     
@@ -53,7 +53,7 @@ Router.post(`/get_level_list/:userid?`, (request, response) => {
 });
 
 //---------------------------------------
-//TODO:Get List of Objects route handler
+//Get List of Objects route handler
 //
 Router.post(`/get_object_list/:userid?`, (request, response) => {
     
@@ -91,7 +91,7 @@ Router.post(`/get_object_list/:userid?`, (request, response) => {
 })
 
 //-----------------------------------------------------------------------------------------------
-///TODO: Save level router handler
+///Save level router handler
 //
 Router.post(`/save/:userid?`, async (request, response) => {
     
@@ -126,42 +126,25 @@ Router.post(`/save/:userid?`, async (request, response) => {
 //-----------------------------------------------------------------------------
 //TODO:Load Level router handler
 //
-Router.post(`/load/:userid?`, (request, response) => {
+Router.post(`/load/:userid?`, async (request, response) => {
     let params = {...request.params,...request.query,...request.body};
 
     //TODO: Actually load the file
     //Receives name -> returns level data
-
-    let result = new Result( 301, "Couldn't Load level oops")
+    console.log( params );
+    let result = new Result( 301, "Couldn't Load level oops");
     
-    let fullPathName = Path.join(__dirname, '../scripts/assets/objects');
+    let fullPathName = Path.join(__dirname, `../data/levels/${params.levelName}.json`);
 
     //Read the files stored in the images folder
-    FileSystem.readdir( fullPathName, (err, objectNameList)=>{
-        if (!err) 
-        {
-            let objectList = [];
+    let foundFile = FileSystem.readFileSync( fullPathName );
+    
+    let level = JSON.parse( foundFile );
 
-            //Add every image found in the selected folder
-            for (let object of objectNameList) 
-            {
-
-                objectList.push( object );
-            }
-
-            //Populate the response object with the files
-            result.content = {
-                payload: objectList,
-                error: 0
-            }
-            result.content.error = 0;
-        }
-
-        response.send( result.serialized() );
-    })
-
-    //result.payload = ""string we got from the file"";
-    //result.error = 0;
+    result.content = {
+        payload: level,
+        error:0
+    }
 
     //params -> payload -> return to front
 
