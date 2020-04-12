@@ -1,3 +1,4 @@
+<!--Copyright (C) 2020 Pedro Avelino-->
 <!DOCTYPE html>
 
 <html>
@@ -8,7 +9,7 @@
 
         <link rel="stylesheet" href="css/myStyle.css">
         <link href="https://fonts.googleapis.com/css?family=Righteous&display=swap" rel="stylesheet">
-
+        <link rel="icon" type="image/icon" href="./images/icon.png">
         <!--Jquery Library-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     </head>
@@ -182,7 +183,48 @@
                     </ul>
                 </div>
 
+            </div>
+            
+            <!--Form to add a new item-->
+            <div class="container">
                 <button type="button" id="btn-add-item">Add Item</button>
+                
+                <div class="popup-form frame">
+                    
+                    <form id="obj-form">
+                        <div class="popup-frame">
+                            <p>Object Name</p>
+                            <input class="popup-item" type="text" name="name" placeholder="ObjectName">
+                        </div>
+                        
+                        <div class="popup-frame" style="flex-direction: column; ">
+                            <p>Width and Height</p>
+                            <input class="popup-item" placeholder="Width" type="text" name="width">
+                            <input class="popup-item" placeholder="Height" type="text" name="height">
+                        </div>
+
+                        <div class="popup-frame">
+                            <p>Texture</p>
+                            <input accept="image/*" class="popup-item" type="text" placeholder="'filename.png'" name="texture">
+                        </div>
+
+                        <div class="popup-frame">
+                            <p>Friction</p>
+                            <input class="popup-item" type="text" name="friction">
+                        </div>
+
+                        <div class="popup-frame">
+                            <p>Mass</p>
+                            <input class="popup-item" type="text" name="mass">
+                        </div>
+
+                        <div class="popup-frame">
+                            <p>Restitution</p>
+                            <input class="popup-item" type="text" name="restitution">
+                        </div>
+                    </form>
+                </div>
+                
             </div>
             <!--Main canvas-->
         

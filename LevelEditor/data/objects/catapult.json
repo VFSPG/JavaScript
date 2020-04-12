@@ -1,1 +1,11 @@
-{"type":"object","name":"catapult","height":100,"width":100,"texture":"catapult.png","shape":"square","friction":1,"mass":90,"restitution":0}
+{
+    "type": "object",
+    "name": "catapult",
+    "height": 100,
+    "width": 100,
+    "texture": "catapult.png",
+    "shape": "square",
+    "friction": 1,
+    "mass": 90,
+    "restitution": 0
+}

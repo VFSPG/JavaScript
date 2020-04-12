@@ -9,16 +9,16 @@ export default class Entity {
     constructor( payload ) {
 
         this.content = {
-            type : payload.type,
+            type : "object",
             name : payload.name,
             height: payload.height,
             width : payload.width,
             texture : payload.texture,
             shape : "square",
             
-            friction : 1,
-            mass : 90,
-            restitution : 0,
+            friction : payload.friction,
+            mass : payload.mass,
+            restitution : payload.restitution,
         }
         
     }

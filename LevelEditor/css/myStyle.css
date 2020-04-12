@@ -44,6 +44,7 @@ main{
     position: fixed;
     background-color: var(--bg-primary);
     transition: width 200ms ease;
+    z-index: 9000;
 }
 
 .navbar-nav{
@@ -147,8 +148,8 @@ main{
 }
 
 #editor{
-    width: 62rem;
-    height: 35rem;
+    width: 1280px;
+    height: 720px;
     top: 0rem;
     left: 0rem;
     margin-left: 0px;
@@ -220,4 +221,30 @@ input[type=submit]:hover{
     margin-bottom: 20px;
     margin-left: 15px;
     list-style-type: none;
+}
+
+.popup-form{
+    width: 750px;
+    height: 200px;
+}
+
+.popup-item{
+    width: 100px;
+    height:20px;
+    display: flex;
+    margin-left: 5px;
+}
+
+.popup-frame{
+    border-width: 2px;
+    border-radius: 10px;
+    background-color: #474c52;
+    border-color: var(--bg-primary);
+    border-style: solid;
+    margin-left: 5px;
+}
+
+#obj-form{
+    display: flex;
+    flex-direction: row;
 }

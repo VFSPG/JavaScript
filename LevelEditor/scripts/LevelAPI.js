@@ -124,7 +124,7 @@ Router.post(`/save/:userid?`, async (request, response) => {
 })
 
 //-----------------------------------------------------------------------------
-//TODO:Load Level router handler
+//Load Level router handler
 //
 Router.post(`/load/:userid?`, async (request, response) => {
     let params = {...request.params,...request.query,...request.body};
@@ -188,9 +188,9 @@ Router.post(`/save_object/:userid?`, async (request, response) => {
     
     let params = {...request.params,...request.query,...request.body};
 
-    //let payload = JSON.parse(params.payload);
+    let payload = JSON.parse(params.payload);
 
-    let object = new Entity( params.payload );
+    let object = new Entity( payload );
 
     object.save()
         .then( fileWritten => {
