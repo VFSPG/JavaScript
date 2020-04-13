@@ -21,6 +21,9 @@ after it installs run npm run server to make the project run on port 3000
 
 you can search levels by user id, select a level and click in the button edit to edit it,
 in the edit mode you can drag objects to change their position, or change the name of the level and ammo
+you can also delete objects by double click them
+
+remember to click save in order to save a change otherwhise all changes will be lost.
 
 
 # *** Caveats ***
@@ -34,7 +37,7 @@ there is a lot that doesnt work just now...
 - you can change the userId anytime and mess everything up 
 - there is an offset in the dragevent
 - if you go beyond the editor space you can still drag the objects and lose them forever
-- you can't delete objects or levels
+- you can't delete levels
 - the server is working syncronimusly (thats how you write that?) anyways thats bad 
 - if you put the same name as other level it will overwrite it
 - there is no checking of the things the user can write and thats unsafe for a webpage

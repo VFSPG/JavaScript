@@ -176,6 +176,7 @@ body{
 #right-panel{
 
     position: absolute;
+    display: none;
     top: 0;
     right: 2%;
     min-width: 20%;
@@ -350,7 +351,6 @@ form div{
 
 #objets-modal > form{
     text-align: justify;
-    display: none;
 }
 
 #objets-modal > #object-visualization{
@@ -359,6 +359,7 @@ form div{
     display: inline-block;
 
     background: #fff;
+    margin: 2%;
 }
 
 

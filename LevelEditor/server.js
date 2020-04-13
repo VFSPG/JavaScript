@@ -41,7 +41,7 @@ class Server {
             
             //get the user_id and creates the path
             var user_id = request.query.userid;
-            var path = "/data/" + user_id + "/objects";
+            var path = "/data/objects";
 
             //call method that gives files by user in that path
             var result = this.giveAllByUser(path);

@@ -14,7 +14,12 @@ export default class App {
         this.levels=[];
         this.objects=[];
         this.currentLevel={};
+        this.currentObject={};
         this.isEditing=false;
+
+
+        //load all objects
+        this.loadObjects();
 
         // Event handlers to load stuff
         $('#search-btn').on('click', e => this.load());
@@ -37,6 +42,8 @@ export default class App {
 
         //manage the object library
         $('#library-button').on('click', event => this.openObjectLibrary());
+        $('#dismiss-object-modal').on('click', event => $("#modal-wrapper").hide());
+        $('#create-object-modal').on('click', event => this.createObject( ));
     }
 
     //loads the info of the user
@@ -122,6 +129,76 @@ export default class App {
 
         $("#modal-wrapper").show();
         $("#modal-tittle").html("Create new object");
+
+        //render all objects in the dropout
+        this.renderObjects();
+
+        //render current object info
+    }
+
+    //load all objects
+    loadObjects(){
+
+        //had to do this because of the 
+        var query = {userid : "user1"};
+        $.get('/api/get_object_list', query)
+            .then( responseData => {
+
+                if(responseData.error!=1){
+
+                    let objectList = responseData.payload;
+                    this.getAllObjects(objectList);
+                }
+
+            })
+            .catch( error => {
+                //if there was an error then show the message
+                console.log( error )
+                this.showMessage("There was an error", "something went wrong while trying to load the objects");
+            });
+    }
+
+    //gets all objects from server
+    getAllObjects(objectList){
+
+        for(var i =0; i < objectList.length; i++){
+
+            var query = {
+                userid : this.userId,
+                name: objectList[i].name,
+                type: "object"
+            };
+            
+            $.get('/api/load', query)   
+                .then( responseData => {
+    
+                    this.objects.push(responseData.payload);
+                })
+                .catch( error => {
+                    console.log( error )
+                    this.showMessage("There was an error", "something went wrong while trying to load the level");
+                });
+        }
+    }
+
+    renderObjects(){
+
+        $( "#objects-list" ).html("");
+
+        for(var i =0; i< this.objects.length;i++){
+
+            var string = "<option value=" + "'object-"+ i + "'>"  + this.objects[i].name + "</option>";
+            
+            $("#objects-list").append(string);
+        } 
+        
+        console.log($("#objects-list").children("option:selected").val());
+    }
+
+
+    createObject(){
+
+
     }
 
     //createa a level by default and calls the method that sends it to the server
@@ -196,6 +273,7 @@ export default class App {
                 //select the level and render it
                 $(e.target ).addClass("selected");
                 this.currentLevel = responseData.payload.level;
+                $("#right-panel").show();
                 this.renderLevel();
             })
             .catch( error => {
@@ -262,6 +340,7 @@ export default class App {
 
     //allows the user to edit the level
     editLevel(){
+
         $('.temp').prop("disabled", false);
         $('#edit-button').hide();
         $("#save-button").css("display", "inline-block");
@@ -322,10 +401,6 @@ export default class App {
                 else{
                     this.showMessage("Not allowed", "you have click edit in the info panel in order to do that");
                 }
-            })
-            .on("click", event => {
-
-                 //here i show info of the object
             })
             .on("dragend", event => {
 
