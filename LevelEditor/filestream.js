@@ -37,16 +37,10 @@ export default class FileStream{
     getFileAt ( path ) {
 
         return new Promise( ( resolve, reject ) => {
+            
             fs.readFile( path, ( err, fileData) => {
 
-                if (err) {
-    
-                    reject( err);
-                }
-                else {
-    
-                    resolve(fileData);
-                }
+                resolve( fileData )
             });
         });
     }

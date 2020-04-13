@@ -15,9 +15,9 @@ const Router = Express.Router();
 
 Router.post('/get_level_list/:userid?', ( request, response ) => {
     
-    let userid = request.params.userid;
+    let params = { ...request.params, ...request.query, ...request.body };
     let fileStream = new FileStream();
-    let path = `./GameContent/Data/${ userid }`;
+    let path = `./GameContent/Data/${ params.userid }`;
 
     fileStream.directoryExists( path )
     .then( exists => {
@@ -37,7 +37,7 @@ Router.post('/get_level_list/:userid?', ( request, response ) => {
             let file = files[i];
 
             //level = { name: 'levelName', fileName: 'fileName.json'}
-            levels.push( { name: file.slice(0, -5), fileName: file } );
+            levels.push( { name: file.slice(0, params.extLength), fileName: file } );
         }
 
         let result = { payload: levels, error: 0 };
@@ -48,9 +48,9 @@ Router.post('/get_level_list/:userid?', ( request, response ) => {
 
 Router.post('/get_object_list/:userid?', ( request, response ) => {
 
-    let userid = request.params.userid;
+    let params = { ...request.params, ...request.query, ...request.body };
     let fileStream = new FileStream();
-    let path = `./GameContent/Data/${ userid }`;
+    let path = `./GameContent/${ params.userid }`;
 
     fileStream.directoryExists( path )
     .then( exists => {
@@ -70,7 +70,7 @@ Router.post('/get_object_list/:userid?', ( request, response ) => {
             let file = files[i];
 
             //level = { name: 'levelName', fileName: 'fileName.json'}
-            levels.push( { name: file.slice(0, -5), fileName: file } );
+            levels.push( { name: file.slice(0, params.extLength), fileName: file } );
         }
 
         let result = { payload: levels, error: 0 };
@@ -105,22 +105,20 @@ Router.post('/save/:userid?', ( request, response ) => {
 Router.post('/load/:userid?', ( request, response ) => {
 
     let params = { ...request.params, ...request.query, ...request.body };
-    let path = `./GameContent/Data/${ params.userid }`;
+    let path = `./GameContent/${ params.userid }`;
     let fileStream = new FileStream();
 
     let fileDirectory = `${path}/${params.name}.json`;
+    
 
     fileStream.directoryExists( fileDirectory )
     .then( exists => {
         if( exists ) {
                     
-            fileStream.getFileAt( fileDirectory )
-            .then( result => {
+            fs.readFile( fileDirectory, ( err, fileData) => {
 
-                //TODO: Get bytes readed
-                response.send( { name: params.name, payload: result, bytes: 0, error: 0} )
-            })
-            .catch( error => response.send( error ) );
+                response.send( { name: params.name, payload: JSON.parse(fileData), bytes: 0, error: 0 } );
+            });
         }
     })
     .catch( error => response.send( error ) )

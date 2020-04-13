@@ -57,7 +57,7 @@
             <!--Game Display-->
             <div style="display: flex; width: 100%; justify-content: center;">
 
-                <div class="gameResolution" style="background-color: black; display: flex;">
+                <div id="game-display" class="gameResolution" style="background-color: black; display: flex;">
 
                     <!--Asset menu-->
                     <div class="assetMenu assetMenuClosed" id="assetMenu">
@@ -69,7 +69,7 @@
                         </div>
 
                         <!--Asset container-->
-                        <div id="assetContainer" class="assetContainer">
+                        <div id="asset-container" class="assetContainer">
                             
                         </div>
                     </div>
@@ -117,9 +117,9 @@
                                 
                                 <div id="upload-gameObject-content" class="tabContent uploadContent hide">
 
-                                    <form id="upload-gameObject-form">
+                                    <form id="upload-game-object-form">
                                         <label>File Name: </label>
-                                        <input type="text" name="file-name" value="" placeholder="How will be stored..."><br>
+                                        <input type="text" name="fileName" value="" placeholder="How will be stored..."><br>
                                         <label>Sprite: </label>
                                         <select id="game-object-sprite"> Sprite </select>
                                         <input type="submit" name="action" value="Save GameObject" >

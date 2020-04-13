@@ -1,6 +1,9 @@
 //Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict'
 
+import Level from './game/level.js'
+import GameObject from './game/worldobjects/gameobject.js'
+
 export default class UploadHander{
 
     constructor(){
@@ -11,21 +14,21 @@ export default class UploadHander{
             this.uploadLevel();
         });
 
-        $('#upload-background-form').on('submit', event => {
+        $('#upload-game-object-form').on('submit', event => {
 
             event.preventDefault();
-            this.uploadBackground();
+            this.uploadGameObject();
         });
     }
 
     uploadLevel () {
         let formData = this.gatherDataFor( '#upload-level-form' );
 
-        let levelJSON = { userid: 'Levels', name: formData.fileName, 
+        let params = { userid: 'Levels', name: formData.fileName, 
                             type: 'Level', payload: JSON.stringify( formData ) };
 
 
-        $.post('/api/save', levelJSON)
+        $.post('/api/save', params)
         .then (  result => {
 
             console.log( JSON.parse( result ) );
@@ -37,25 +40,23 @@ export default class UploadHander{
     }
 
 
-    uploadBackground () {
+    uploadGameObject () {
 
-        let formData = this.gatherDataFor( '#upload-background-form' );
+        let formData = this.gatherDataFor( '#upload-game-object-form' );
 
-        let backgroundJSON = { userid: 'Backgrounds', name: formData.name,
-                                type: 'Background', payload: JSON.stringify( formData ) };
+        let selectedSprite = $('#game-object-sprite').children('option:selected').val();
 
-        $.post('/api/save', backgroundJSON)
+        let params = { userid: 'GameObjects', name: formData.fileName,
+                        type: 'GameObject', payload: JSON.stringify( {...formData, selectedSprite} )};
+
+        $.post('/api/save', params )
         .then( result => {
 
-            console.log( JSON.parse( result ) );
+            console.log(JSON.parse( result));
         })
         .fail( error => {
             console.log( error );
         })
-    }
-
-    uploadGameObject () {
-
     }
     
     gatherDataFor ( id ) {
