@@ -347,6 +347,21 @@ form div{
     display: none;
 }
 
+
+#objets-modal > form{
+    text-align: justify;
+    display: none;
+}
+
+#objets-modal > #object-visualization{
+    width: 12vw;
+    height: 12vw;
+    display: inline-block;
+
+    background: #fff;
+}
+
+
 /*
  *******************************************
  * THIS IS THE STYLES THAT WORK EVERYWHERE *
@@ -371,3 +386,4 @@ form div{
     letter-spacing: 0.1em;
     text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;   
 }
+

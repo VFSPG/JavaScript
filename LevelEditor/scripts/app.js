@@ -86,7 +86,7 @@ export default class App {
     //method that shows a message to the user
     showMessage(tittle, message){
 
-        $("#input-modal").hide();
+        $("#modal > div").hide();
         $("#message-modal").show();
 
         $("#modal-wrapper").show();
@@ -104,7 +104,7 @@ export default class App {
         }
         else{
 
-            $("#message-modal").hide();
+            $("#modal > div").hide();
             $("#input-modal").show();
     
             $("#modal-wrapper").show();
@@ -114,9 +114,14 @@ export default class App {
 
     }
 
-    //TODO opens a modal to select the objects and place them
+    //opens a modal to select the objects and place them
     openObjectLibrary(){
         
+        $("#modal > div").hide();
+        $("#objets-modal").show();
+
+        $("#modal-wrapper").show();
+        $("#modal-tittle").html("Create new object");
     }
 
     //createa a level by default and calls the method that sends it to the server
@@ -301,7 +306,22 @@ export default class App {
         $elementList
             .on("dblclick", event => {
 
-                //here i show delete confirmation
+                //if the object isnt the catapult then you can delete it
+                if(this.isEditing==true){
+
+                    if(event.target.id!="catapult" ){
+                        var elementIndex = event.target.id.split("-")[1];
+                        this.currentLevel.entityLists.collidableList.splice(elementIndex);
+                        this.renderLevel();
+                    }
+                    else{
+                        this.showMessage("Not allowed", "you can't destroy the cannon of a level");
+                    }
+
+                }
+                else{
+                    this.showMessage("Not allowed", "you have click edit in the info panel in order to do that");
+                }
             })
             .on("click", event => {
 
@@ -309,6 +329,7 @@ export default class App {
             })
             .on("dragend", event => {
 
+                //if editing is activated
                 if(this.isEditing==true){
 
                     if(event.target.id=="catapult"){
@@ -331,7 +352,6 @@ export default class App {
 
                     }
     
-                    console.log(this.currentLevel);
                     this.renderLevel();
                 }
                 else{
