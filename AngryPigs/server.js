@@ -1,10 +1,11 @@
-// Copyright (C) 2020 Scott Henshaw, All Rights Reserved
+// Copyright (C) 2020 Daniela Marino 
 'use strict';
 
 import Express from 'express'
 import Path from 'path'
 import HTTP from 'http'
 
+//import LevelAPI from "./server/LevelAPI.js"
 
 const PORT = 3000;
 
@@ -22,7 +23,13 @@ class Server {
 
 
         this.api.get('/', ( request, response ) => {
-            response.render('index',{ title:'Level editor'})
+            response.sendFile('index',{ title:'Level editor'})
+        });
+
+        this.api.get('/editor', ( request, response ) => {
+            let editorFile = Path.join( __dirname, "./editor.html")
+
+            response.sendFile(editorFile,{ title:'Level editor'})
         });
 
         this.api.get('/api/get_level_list', ( request, response ) => {

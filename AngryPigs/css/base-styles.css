@@ -1,0 +1,107 @@
+html,body{
+    background: #fff;
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    background: #10AEE8	;
+    background: -webkit-linear-gradient( top, #10AEE8, #66CBF0);
+    background: -o-linear-gradient(bottom , #10AEE8, #66CBF0); 
+    background: -moz-linear-gradient(bottom ,#10AEE8, #66CBF0); 
+    background: linear-gradient(to bottom , #10AEE8, #66CBF0); 
+
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+}
+
+/*
+ *******************************************
+ * THIS IS THE STYLES THAT WORK EVERYWHERE *
+ *******************************************
+ */
+
+.panel{
+    display: inline-block;
+}
+
+.button:hover{
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tittle{
+ 
+    font-family: 'Arvo', Georgia, Times, serif;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.2em;
+    letter-spacing: 0.1em;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;   
+}
+
+/*
+ ******************************************
+ *        THIS ARE THE MODAL STYLES       *
+ ******************************************
+ */
+ #modal-wrapper{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 99999;
+
+    height: 100%;
+    width: 100%;
+
+}
+
+#modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    padding: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+
+    border-style: solid;
+    border-color: #000;
+    border-radius: 2%;
+
+    background: #10AEE8	;
+    background: -webkit-linear-gradient( top, #10AEE8, #66CBF0);
+    background: -o-linear-gradient(bottom , #10AEE8, #66CBF0); 
+    background: -moz-linear-gradient(bottom ,#10AEE8, #66CBF0); 
+    background: linear-gradient(to bottom , #10AEE8, #66CBF0); 
+
+    text-align: center;
+    color: #fff;
+}
+
+#modal-tittle{
+    font-size: 1.5em;
+    margin-bottom: 2%;
+}
+
+.modal-button{
+
+    margin-top: 5%;
+    background: #d80026;
+    color: #fff;
+
+    padding:2%;
+    padding-left: 7%;
+    padding-right: 7%;
+    border-radius: 25px;
+
+}
+
+.modal-button:hover{
+    border-style: solid;
+    border-color: #000;
+    border-width: thin;
+}
