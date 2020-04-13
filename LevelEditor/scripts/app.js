@@ -176,6 +176,7 @@ export default class App {
 
                     let old = "#" + this.currentLevel.name;
                     $(old).removeClass("selected");
+                    this.unableEdit();
 
                 }
 
@@ -246,6 +247,7 @@ export default class App {
         }
     }
 
+    //allows the user to edit the level
     editLevel(){
         $('.temp').prop("disabled", false);
         $('#edit-button').hide();
@@ -253,7 +255,17 @@ export default class App {
         this.isEditing=true;
     }
 
+    //the edit option is unable
+    unableEdit(){
 
+        $('.temp').prop("disabled", true);
+        $('#edit-button').show();
+        $('#save-button').hide();
+        this.isEditing=false;
+    }
+
+
+    //gets the data of the level and calls the method that saves it
     saveLevel() {
 
         this.currentLevel.name = $("#level-name").val();
@@ -272,12 +284,10 @@ export default class App {
         object.payload = JSON.stringify(level);
         this.save(object);
 
-        $('.temp').prop("disabled", true);
-        $('#edit-button').show();
-        $('#save-button').hide();
-        this.isEditing=false;
+        this.unableEdit();
     }
 
+    //add the drag events to the elements
     addDraggableHandlers( $elementList ) {
 
         $elementList
@@ -298,6 +308,17 @@ export default class App {
 
                         this.currentLevel.catapult.pos.x= event.screenX - off;
                         this.currentLevel.catapult.pos.y=event.screenY;
+                    }
+                    else{
+
+                        var elementIndex = event.target.id.split("-")[1];
+
+                        var id = "#" + event.target.id;
+                        var off = $(id).offsetParent().offset().left;
+
+                        this.currentLevel.entityLists.collidableList[elementIndex].pos.x = event.screenX - off;
+                        this.currentLevel.entityLists.collidableList[elementIndex].pos.y = event.screenY;
+
                     }
     
                     console.log(this.currentLevel);
