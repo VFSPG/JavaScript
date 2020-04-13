@@ -2,7 +2,7 @@
 'use strict';
 
 //imports
-import {Entity, Level} from './entitiesFactory.js'
+import {Entity, Level} from '../entitiesFactory.js'
 
 // This controlls the User Interface
 export default class App {
