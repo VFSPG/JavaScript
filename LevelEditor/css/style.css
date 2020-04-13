@@ -170,7 +170,7 @@ body{
 }
 
 .placed {
-    position: relative;
+    position: absolute;
 }
 
 .flex-container {

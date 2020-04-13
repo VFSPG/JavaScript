@@ -134,15 +134,12 @@ export default class LoadHandler{
 
                 let pair = list[i];
 
-                this.loadGameObject( pair.name );
+                this.loadGameObject( pair.name, i );
             }
-            let dragAndDropHandler = new DragAndDropHandler();
-
-            dragAndDropHandler.addDraggableHandlers( $('#asset-container').children() )
         })
     }
 
-    loadGameObject ( name ) {
+    loadGameObject ( name, index ) {
 
         $.post('/api/load', { userid: 'Data/GameObjects', name: name, type: 'GameObject' })
         .then( result => {
@@ -158,7 +155,9 @@ export default class LoadHandler{
 
             assetContainer.append(element);
 
-            
+            let dragAndDropHandler = new DragAndDropHandler();
+
+            dragAndDropHandler.addDraggableHandlers( $(`#${id}`) );
         })
     }
 
