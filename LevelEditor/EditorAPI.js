@@ -2,21 +2,17 @@
 'use strict'
 
 import Express from 'express'
-
+import FileSystem from 'fs'
 import FileStream from './filestream'
 
-import FileSystem from 'fs'
 
 const fs = require('fs'); 
-
-
 const Router = Express.Router();
 
 //error 101: Folder doesn't exists
 //error 102: File with the same name already exists
 //error 103: file doesn't exists in that specific folder
 
-//Fix: When userid is invalid, the response is currently an empty object
 Router.post('/get_level_list/:userid?', ( request, response ) => {
     
     let userid = request.params.userid;
@@ -83,7 +79,7 @@ Router.post('/get_object_list/:userid?', ( request, response ) => {
     .catch( error => response.send( JSON.stringify( error ) ) )
 });
 
-Router.post('/save', ( request, response ) => {
+Router.post('/save/:userid?', ( request, response ) => {
             
         let params = { ...request.params, ...request.query, ...request.body };
         let path = `./GameContent/Data/${ params.userid }`;
@@ -93,59 +89,41 @@ Router.post('/save', ( request, response ) => {
 
         fileStream.directoryExists( path )
         .then( exists => {
+
             if ( exists ) {
 
-                return fileStream.isPathAvaiable( fileDirectory )
+                fs.writeFile( fileDirectory , params.payload, err => {
+                    //TODO: Get bytes written
+                    response.send( JSON.stringify( { name: params.name, bytes: 0, error:0} ) );
+                });
             }
             else { response.send( JSON.stringify( { error: 101 } ))}
-        })
-        .then( available => {
-            if( available ) {
-
-                fs.writeFile( fileDirectory , params.payload, err => {
-
-                    response.send( JSON.stringify( { name: params.name, bytes: 0, error:0} ) );
-                })
-            }
-            else { response.send( JSON.stringify( { error: 102 } ) )}
         })
         .catch( error => response.send( JSON.stringify( error ) ));
 });
 
-Router.post('/load/:userid?/:name?/"type?', ( request, response ) => {
+Router.post('/load/:userid?', ( request, response ) => {
 
-    let promise = new Promise( ( resolve, reject) => {
+    let params = { ...request.params, ...request.query, ...request.body };
+    let path = `./GameContent/Data/${ params.userid }`;
+    let fileStream = new FileStream();
 
-        let params = { ...request.params, ...request.query, ...request.body };
-        let path = `./GameContent/Data/${ params.userid }`;
-        let fileStream = new FileStream();
+    let fileDirectory = `${path}/${params.name}.json`;
 
-        if( fileStream.directoryExists( path ) ) {
+    fileStream.directoryExists( fileDirectory )
+    .then( exists => {
+        if( exists ) {
+                    
+            fileStream.getFileAt( fileDirectory )
+            .then( result => {
 
-            let fileDirectory = `${ path }/${ params.name }.json`
-
-            if ( !fileStream.directoryExists( fileDirectory )) {
-                
-                let file = fileStream.getFileAt( fileDirectory );
-                let size = fileStream.getSizeOfFileIn( fileDirectory );
-
-                let result = { name: params.name, payload: JSON.stringify( file ), bytes: size, error:0 };
-                resolve( result );
-            }
-            else {
-                
-            let result = { error: 102 };
-            resolve( result );
-            }
-        }
-        else {
-
-            let result = { error: 101 };
-            reject( result );
+                //TODO: Get bytes readed
+                response.send( { name: params.name, payload: result, bytes: 0, error: 0} )
+            })
+            .catch( error => response.send( error ) );
         }
     })
-    .then( result => response.send( result ))
-    .catch( error => response.send( error ));
+    .catch( error => response.send( error ) )
 });
 
 export default Router;

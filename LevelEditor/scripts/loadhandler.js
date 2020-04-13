@@ -9,6 +9,7 @@ export default class LoadHandler{
 
         $('#load-level-form').on('submit', event => {
 
+            event.preventDefault();
             this.loadLevel();
         })
     }
@@ -26,7 +27,7 @@ export default class LoadHandler{
                 for ( let i = 0; i < data.payload.length; i++ ) {
 
                     let levelData = data.payload[i];
-                    levelsDropown.append(`<option value= "${levelData.fileName}"> ${levelData.name} </option>`)
+                    levelsDropown.append(`<option value= "${levelData.name}"> ${levelData.name} </option>`)
                 }
             }
             else {
@@ -38,6 +39,26 @@ export default class LoadHandler{
 
     loadLevel() {
 
+        let selectedLevel = $('#level-to-load').children('option:selected').val();
+
+        let params = { userid: 'Levels', name: selectedLevel, type: 'Level'}
+        $.post('/api/load', params)
+        .then( result => {
+
+            //let data = JSON.parse( result );
+            
+            if( data.error <= 0 ) {
+
+                console.log( result.payload );4
+            }
+            else {
+
+                console.log( result );
+            }
+        })
+        .fail( error => {
+            console.log( error );
+        })
     }
 
     gatherLevelData() {

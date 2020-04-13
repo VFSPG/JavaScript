@@ -2,33 +2,32 @@
 .tab {
     overflow: hidden;
     border-radius: 10px 10px 0px 0px;
-    
-  }
+}
   
   /* Create an active/current tablink class */
-  .tab button.activeTab {
-    background-color: #0A2845;
-    color: #103E6B;
-  }
+ .tab button.activeTab {
+   background-color: #0A2845;
+   color: #103E6B;
+ }
 
-  .tab button.inactiveTab{
-    background-color: #103E6B;
-    color: #0A2845;
-  }
+ .tab button.inactiveTab{
+   background-color: #103E6B;
+   color: #0A2845;
+ }
 
-  label{
-    font-family: sanvito-pro-display, sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    color: #103E6B;
-  }
+ label{
+   font-family: sanvito-pro-display, sans-serif;
+   font-style: normal;
+   font-weight: 700;
+   color: #103E6B;
+ }
 
-  .tabContent{
-    background-color: #0A2845;
-  }
-  
-  /* Style the buttons inside the tab */
-  .tab button {
+ .tabContent{
+   background-color: #0A2845;
+ }
+ 
+ /* Style the buttons inside the tab */
+ .tab button {
     background-color: inherit;
     float: left;
     border: none;
@@ -41,7 +40,7 @@
     font-family: sanvito-pro-display, sans-serif;
     font-style: normal;
     font-weight: 700;
-  }
+}
   
 
 .popUpSection{

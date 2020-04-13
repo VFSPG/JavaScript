@@ -96,7 +96,6 @@
                             <div id="upload-menu" class="popUpContent hide">
                                 <div class="tab">
                                     <button id="upload-level" class="tabLinks uploadTab inactiveTab">Level</button>
-                                    <button id="upload-background" class="tabLinks uploadTab inactiveTab">Background</button>
                                     <button id="upload-gameObject" class="tabLinks uploadTab inactiveTab">Game Object</button>
                                 </div>
                                   
@@ -116,24 +115,13 @@
                                     </form>
                                 </div>
                                 
-                                <div id="upload-background-content" class="tabContent uploadContent hide">
-
-                                    <form id="upload-background-form">
-                                        <label>File Name: </label>
-                                        <input type="text" name="file-name" value="" placeholder="How will be stored..."><br>
-                                        <label>File: </label>
-                                        <input type="file" accept="image/*"><br>
-                                        <input type="submit" name="action" value="Save Background" >
-                                    </form>
-                                </div>
-                                
                                 <div id="upload-gameObject-content" class="tabContent uploadContent hide">
 
                                     <form id="upload-gameObject-form">
                                         <label>File Name: </label>
                                         <input type="text" name="file-name" value="" placeholder="How will be stored..."><br>
                                         <label>Sprite: </label>
-                                        <input type="file" name="sprite" accept="image/*"><br>
+                                        <select id="game-object-sprite"> Sprite </select>
                                         <input type="submit" name="action" value="Save GameObject" >
                                     </form>
                                 </div>

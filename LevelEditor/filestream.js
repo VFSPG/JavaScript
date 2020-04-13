@@ -32,20 +32,22 @@ export default class FileStream{
                 }
             });
         });
-
-        
     }
 
     getFileAt ( path ) {
 
-        fs.readFile( path, ( err, fileData) => {
+        return new Promise( ( resolve, reject ) => {
+            fs.readFile( path, ( err, fileData) => {
 
-            if (err) {
-
-                console.log( `Error reading file at: ${ path }. ${ err }`);
-            }
-
-            return fileData;
+                if (err) {
+    
+                    reject( err);
+                }
+                else {
+    
+                    resolve(fileData);
+                }
+            });
         });
     }
 
@@ -53,10 +55,13 @@ export default class FileStream{
 
         return new Promise( ( resolve, reject) => {
 
-            fs.exists( filePath , exists => { 
+            fs.access( filePath , exists => { 
 
-                resolve ( exists );
+                exists ? reject( false ): resolve ( true );
             });
+        })
+        .catch( error => {
+            console.log( error );
         })
     }
 
@@ -94,7 +99,7 @@ export default class FileStream{
                 
                 if ( result ) {
 
-                    reject( { error: 102} );
+                    reject( { error: 102 } );
                 } else {
 
                     resolve( true );
