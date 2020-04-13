@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Alejandro Guereca Valdivia
 import app from '../app.js';
 import Collidable from '../models/Collidable.js';
 
@@ -9,6 +10,7 @@ class PlaceNewObjectHandler {
     this.draggedObject;
   }
 
+  // Set handler for dragging object into editor
   setHandlers() {
     const editor$ = $('#editor');
     const objectToCreate$ = $('.item-placeholder');

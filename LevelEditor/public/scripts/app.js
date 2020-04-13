@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Scott Henshaw
+// Copyright (C) 2020 Alejandro Guereca Valdivia
 'use strict';
 
 import entityRequest from './requests/EntityRequests.js';
@@ -11,10 +11,11 @@ export const texturesImagesPath = 'images/textures/';
 class App {
 
   constructor() {
-    this.currentLevel = new Level();
-    this.entityLists = [];
+    this.currentLevel = new Level(); // Reference to the current level
+    this.entityLists = [];           // List of available entities to use in the level
   }
 
+  // Running the inital handlers and getting the available entities right when the page loads
   run() {
     levelRequest.setHandlers();
     entityRequest.getAvailableEntities();
@@ -22,19 +23,23 @@ class App {
     $('.modal-close').on('click', event => this.closeModal( event ));
   }
 
+  // Closes any open modal
   closeModal() {
     $('.modal-form').trigger('reset');
     $('.modal').css('display', 'none');
   }
 
+  // Add collidable to the current level reference
   addCollidableToCurrentLevel(collaidable) {
     this.currentLevel.entityLists.collidableList.push(collaidable);
   }
 
+  // Adds to the available entity lists
   addToAvailableEntitiesList(entity) {
     this.entityLists.push(entity);
   }
 
+  // Set the current level, used when loading level or creating an empty one
   setCurrentLevel(level) {
     this.currentLevel = level;
   }

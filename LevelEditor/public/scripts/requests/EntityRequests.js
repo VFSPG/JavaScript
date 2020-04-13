@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Alejandro Guereca Valdivia
 'use strict';
 
 import app, { texturesImagesPath } from '../app.js';
@@ -10,24 +11,29 @@ class EntityRequest {
     this.setHandlers();
   }
 
+  // Set handlers for creating a new entity
   setHandlers() {
     $('#create-new-object-open-modal').on('click', event => this.openCreateNewObjectModal( event ));
     $('#save-object-btn').on('click', event => this.saveNewObject( event ));
     $('#save-object-form').on('change', event => this.updatePreview(event));
   }
 
+  // Making a preview of the new entity, it gets updated everytime that theres a change in a form
   updatePreview() {
+    // Get all the data from the form
     const formData = $('#save-object-form').serializeArray();
     const newEntityAttributes = {};
 
-    // eslint-disable-next-line guard-for-in
-    for (const attribute in formData) {
+    for (const attribute of formData) {
       const { name, value } = formData[attribute];
 
       newEntityAttributes[name] = value;
     }
 
+    // Extract the necessary one for visual representation
     const { height, width, texture } = newEntityAttributes;
+
+    // Create a new element that shows a preview of the new entity
     const $newEntityRepresentation = $('<div></div>');
 
     $newEntityRepresentation.addClass('item');
@@ -45,14 +51,16 @@ class EntityRequest {
     $previewElement.append($newEntityRepresentation);
   }
 
-
+  // Open create object modal
   openCreateNewObjectModal() {
     $('#new-object-modal').css('display', 'block');
   }
 
+  // The actual saving of the new entity
   saveNewObject(event) {
     event.preventDefault();
 
+    // Get the form data
     const baseData = $('#save-object-form').serializeArray();
 
     const entityData = {};
@@ -61,7 +69,7 @@ class EntityRequest {
       entityData[field.name] = field.value;
     }
 
-    // Post a message to the server
+    // Post a message to the server with the new entity data
     $.post('/api/entity/save', entityData)
       .then(responseData => {
         const { msg } = responseData;
@@ -76,6 +84,7 @@ class EntityRequest {
       });
   }
 
+  // We get all the entities and put them in the object box so that we can then place them in the level
   getAvailableEntities() {
     $.get('/api/entity/')
       .then( responseData => {

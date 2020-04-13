@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Alejandro Guereca Valdivia
 import Entity from './Entity.js';
 import app, { texturesImagesPath } from '../app.js';
 
@@ -5,6 +6,8 @@ const DEFAULT_Z = 1;
 
 export default class Collidable {
 
+  // Helper variables declaration for moving object around
+  // data initialization
   constructor(params) {
     this.mouseDown = false;
     this.mouseOver = false;
@@ -25,6 +28,8 @@ export default class Collidable {
     this.entity = entity;
     this.elementRepresentation = this.render();
 
+    // After setting all the needed data and rendering the element we set
+    // its moving handlers
     this.setHandlers();
   }
 
@@ -53,6 +58,8 @@ export default class Collidable {
     return objectRepresentation;
   }
 
+  // Function for returning clean data without any of the helper functions
+  // to send to the server
   getRaw() {
     const {
       id,
@@ -67,6 +74,7 @@ export default class Collidable {
     };
   }
 
+  // Remove element from the dom and call the app to remove from the level reference
   delete(event) {
     event.preventDefault();
     const wasRemoved = app.currentLevel.removeObjectFromLevel(this);
@@ -76,6 +84,7 @@ export default class Collidable {
     }
   }
 
+  // Set handlres for moving the collidable
   setHandlers() {
     this.elementRepresentation.on('mousedown',   (event) => this.down(event));
     this.elementRepresentation.on('mousemove',   (event) => this.move(event));
@@ -85,6 +94,8 @@ export default class Collidable {
     this.elementRepresentation.on('contextmenu', (event) => this.delete(event));
   }
 
+  // mouse button is down, make sure that the mouse is over a draggable object
+  // then get the offset based on the click position on the element the the client coordenates
   down( event ) {
 
     if (this.mouseOver) {
@@ -98,6 +109,8 @@ export default class Collidable {
     }
   }
 
+  // When moving and the mouse is over and the mouse is down and there is a element selected
+  // Keep changing objects coordenate by the offset
   move( event ) {
 
     if (this.mouseDown && this.mouseOver && this.elementRepresentation) {
@@ -115,6 +128,7 @@ export default class Collidable {
     }
   }
 
+  // If its over a draggable object means we can move it so we set the flag to true
   over( event ) {
     if (!event) {
       return;
@@ -131,11 +145,13 @@ export default class Collidable {
     }
   }
 
+  // If it goes out we reset everything
   out() {
     this.mouseOver = false;
     this.elementRepresentation = null;
   }
 
+  // When mouse is up we reset flags and set the correct z axis
   up() {
     this.mouseDown = false;
     if (this.elementRepresentation) {

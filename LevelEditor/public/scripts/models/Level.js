@@ -6,6 +6,9 @@ import Target from './Target.js';
 
 export default class Level {
 
+  // Everytime a new level is created the editore is empty out
+  // values are set, collidables are assined and sent to render
+  // Catapult is also created and rendered
   constructor(params = {}) {
     $('#editor').empty();
 
@@ -33,6 +36,7 @@ export default class Level {
     this.createCatapult();
   }
 
+  // Creation of catapult in the default position
   createCatapult() {
     const { catapult: { pos: { x, y } } } = this;
 
@@ -44,24 +48,29 @@ export default class Level {
     this.catapult = new Collidable(data);
   }
 
+  // Make sure theres a catapult in place
   checkForCatapultPlacement() {
     return this.catapult && Object.entries(this.catapult).length;
   }
 
+  // Remove and object from the current level
   removeObjectFromLevel(object) {
     const {
       catapult,
       entityLists = { }
     } = this;
 
+    // If the element that wants to be removed is the catapult dont remove it
     if (object === catapult) {
       return false;
     }
 
+    // Find the element in the list
     const { collidableList = [], targetList = [] } = entityLists;
     const collidableIndex = collidableList.indexOf(object);
     const targetIndex = targetList.indexOf(object);
 
+    // Remove it based in the index
     if (collidableIndex > -1) {
       collidableList.splice(collidableIndex, 1);
       return true;
@@ -72,9 +81,12 @@ export default class Level {
       return true;
     }
 
+    // If the object was removed return true, else return false
     return false;
   }
 
+  // Function for returning clean data without any of the helper functions
+  // to send to the server
   getRaw() {
     const {
       id,

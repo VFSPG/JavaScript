@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Alejandro Guereca Valdivia
 'use strict';
 
 import app, { backgroundImagesPath } from '../app.js';
@@ -5,6 +6,7 @@ import Level from '../models/Level.js';
 
 class LevelRequests {
 
+  // Handlers for level data such as ammunition, background, saving, and loading
   setHandlers() {
     $('#ammo-amount-id').on('change', event => this.updateLevelAmmo( event ));
     $('#background-selection-id').on('change', event => this.updateBackgroundImg( event ));
@@ -15,11 +17,15 @@ class LevelRequests {
     $('#load-level-btn').on('click', event => this.loadLevel( event ));
   }
 
+  // Opening the save level modal
   saveLevelOpenModal() {
     $('#save-level-modal').css('display', 'block');
   }
 
+  // Open the modal for saving the level
   loadLevelOpenModal() {
+    // We get the current user right away to get the list of the levels associated to that user
+    // and right away feed it to the dropdown
     const currentUser = $('#current-user-container-id').val();
 
     $.get(`api/level/${currentUser}`)
@@ -42,10 +48,12 @@ class LevelRequests {
       });
   }
 
+  // Create a new empty level
   createLevel( ) {
     app.setCurrentLevel(new Level());
   }
 
+  // Request to get the level information selected in the dropdown
   loadLevel(event) {
     event.preventDefault();
 
@@ -72,6 +80,7 @@ class LevelRequests {
       });
   }
 
+  // Sends a request with the level data to the server to save the level information
   saveLevel( event ) {
     event.preventDefault();
 
@@ -107,6 +116,7 @@ class LevelRequests {
       });
   }
 
+  // Some data validation, not nearly enough but its something
   validateLevelData(levelAmmo, currentUser) {
     if (!app.currentLevel.checkForCatapultPlacement()) {
       alert('You havent placed a catapult yet though!');

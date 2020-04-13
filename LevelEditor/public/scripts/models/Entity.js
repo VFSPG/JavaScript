@@ -1,7 +1,9 @@
+// Copyright (C) 2020 Alejandro Guereca Valdivia
 import { texturesImagesPath } from '../app.js';
 
 export default class Entity {
 
+  // Data initialization
   constructor(data) {
     const {
       type,
@@ -26,6 +28,7 @@ export default class Entity {
     this.restitution = restitution;
   }
 
+  // Create the place holder element for the editor
   generatePlaceHolder() {
     const { height, width, texture } = this;
     const entityRepresentation = $('<div draggable="true"></div>');
@@ -44,6 +47,8 @@ export default class Entity {
     return entityRepresentation;
   }
 
+  // Function for returning clean data without any of the helper functions
+  // to send to the server
   getRaw() {
     const {
       type,
