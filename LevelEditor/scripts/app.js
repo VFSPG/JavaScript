@@ -34,6 +34,9 @@ export default class App {
         //event handler to edit level
         $('#edit-button').on('click', event => this.editLevel());
         $(document).on("click", "#save-button" , event => this.saveLevel( ));
+
+        //manage the object library
+        $('#library-button').on('click', event => this.openObjectLibrary());
     }
 
     //loads the info of the user
@@ -109,6 +112,11 @@ export default class App {
             
         }
 
+    }
+
+    //TODO opens a modal to select the objects and place them
+    openObjectLibrary(){
+        
     }
 
     //createa a level by default and calls the method that sends it to the server
@@ -215,7 +223,7 @@ export default class App {
 
         //add draggable handler
         let $draggableElementList = $(".draggable");
-        this.addDraggableHandlers( $draggableElementList );
+        this.addHandlers( $draggableElementList );
     }
 
 
@@ -288,14 +296,16 @@ export default class App {
     }
 
     //add the drag events to the elements
-    addDraggableHandlers( $elementList ) {
+    addHandlers( $elementList ) {
 
         $elementList
-            .on("dragstart", event => {
+            .on("dblclick", event => {
 
-                console.log(event);
+                //here i show delete confirmation
             })
-            .on("drag", event => {
+            .on("click", event => {
+
+                 //here i show info of the object
             })
             .on("dragend", event => {
 
