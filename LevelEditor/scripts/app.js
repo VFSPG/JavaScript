@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Scott Henshaw
+// Copyright (C) 2020 Daniela Marino
 'use strict';
 
 //imports
@@ -14,6 +14,7 @@ export default class App {
         this.levels=[];
         this.objects=[];
         this.currentLevel={};
+        this.isEditing=false;
 
         // Event handlers to load stuff
         $('#search-btn').on('click', e => this.load());
@@ -79,6 +80,7 @@ export default class App {
             });
     }
 
+    //method that shows a message to the user
     showMessage(tittle, message){
 
         $("#input-modal").hide();
@@ -89,7 +91,7 @@ export default class App {
         $("#modal-message").html(message);
     }
 
-
+    //method that shows a modal to create a new level
     showModalCreate( ) {
         
         let user = $("#userId").val();
@@ -109,6 +111,7 @@ export default class App {
 
     }
 
+    //createa a level by default and calls the method that sends it to the server
     createLevel(){
 
         let object = {
@@ -125,6 +128,7 @@ export default class App {
 
     }
 
+    //tries to save an objec/level to the server, shows if it could or it couldnt
     save(object){
 
         $.post('/api/save', object )
@@ -132,6 +136,7 @@ export default class App {
 
                 this.showMessage("SAVED!", "the " + object.type + " was succesfully saved!");
                 if(object.type == "level"){
+                    //if i saved a level then i have to render the list again
                     this.loadLevels();
                 }
             })
@@ -141,6 +146,7 @@ export default class App {
             });
     }
 
+    //renders the list of levels
     renderList(){
 
         $( "#level-list" ).html("");
@@ -153,6 +159,7 @@ export default class App {
         }
     }
 
+    //if the user selects a level then try to load it
     selectLevel(e){
         
         var query = {
@@ -164,19 +171,18 @@ export default class App {
         $.get('/api/load', query)   
             .then( responseData => {
  
-                console.log(this.responseData);
+                //if i had a level selected before then de-select it
                 if(this.currentLevel.name!=null){
 
                     let old = "#" + this.currentLevel.name;
                     $(old).removeClass("selected");
+
                 }
 
+                //select the level and render it
                 $(e.target ).addClass("selected");
                 this.currentLevel = responseData.payload.level;
                 this.renderLevel();
-                //here show the level
-
-                console.log(this.currentLevel);
             })
             .catch( error => {
                 console.log( error )
@@ -184,26 +190,67 @@ export default class App {
             });
     }
 
+    //shows the info of the level
     renderLevel(){
 
         //change the name and ammo to the ones on the level
         $( "#level-name" ).val(this.currentLevel.name);
         $( "#ammo" ).val(this.currentLevel.ammo);
         
+        //clean editor first
+        $( "#editor" ).html(" ");
+
         //creates the catapult and places it
         var catapult = $("<div></div>");
-        catapult.addClass("draggable");;
+        catapult.addClass("draggable");
         catapult.attr('id', 'catapult');
-        catapult.css("top",0);
-        catapult.css("left",0);
-
+        catapult.attr('draggable', true);
+        catapult.css("top",this.currentLevel.catapult.pos.y);
+        catapult.css("left",this.currentLevel.catapult.pos.x);
         $( "#editor" ).append(catapult);
+
+        //creates collidables and other stuff
+        this.renderCollidables();
+
+        //add draggable handler
+        let $draggableElementList = $(".draggable");
+        this.addDraggableHandlers( $draggableElementList );
+    }
+
+
+    //renders all the collidables of the level
+    renderCollidables(){
+
+        var list = this.currentLevel.entityLists.collidableList;
+
+        for(var i=0; i < list.length; i++ ){
+
+            let object = list[i];
+
+             var temp = $("<img></img>");
+             temp.addClass("draggable");
+             temp.attr('draggable', true);
+
+             let id = "collidable-" + object.id;
+             temp.attr('id', id);
+
+             temp.attr("src",object.entity.texture);
+             temp.css("width",object.entity.width);
+             temp.css("height",object.entity.height);
+
+             temp.css("top",object.pos.y);
+             temp.css("left",object.pos.x);
+
+             $( "#editor" ).append(temp);     
+             
+        }
     }
 
     editLevel(){
         $('.temp').prop("disabled", false);
         $('#edit-button').hide();
         $("#save-button").css("display", "inline-block");
+        this.isEditing=true;
     }
 
 
@@ -228,6 +275,38 @@ export default class App {
         $('.temp').prop("disabled", true);
         $('#edit-button').show();
         $('#save-button').hide();
+        this.isEditing=false;
+    }
+
+    addDraggableHandlers( $elementList ) {
+
+        $elementList
+            .on("dragstart", event => {
+
+                console.log(event);
+            })
+            .on("drag", event => {
+            })
+            .on("dragend", event => {
+
+                if(this.isEditing==true){
+
+                    if(event.target.id=="catapult"){
+
+                        var id = "#" + event.target.id;
+                        var off = $(id).offsetParent().offset().left;
+
+                        this.currentLevel.catapult.pos.x= event.screenX - off;
+                        this.currentLevel.catapult.pos.y=event.screenY;
+                    }
+    
+                    console.log(this.currentLevel);
+                    this.renderLevel();
+                }
+                else{
+                    this.showMessage("Not allowed", "you have click edit in the info panel in order to do that");
+                }
+            });
     }
 }
 
