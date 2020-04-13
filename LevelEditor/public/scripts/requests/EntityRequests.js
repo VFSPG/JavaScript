@@ -24,10 +24,8 @@ class EntityRequest {
     const formData = $('#save-object-form').serializeArray();
     const newEntityAttributes = {};
 
-    for (const attribute of formData) {
-      const { name, value } = formData[attribute];
-
-      newEntityAttributes[name] = value;
+    for (const field of formData) {
+      newEntityAttributes[field.name] = field.value;
     }
 
     // Extract the necessary one for visual representation
