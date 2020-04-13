@@ -1,0 +1,11 @@
+{
+    "type": 1,
+    "name": "BlueJay",
+    "height": 40,
+    "width": 40,
+    "texture": "images/blue-jay1.png",
+    "shape": "square",
+    "friction": 1,
+    "mass": 90,
+    "restitution": 0
+}

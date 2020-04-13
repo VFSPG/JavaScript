@@ -1,0 +1,48 @@
+{
+  "id": 0,
+  "name": "sdfghg",
+  "ammo": 15,
+  "catapult": {
+    "id": 0,
+    "pos": {
+      "x": 36,
+      "y": 432
+    }
+  },
+  "entityLists": {
+    "collidableList": [
+      {
+        "id": 0,
+        "x": "478px",
+        "y": "231px",
+        "entity": {
+          "type": 0,
+          "name": "Stick",
+          "height": 150,
+          "width": 50,
+          "texture": "images/Stick-one.png",
+          "shape": "square",
+          "friction": 1,
+          "restitution": 0
+        }
+      }
+    ],
+    "targetList": [
+      {
+        "id": 1,
+        "x": "300px",
+        "y": "276px",
+        "entity": {
+          "type": 1,
+          "name": "BlueJay",
+          "height": 40,
+          "width": 40,
+          "texture": "images/blue-jay1.png",
+          "shape": "square",
+          "friction": 1,
+          "restitution": 0
+        }
+      }
+    ]
+  }
+}

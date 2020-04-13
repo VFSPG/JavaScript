@@ -1,0 +1,78 @@
+{
+  "id": 0,
+  "name": "final level",
+  "ammo": 15,
+  "catapult": {
+    "id": 0,
+    "pos": {
+      "x": 36,
+      "y": 432
+    }
+  },
+  "entityLists": {
+    "collidableList": [
+      {
+        "id": "WoodCrate0",
+        "x": 554.5999755859375,
+        "y": 384.6000061035156,
+        "entity": {
+          "type": 0,
+          "name": "WoodCrate",
+          "height": 70,
+          "width": 70,
+          "texture": "images/crate-one.png",
+          "shape": "square",
+          "friction": 1,
+          "restitution": 0
+        }
+      },
+      {
+        "id": "WoodCrate1",
+        "x": 483.5999755859375,
+        "y": 383.6000061035156,
+        "entity": {
+          "type": 0,
+          "name": "WoodCrate",
+          "height": 70,
+          "width": 70,
+          "texture": "images/crate-one.png",
+          "shape": "square",
+          "friction": 1,
+          "restitution": 0
+        }
+      },
+      {
+        "id": "Stick2",
+        "x": 273.20001220703125,
+        "y": 326.20001220703125,
+        "entity": {
+          "type": 0,
+          "name": "Stick",
+          "height": 150,
+          "width": 50,
+          "texture": "images/Stick-one.png",
+          "shape": "square",
+          "friction": 1,
+          "restitution": 0
+        }
+      }
+    ],
+    "targetList": [
+      {
+        "id": "BlueJay0",
+        "x": 518.2000122070312,
+        "y": 347.1999969482422,
+        "entity": {
+          "type": 1,
+          "name": "BlueJay",
+          "height": 40,
+          "width": 40,
+          "texture": "images/blue-jay1.png",
+          "shape": "square",
+          "friction": 1,
+          "restitution": 0
+        }
+      }
+    ]
+  }
+}

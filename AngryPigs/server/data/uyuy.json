@@ -1,0 +1,16 @@
+{
+  "id": 0,
+  "name": "uyuy",
+  "ammo": 15,
+  "catapult": {
+    "id": 0,
+    "pos": {
+      "x": 36,
+      "y": 432
+    }
+  },
+  "entityLists": {
+    "collidableList": [],
+    "targetList": []
+  }
+}

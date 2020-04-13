@@ -1,0 +1,88 @@
+.parent-content{
+    position: absolute;
+    width: 1520px;
+    height: 735px;
+    font-size: 1vw;
+
+}
+
+.topside-content
+{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 70%;
+}
+
+.bottomside-content
+{
+    position: absolute;
+    top: 70%;
+    width: 100%;
+    height: 30%;
+    border: 2px inset black;
+}
+
+.left-form-content
+{
+    overflow: auto;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 20%;
+    height: 100%;
+    border: 2px outset black;
+}
+
+.assets-content
+{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px 10px;
+    overflow: auto;
+    position: absolute;
+    top: 0%;
+    left: 80%;
+    width: 20%;
+    height: 100%;
+    border: 2px inset black;
+}
+
+.level-content
+{
+    overflow: auto;
+    position: absolute;
+    top: 0%;
+    left: 20%;
+    width: 60%;
+    height: 100%;
+    border: 2px inset black;
+}
+
+/*TODO change the way the background will be shown. to have always the same size and be scrollable*/
+.background-style
+{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    background-image: url("../images/airadventurelevel1.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.background-asset
+{
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.cannon-asset
+{
+    background-image: url(/images/cannon.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 70px;
+    width: 70px;
+}

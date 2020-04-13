@@ -1,0 +1,59 @@
+<!--Copyright (C) 2020. Omar Pino-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Level Editor</title>
+
+        <meta name="description" content="Demo">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </head>
+    <body>
+        <div id="parent-div" class="parent-content">
+            <div id="topside-div" class="topside-content">
+                <div id="left-form-div" class="left-form-content">
+                <form id="level-form">
+                    <label for="name-input">Level Name</label></br>
+                    <input type="text" name="levelName" id="name-input" value="Level"></br></br>
+                    <label for="obstacles-input">Obstacles</label></br>
+                    <input type="text" name="obstacleNumber" id="obstacles-input" readonly value="0"></br></br>
+                    <label for="score-input">Score</label></br>
+                    <input type="text" name="scoreNumber" id="score-input" value="0"></br></br>
+                    <label for="shots-input">Number of shots</label></br>
+                    <input type="text" name="shotsNumber" id="shots-input" value="0"></br></br>
+                    <label for="cannon-input">Number of cannons</label></br>
+                    <input type="text" name="cannonNumber" id="cannon-input" value="0" readonly></br></br>
+                    <input type="submit" id="save-level" value="Save"></br>
+                    <input type="submit" id="load-level" value="Load Level List"></br>
+                    <select id="level-list">
+                        <option value="None">None</option>
+                    </select></br></br>
+                    <input type="submit" id="new-level" value="New Level">
+                </form>
+                </div>
+                <div id="level-div" class="level-content">
+                    <div id="background-div" class="background-style">
+
+                    </div>
+                </div>
+                <div id="assets-div" class="assets-content">
+                    <div id="item3" draggable="true" class="background-asset"></div>
+                    <div id="item3" draggable="true" class="cannon-asset"></div>
+                </div>
+                
+            </div>
+            <div id="bottomside-div" class="bottomside-content">
+
+            </div>
+        </div>
+        <script type="module" src="scripts/index.js"></script>
+    </body>
+</html>

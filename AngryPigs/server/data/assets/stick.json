@@ -1,0 +1,11 @@
+{
+    "type": 0,
+    "name": "Stick",
+    "height": 150,
+    "width": 50,
+    "texture": "images/Stick-one.png",
+    "shape": "square",
+    "friction": 1,
+    "mass": 90,
+    "restitution": 0
+}
