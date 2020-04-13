@@ -6,11 +6,11 @@ import Path from 'path'
 import HTTP from 'http'
 import FileSystem from 'fs'
 
-import LevelAPI from './'
+import EditorAPI from './EditorAPI'
 
 const PORT = 3000;
 
-export default class Server {
+class Server {
 
     constructor() {
 
@@ -18,14 +18,15 @@ export default class Server {
         this.api.use( Express.json() )
                 .use( Express.urlencoded({ extended: false }))
                 .use( Express.static( Path.join( __dirname, '.')))
-                .use ( '/api', LevelAPI)
+                .use ( '/api', EditorAPI)
 
 
             // this.api.get('/editor', ( request, response ) => {
             //     response.render('editor',{ title:'Level Editor'})
             // });
             this.api.get('/', ( request, response ) => {
-                response.render('index',{ title:'Game'})
+
+                response.render('index', { title:'Game'} );
             });
 
         /*
@@ -78,27 +79,6 @@ export default class Server {
         // });
 
         this.run()
-    }
-
-    handleActionQuery( action, query, body ) {
-
-        let result = { error: -1 };
-        let command = (action == '' ? body.action : action);
-        switch (command) {
-            case 'Validate':
-                result.error = 0;
-                break;
-
-            case 'Submit':
-                result.error = 0;
-                break;
-
-            default:
-                result = { error: -2, ...body }
-                break;
-        }
-        // send the result back as JSON data
-        return result
     }
 
     run() {

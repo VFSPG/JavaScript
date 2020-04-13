@@ -1,6 +1,9 @@
 // Copyright (C) 2020 Scott Henshaw
 'use strict';
 
+import UIHandler from './uihandler.js'
+import UploadHandler from './uploadhandler.js'
+import LoadHandler from './loadhandler.js'
 // This controlls the User Interface
 export default class App {
 
@@ -21,86 +24,13 @@ export default class App {
         // create a new level/load existing level
 
         // Event handlers here
-        $('#level-dropdown').on('change', event => this.loadLevel( event ));
-        $('#new-level-btn').on('click', event => this.createLevel( event ));
-        $('#save-btn').on('click', event => this.saveLevel( event ));
+        // $('#level-dropdown').on('change', event => this.loadLevel( event ));
+        // $('#new-level-btn').on('click', event => this.createLevel( event ));
+        // $('#save-btn').on('click', event => this.saveLevel( event ));
 
-        //I'm using 'function' to preserve the value of 'this' 
-        $('.barButton, .assetMenuButton').hover ( function () {
-
-            $( this ).toggleClass( "buttonHoverInColor" );
-            $( this ).toggleClass( "buttonHoverOutColor" );
-        })
-
-        $('#closePopUp').on('click', event => {
-            $('.popUpSection').toggleClass('hide');
-            let popUpContent = $('.popUpContent');
-
-            for (let i = 0; i < popUpContent.length; i++) {
-
-                let content = popUpContent[i];
-                if(!content.classList.contains('hide')){
-                    content.classList.add('hide')
-                }
-            }
-        })
-
-        $('#assetMenuButton').on('click', event => {
-
-            let icon = $("#assetMenuButtonIcon");
-            icon.toggleClass("fa-arrow-circle-up");
-            icon.toggleClass("fa-arrow-circle-down");
-
-            let menu = $("#assetMenu");
-            menu.toggleClass("assetMenuClosed");
-            menu.toggleClass("assetMenuOpened");
-        })
-
-        this.intializePopUps();
-        
-    }
-
-    intializePopUps() {
-        function setTabs( event ){
-            
-            let tabContents = $(`.${event.data.content}`);
-            let tag = `${$(this).attr('id')}-content`;
-
-            $('.activeTab').addClass('inactiveTab');
-            $('.activeTab').removeClass('activeTab');
-            $(this).addClass('activeTab')
-            $(this).removeClass('inactiveTab')
-
-            for (let i = 0; i < tabContents.length; i++) {
-
-                let tabContent = tabContents[i];
-                if (tabContent.id == tag) {
-
-                    tabContent.classList.remove( 'hide' );
-                }
-                else {
-
-                    if(!tabContent.classList.contains( tag )) {
-                        tabContent.classList.add( 'hide' );
-                    }
-                }
-            }
-        }
-
-        $('.uploadTab').on('click' , { content: "uploadContent" }, setTabs);
-        $('.loadTab').on('click' , { content: "loadContent" }, setTabs);
-        $('.removeElementTab').on('click' , { content: "removeElementContent" }, setTabs);
-
-        function hidePopUp( event ){
-            
-            $('#popUpWindow').toggleClass('hide');
-            $(`#${event.data.id}`).toggleClass('hide');
-        }
-
-        $('#upload-button').on('click', { id: "upload-menu" }, hidePopUp);
-        $('#load-button').on('click', { id: "load-menu" }, hidePopUp);
-        $('#level-info-button').on('click', { id: "level-info-menu" }, hidePopUp);
-        $('#remove-element-button').on('click', { id: "remove-element-menu" }, hidePopUp);
+        let uiHanlder = new UIHandler();
+        let uploadHandler = new UploadHandler();
+        let loadHandler = new LoadHandler();
     }
 
     addDraggableHandlers( $elementList ) {
@@ -200,35 +130,7 @@ export default class App {
             });
     }
 
-    gatherFormData( event ) {
-        // TODO: gather all the data and send it off to the server
-        let baseData = $("#info-form").serializeArray();
-        /*
-        We have this...
-        let deleteMe = [{ name:"name", value:"level-1" },
-                        { name:"obstacleCount", value: "10" },
-                        {}, ...];
-
-        We want this...
-        let levelData = {
-            name: "level-1",
-            obstacleCount: 10,
-            ...
-        };
-        */
-        let levelData = {};
-        for (let field of baseData) {
-
-            levelData[field.name] = field.value;
-        }
-
-        //  TODO: Also add in the data representing the entities in the actual level
-
-        return levelData;
-    }
-
     run() {
 
     }
 }
-

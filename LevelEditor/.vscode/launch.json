@@ -9,10 +9,27 @@
             "request": "attach",
             "name": "Attach",
             "processId": "${command:PickProcess}",
+            "port": 9229,
             "skipFiles": [
-                "<node_internals>/**"
+                "<node_internals>/"
             ]
         },
+        {
+            "name": "Node: node server",
+            "type": "node",
+            "runtimeArgs": [
+                "-r",
+                "esm",
+            ],
+            "request": "launch",
+            "cwd": "${fileDirname}",
+            "program": "${file}",
+            "skipFiles": [
+                "<node_internals>/"
+            ]
+        },
+
+
 
         {
             "type": "node",
@@ -21,7 +38,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\server.js"
+            "program": "${file}"
         }
     ]
 }
