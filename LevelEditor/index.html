@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title></title>
+        <title>Angry Pigs Editor</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="css/reset.css"/>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
@@ -10,54 +10,114 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     </head>
     <body>
+        
+        <!-- GRID CONTAINER TO DEV THE LAYOUT -->
         <div class="grid-container">   
-            <div class="parameters zone" >
-                <form id="info-form">
-                    Level:
-                        <select id="level-list" name="Level">
-                            <option value="Level-1">Level 1</option>
-                            <option value="Level-2">Level 2</option>
-                        </select></br>
-                        <div id="new-level-button"><button>Create Level</button></div></br>
-                    
-                    Background:
-                        <select id="background-list" name="Background">
-                            <option value="my-background">My Background</option>
-                        </select></br></br>
-
-                    Max Shots:
-                    <input type="text" name="maxShots" value="1"></br></br>
-
-                    One Star Score:
-                    <input type="text" name="oneStarScore" value="100"></br>
-                    Two Star Score:
-                    <input type="text" name="twoStarScore" value="100"></br>
-                    Three Star Score:
-                    <input type="text" name="threeStarScore" value="100"></br>
-
-                </form>
-
-                <div id="save-button"><button>Save</button></div>
+            
+        <!-- FILE OPTIONS HEADER -->
+            <div class="file-options zone">
+                <div>
+                    <label for="Level">LEVEL</label>
+                    <select id="level-dropdown" name="Level" style = "width: 200px; padding: 6px; margin: 10px;">
+                    </select>
+                </div>
+                <div id="new-level-button"><button>Create Level</button></div>
+                <div id="save-btn"><button>Save</button></div>
+                <div id="remove-level-button"><button>Remove Level</button></div>
+                <div id="rename-level-button"><button>Rename Level</button></div>
             </div>
-            <div class="windows zone">
-                <div class="editor zone">
 
+        <!-- PARAMETER OPTIONS ZONE -->
+            <div class="parameters zone" >
+                <form id="info-form">  
+                    <label for="background-dropdown" >Background</label></br>                  
+                        <select id="background-dropdown" name="Background" style="width: 210px; padding: 6px; margin-top: 10px;">
+                            <option value="my-background">My Background</option>
+                            <option value="bambu-background">Bambu Background</option>
+                        </select></br></br>
+                    
+                    <label for="maxShots">Max Shots</label></br>
+                    <input type="text" name="maxShots" placeholder="1" value=""></br></br>
+                    <label for="oneStarScore">One Star Score</label></br>
+                    <input type="text" name="oneStarScore" placeholder="100" value=""></br></br>
+                    <label for="twoStarScore">Two Star Score</label></br>
+                    <input type="text" name="twoStarScore" placeholder="100" value=""></br></br>
+                    <label for="threeStarScore">Three Star Score</label></br>
+                    <input type="text" name="threeStarScore" placeholder="100" value=""></br>
+                </form>
+            </div>
+
+        <!-- EDITOR OPTIONS ZONE -->           
+            <div class="windows zone">
+                <div class="editor zone" id ="editor">
                 </div>
                 <div class="zone">
-
-
                 </div>
             </div>
+
+        <!-- ITEMS OPTIONS ZONE -->  
             <div class="objects zone">
+                <div id="add-object-button"><button>Add Object</button></div></br>
                 <ul id="object-list">
-                    <li name="obj1" value="obj1">
-                        <div id="library-01" class="obstacle debug" draggable="true"></div>
-                    </li>
-                    <div id="add-object-button"><button>Add Object</button></div></br>
-                    <div id="coords-info" class="zone" style="width: 20em;;"></div>
                 </ul>
             </div>
         </div>
-    </body>
+
+        <!-- MODAL WINDOW -->  
+        <div id="myModal" class="modal">
+
+            <!-- CREATE LEVEL POPUP -->  
+            <div class="popup hide" id="create-level-popup">
+                <div>
+                    <form id="level-popup-form">
+                        <label for="id">Id</label></br>
+                        <input type="number" name="id" placeholder="0" value=""></br></br>
+                        <label for="name">Level Name</label></br>              
+                        <input type="text" name="name" placeholder="Level" value=""></br></br>
+                        <div id="create-level-button"><button>Create Level</button></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- CREATE ENTITY POPUP -->  
+            <div class="popup hide" id="create-entity-popup">
+                <div>
+                    <form id="entity-popup-form">
+                        <label for="id">Id:</label></br>
+                        <input type="number" name="id" placeholder="0" value=""></br></br>
+                        <label for="type">Type:</label></br>
+                        <input type="number" name="type" placeholder="0" value=""></br></br>
+                        <label for="name">Name:</label></br>
+                        <input type="text" name="name" placeholder="Crate" value=""></br></br>
+                        <label for="height">Height:</label></br>
+                        <input type="number" name="height" placeholder="0" value=""></br></br>
+                        <label for="width">Width:</label></br>
+                        <input type="number" name="width" placeholder="0" value=""></br></br>
+                        <label for="texture">Texture:</label></br>
+                        <input type="text" name="texture" placeholder="" value=""></br></br>
+                        <label for="shape">Shape:</label></br>
+                        <input type="text" name="shape" placeholder="square" value=""></br></br>
+                        <label for="friction">Friction:</label></br>
+                        <input type="number" name="friction" placeholder="1" value=""></br></br>
+                        <label for="mass">Mass:</label></br>
+                        <input type="number" name="mass" placeholder="90" value=""></br></br>
+                        <label for="restitution">Restitution:</label></br>
+                        <input type="number" name="restitution" placeholder="0" value=""></br></br>
+    
+                        <div id="create-entity-button"><button>Create Entity</button></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- RENAME LEVEL POPUP -->
+            <div class="popup hide" id="rename-level-popup">
+                <form id="rename-popup-form">
+                    <label for="newName">NEW NAME</label></br>
+                    <input type="text" name="newName" placeholder="new name" value=""></br>
+                    <div id="rename-button"><button>RENAME LEVEL</button></div>
+                </form>
+            </div>
+        </body>
+        </div>      
     <script type="module" src="scripts/index.js"></script>
 </html>

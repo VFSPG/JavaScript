@@ -1,0 +1,12 @@
+{
+    "id": 0,
+    "type": 0,
+    "name": "Crate",
+    "height": 100,
+    "width": 100,
+    "texture": "../images/crate-one.png",
+    "shape": "square",
+    "friction": 1,
+    "mass": 90,
+    "restitution": 0
+}

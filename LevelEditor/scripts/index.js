@@ -1,4 +1,4 @@
-//Copyright (C) 2020 Alejandro Lopez
+// Copyright (C) 2020 Alejandro Lopez, All Rights Reserved
 'use strict'
 
 import App from './app.js';

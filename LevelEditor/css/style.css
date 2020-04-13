@@ -4,46 +4,177 @@
     border:2px solid black;
 }
 
-.editor{
-    height: 720px;
-    width: 1280px;
-    background-size: 100% 100%;
-    background-image: url('../images/my-background.jpg');
-}
-
 .grid-container{
     display: grid;
     grid-template-columns: auto 1284px auto;
-    grid-template-rows: 1fr;
+    grid-template-rows: 80px auto;
 }
 
-.parameters{
+/* FILES WINDOW */
+
+.file-options{
     grid-row: 1;
-    grid-column: 1;
-    padding: 8px;
+    grid-column: 1 / span 3;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #292C2C;
 }
+
+.file-options label{
+    font-size: 20px;
+    color: rgb(218, 218, 218);
+}
+
+.file-options button{
+    border: 2px solid white;
+    width: 200px;
+    background: #404040;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 10px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+}
+
+.file-options button:hover{
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
+}
+
+
+/* PARAMETER WINDOW */
+.parameters{
+    grid-row: 2;
+    grid-column: 1;
+    padding-top: 25px;
+    padding-left: 25px;
+}
+
+.parameters label{
+    font-size: 20px;
+}
+
+.parameters input{
+    padding: 6px;
+    margin-top: 10px;
+}
+
+/* EDITOR WINDOW */
 
 .windows{
-    grid-row: 1;
+    grid-row: 2;
     grid-column: 2;
 }
 
+.editor{
+    height: 720px;
+    width: 1280px;
+    position: relative;
+    display: block;
+    background-size: 100% 100%;
+    background-image: url('../images/my-background.jpg');
+    overflow:hidden;
+    cursor:pointer;
+}
+
+/* ITEMS WINDOW */
 .objects{
-    grid-row: 1;
+    grid-row: 2;
     grid-column: 3;
     padding: 6px;
+}
+
+.objects ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.objects button{
+    border: 2px solid white;
+    width: 200px;
+    background: #404040;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 10px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+}
+
+.objects button:hover{
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
 }
 
 body{
     height: 100%;
 }
 
+/* The actual popup (appears on top) */
+.modal{
+    display: none; 
+    position: fixed; 
+    z-index: 1;
+    padding-top: 100px; 
+    padding-left: 46%; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
 
-.obstacle {
+.popup{
+    position: fixed;
+    border: 3px solid grey;
+    z-index: 100;
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+}
+
+.popup-form{
+    max-width: 300px;
+    background-color: white;
+}
+
+.popup button{
+    border: 2px solid white;
+    width: 200px;
+    background: #404040;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 10px;
+    text-transform: uppercase;
+    border-radius: 6px;
     display: inline-block;
-    position: relative;
-    background-image: url('../images/crate-one.png');
-    background-size: 100% 100%;
-    height: 100px;
-    width: 100px;
+    transition: all 0.3s ease 0s;
+}
+
+.popup button:hover{
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
 }
