@@ -29,7 +29,7 @@ export default class UploadHander{
 
     uploadGameObject ( gameObject, feedback ) {
 
-        let params = { userid: 'GameObjects', name: formData.fileName,
+        let params = { userid: 'GameObjects', name: gameObject.name,
                         type: 'GameObject', payload: JSON.stringify( { gameObject } )};
 
         $.post('/api/save', params )

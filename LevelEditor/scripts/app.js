@@ -36,6 +36,7 @@ export default class App {
 
             uploadHandler.uploadLevel( this.level.content, data => {
                 console.log(data);
+                loadHandler.initializeLevelOptions();
             } );
         });
 
@@ -44,11 +45,23 @@ export default class App {
             event.preventDefault();
             let formData = this.gatherDataFor( '#upload-game-object-form' );
 
-            let selectedSprite = getSpriteSelected();
+            let selectedSprite = this.getSpriteSelected();
             let gameObject = { ...formData, selectedSprite };
 
             uploadHandler.uploadGameObject( gameObject, data => {
                 console.log(data);
+                loadHandler.loadAssets()
+                .then( promises => {
+        
+                    for ( let i = 0; i < promises.length; i++ ) {
+        
+                        promises[i].then( id => {
+        
+                            let element = $(`#${id}`);
+                            dragAndDropHandler.addDraggableHandlers( element );
+                        } )
+                    }
+                })
             } );
         });
         $('#load-level-form').on('submit', event => {
@@ -112,6 +125,10 @@ export default class App {
                 this.level.content.gameObjects.push( gameObject );
             }
         });
+    }
+
+    loadAssets() {
+        
     }
 
     getBackgroundSelected() {

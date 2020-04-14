@@ -65,6 +65,7 @@ export default class LoadHandler{
 
         
         let select = $( id );
+        select.empty();
 
         for ( let i = 0; i < options.length; i++ ) {
 
@@ -111,6 +112,7 @@ export default class LoadHandler{
             $.post('/api/get_object_list', { userid: 'Data/GameObjects', extLength: -5 })
             .then( result => {
     
+                $('#asset-container').empty();
                 let list = JSON.parse( result ).payload;
 
                 let promises = new Array();
@@ -136,11 +138,11 @@ export default class LoadHandler{
             .then( result => {
     
     
-                let data =  result.payload;
+                let data =  result.payload.gameObject;
     
                 let assetContainer = $('#asset-container');
     
-                let id = `game-object-${data.fileName}`;
+                let id = `game-object-${data.name}`;
                 let src = `/../GameContent/Images/Sprites/${data.selectedSprite }`;
                 let element = `<img id="${id}" src="${src}" width="100px" height="100px" draggable="true">`;
     
@@ -154,6 +156,8 @@ export default class LoadHandler{
     loadGameObjects( gameObjects, addHandlersTo ) {
 
         let gameDisplay = $('#game-display');
+
+        $('.placed').remove();
 
         for ( let i = 0; i < gameObjects.length; i++ ) {
 
