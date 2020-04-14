@@ -8,31 +8,18 @@ export default class UploadHander{
 
     constructor(){
 
-        $('#upload-level-form').on('submit', event => {
-
-            event.preventDefault();
-            this.uploadLevel();
-        });
-
-        $('#upload-game-object-form').on('submit', event => {
-
-            event.preventDefault();
-            this.uploadGameObject();
-        });
     }
 
-    uploadLevel () {
-        let formData = this.gatherDataFor( '#upload-level-form' );
+    uploadLevel ( level, feedback ) {
 
-        let params = { userid: 'Levels', name: formData.fileName, 
-                            type: 'Level', payload: JSON.stringify( formData ) };
+        let params = { userid: 'Levels', name: level.name, 
+                            type: 'Level', payload: JSON.stringify( level ) };
 
 
         $.post('/api/save', params)
         .then (  result => {
 
-            console.log( JSON.parse( result ) );
-            //Notify load
+            feedback(JSON.parse( result ));
         })
         .fail ( error => {
             console.log( error );
@@ -40,36 +27,18 @@ export default class UploadHander{
     }
 
 
-    uploadGameObject () {
-
-        let formData = this.gatherDataFor( '#upload-game-object-form' );
-
-        let selectedSprite = $('#game-object-sprite').children('option:selected').val();
+    uploadGameObject ( gameObject, feedback ) {
 
         let params = { userid: 'GameObjects', name: formData.fileName,
-                        type: 'GameObject', payload: JSON.stringify( {...formData, selectedSprite} )};
+                        type: 'GameObject', payload: JSON.stringify( { gameObject } )};
 
         $.post('/api/save', params )
         .then( result => {
 
-            console.log(JSON.parse( result));
+            feedback( JSON.parse( result) );
         })
         .fail( error => {
             console.log( error );
         })
-    }
-    
-    gatherDataFor ( id ) {
-
-        let formData = $( id ).serializeArray();
-
-        let levelData = {};
-
-        for (let field of formData) {
-
-            levelData[field.name] = field.value;
-        }
-
-        return levelData;
     }
 }

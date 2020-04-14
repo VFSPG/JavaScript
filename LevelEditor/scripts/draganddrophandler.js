@@ -7,9 +7,8 @@ export default class DragAndDropHandler{
 
         this.clonesCount = 0;
     }
-    addDraggableHandlers( $elementList ) {
+    addDraggableHandlers( $elementList) {
 
-        console.log($elementList);
         $elementList
             .on("dragstart", event => {
                 // collect drag info, delta from top left, el id
@@ -24,7 +23,6 @@ export default class DragAndDropHandler{
             })
             .on("drag", event => {
                 // debug stuff?
-                console.log("FUnciona")
             })
             .on("dragend", event => {
                 // change the look,
@@ -33,12 +31,11 @@ export default class DragAndDropHandler{
             });
     }
 
-    addDroppableHandlers() {
+    addDroppableHandlers( dropCB ) {
         let $editor = $("#game-display");
 
         $editor.on("dragenter", event => { 
             event.preventDefault();
-            //Set up
         })
         .on("dragover", event => {
             if( event.preventDefault ){
@@ -54,35 +51,34 @@ export default class DragAndDropHandler{
         .on("drop", event => {
 
             if (event.stopPropagation) {
-                event.stopPropagation(); // stops the browser from redirecting.
+                event.stopPropagation();
               }
             let data = this.eventData( event );
             let droppedElement = $(`${data.id}`);
 
-            if( droppedElement.hasClass('placed') ){
+            let isPlaced = droppedElement.hasClass('placed');
+            if( isPlaced ){
 
 
                 let position = this.offsetPosition( event , data );
                 this.setPositionTo( droppedElement, position );
+                
+                dropCB( droppedElement, isPlaced, position );
             }
             else {
 
                 let position = this.offsetPosition( event , data )
                 let element = this.generateNewElement( droppedElement, position )
                 
+                
+                let currentId = element.attr("id");
+                element.attr("id", `${currentId}-${ $editor.children().length }`);
+
                 $editor.append( element );
+                this.setPositionTo(element, position);
+                dropCB( element, isPlaced, position );
             }
-
-            // On drop, clone the object, add to this div as a child
-            //let dragData = this.eventData( event );
-            //let $obj = $(dragData.id);
-
-            // add a class to the new element to indicate it exists
-            //if (!$obj.hasClass("placed"))
-                //$obj = this.generateNewObstacle( $oldObstacle )
-
-            //let editorPos = $editor.offset();
-            //$obj.offset( this.offsetPosition( event, dragData ) );
+            
             return false;
         })
     }
@@ -108,12 +104,8 @@ export default class DragAndDropHandler{
         
         let element = $oldElement.clone();
         element.addClass("placed");
-        this.setPositionTo(element, position);
-        let currentId = element.attr("id");
-        element.attr("id", `${currentId}-${this.clonesCount}`);
+        element.css("position", "absolute");
         this.clonesCount++;
-
-        this.addDraggableHandlers( element )
         return element;
     }
 

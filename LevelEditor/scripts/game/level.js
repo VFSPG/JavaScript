@@ -3,14 +3,17 @@
 
 export default class Level {
 
-    constructor( name, fileSaved, gameObjects) {
+    constructor() {
 
         this.content = {
 
-            id: fileSaved.id,
-            name: name,
-            ammo: fileSaved.ammo,
-            gameObjects: gameObjects
+            name: "",
+            levelPosition: 0,
+            threeStarsScore: 0,
+            twoStarsScore: 0,
+            ammo: 0,
+            gameObjects: [],
+            background: ""
         }
     }
 }

@@ -4,7 +4,7 @@
 export default class Transform {
 
     constructor() {
-        this.position = { x: 0, y: 0 };
+        this.position = { left: 0, top: 0 };
         this.rotation = { x: 0, y: 0 };
         this.scale = { x: 1, y: 1 };
     }

@@ -7,22 +7,6 @@ export default class LoadHandler{
 
     constructor() {
 
-        this.initializeLevelOptions();
-        this.initalizeBackgroundOptions();
-        this.initializeGameObjectOptions();
-        this.loadGameObjects();
-
-        $('#load-level-form').on('submit', event => {
-
-            event.preventDefault();
-            this.loadLevel();
-        });
-
-        $('#load-background-form').on('submit', event => {
-
-            event.preventDefault();
-            this.loadBackground();
-        });
     }
 
     initializeLevelOptions(){
@@ -89,7 +73,7 @@ export default class LoadHandler{
         }
     }
 
-    loadLevel() {
+    loadLevel( loadLevelCB ) {
 
         let selectedLevel = $('#level-to-load').children('option:selected').text();
 
@@ -99,7 +83,7 @@ export default class LoadHandler{
             
             if( result.error <= 0 ) {
 
-                console.log( result.payload );
+                loadLevelCB( result.payload );
             }
             else {
 
@@ -111,57 +95,80 @@ export default class LoadHandler{
         })
     }
 
-    loadBackground() {
+    loadBackground( name ) {
 
-        let selectedBackground = $('#background-to-load').children('option:selected').val();
-
-        console.log(selectedBackground);
         let gameDisplay = $('#game-display');
-        gameDisplay.css('background-image', `url('/../GameContent/Images/Backgrounds/${selectedBackground}')`);
+        gameDisplay.css('background-image', `url('/../GameContent/Images/Backgrounds/${name}')`);
         gameDisplay.css('background-repeat', 'no-repeat');
         gameDisplay.css('background-attachment', 'fixed');
         gameDisplay.css('background-size', '100% 100%');
     }
 
-    loadGameObjects() {
+    loadAssets() {
 
-        $.post('/api/get_object_list', { userid: 'Data/GameObjects', extLength: -5 })
-        .then( result => {
+        return new Promise( (resolve, reject) => {
 
-            let list = JSON.parse( result ).payload;
+            $.post('/api/get_object_list', { userid: 'Data/GameObjects', extLength: -5 })
+            .then( result => {
+    
+                let list = JSON.parse( result ).payload;
 
-            for ( let i = 0; i < list.length; i++ ) {
+                let promises = new Array();
+    
+                for ( let i = 0; i < list.length; i++ ) {
+    
+                    let pair = list[i];
 
-                let pair = list[i];
+                    promises.push( 
+                        this.loadAsset( pair.name ) )
+                }
 
-                this.loadGameObject( pair.name, i );
-            }
+                resolve(promises);
+            })
         })
     }
 
-    loadGameObject ( name, index ) {
+    loadAsset ( name ) {
 
-        $.post('/api/load', { userid: 'Data/GameObjects', name: name, type: 'GameObject' })
-        .then( result => {
+        return new Promise( (resolve, reject) => {
 
-
-            let data =  result.payload;
-
-            let assetContainer = $('#asset-container');
-
-            let id = `game-object-${data.fileName}`;
-            let src = `/../GameContent/Images/Sprites/${data.selectedSprite }`;
-            let element = `<img id="${id}" src="${src}" width="100px" height="100px" draggable="true">`;
-
-            assetContainer.append(element);
-
-            let dragAndDropHandler = new DragAndDropHandler();
-
-            dragAndDropHandler.addDraggableHandlers( $(`#${id}`) );
+            $.post('/api/load', { userid: 'Data/GameObjects', name: name, type: 'GameObject' })
+            .then( result => {
+    
+    
+                let data =  result.payload;
+    
+                let assetContainer = $('#asset-container');
+    
+                let id = `game-object-${data.fileName}`;
+                let src = `/../GameContent/Images/Sprites/${data.selectedSprite }`;
+                let element = `<img id="${id}" src="${src}" width="100px" height="100px" draggable="true">`;
+    
+                assetContainer.append(element);
+    
+                resolve (id);
+            })
         })
     }
 
-    refreshGameObjects() {
+    loadGameObjects( gameObjects, addHandlersTo ) {
+
+        let gameDisplay = $('#game-display');
+
+        for ( let i = 0; i < gameObjects.length; i++ ) {
+
+            let gameObject = gameObjects[i];
+
+            let id = `${gameObject.id}`;
+            let src = gameObject.sprite;
+            let element = `<img id="${id}" 
+                            src="${src}" width="100px" height="100px" draggable="true"
+                            style="position: absolute; left: ${gameObject.transform.position.left}px;
+                            top: ${gameObject.transform.position.top}px;" class="placed">`;
+            
+            gameDisplay.append(element);
+            addHandlersTo( $(`#${id}`) );
+        }
 
     }
 }
