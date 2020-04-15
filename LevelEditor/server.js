@@ -20,10 +20,16 @@ class Server {
                 .use( Express.static( Path.join( __dirname, '.')))
                 .use ( '/api', EditorAPI)
 
-            this.api.get('/', ( request, response ) => {
+            this.api.get('/editor', ( request, response ) => {
 
-                response.render('index', { title:'Game'} );
+                let indexFile = Path.join(__dirname + '/editor.html')
+                response.sendFile(indexFile, { title:'Editor'} );
             });
+
+            // this.api.get('/', ( request, response ) => {
+
+            //     response.render('index', { title:'Editor'} );
+            // });
 
         this.run()
     }
