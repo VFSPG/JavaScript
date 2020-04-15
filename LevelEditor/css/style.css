@@ -1,62 +1,40 @@
-/* Copyright (C) 2018 Scott Henshaw, All Rights Reserved */
-.hide { display:none; }
-.box-border {
-    border:1px solid black;
+/*
+ * CSS Styles for Risk Demo App
+ *
+ * Copyright 2020, Ava Cheng
+ *
+ */
+ body, html {
+    background: #242527;
+    border: none;
+    color: #fff;
+    font-family: Helvetica, Arial, sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.box-dashed {
-    border:2px dashed red;
+tr {
+    height: 80px;
 }
-#object-list {
-    list-style-type: none;
+#header {
+    text-align: center;
+    font-size: 6em;
+    font-family: fantasy;
+    line-height: 120px;
 }
-.editor {
-    background-image: url('../images/my-background.jpg');
-    background-size: 100% 100%;
-    min-width: 50vw;
-    min-height: 90vh;
+#sidebar_left {
+    width: 20%;
+    margin-bottom: 20px;
+    float: left;
 }
-.debug {
-    border: dashed 1px red;
+#sidebar_right {
+    width: 20%;
+    margin-bottom: 20px;
+    float: right;
 }
-
-.library {
-    position: relative;
-}
-
-.obstacle {
-    display: inline-block;
-    position: relative;
-    background-image: url('../images/crate-one.png');
-    background-size: 100% 100%;
-    height: 100px;
-    width: 100px;
-}
-
-.placed {
-    position: relative;
-}
-
-.flex-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap:nowrap;
-    justify-content:center;
-}
-.flex-item {
-    flex-grow: 1;
-}
-.flex-center-item {
-    flex-grow: 3;
-}
-.feedback {
-    height: 2em;
-    width: 100%;
-}
-
-.info-form-area {
-    padding: 8px;
-}
-
-input {
-    margin: 4px;
+#content {
+    width: 60%;
+    margin-bottom: 10px;
+    float: left;
 }

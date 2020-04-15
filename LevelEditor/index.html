@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "150-8859-1">
+        <title>Angry Pigs</title>
+
+        <meta name="description" content="Demo">
+        <meta name="viewport" content="width-device-width, initial-scale-1">
+        <meta http-equiv="Content-Type" content="text/html; tharset-utf-8"/>
+        <meta charset="utf-8">
+
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <style>
+            .container
+            {
+                border: 2px solid black;
+                margin: 0.25em;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="sitebody">
+            <div id="header">Angry Pigs</div>
+            <div id="sidebar_left">
+                <table class="container_left">
+                    <tr>
+                        <td>Name: </td>
+                        <td>
+                            <select>
+                                <option value="level_1">Level 1</option>
+                                <option value="level_2">Level 2</option>
+                            </select>
+                            <button id="new_level">new</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Obstacles: </td>
+                        <td><input id="obstacles"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Cannons: </td>
+                        <td><input id="cannons"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Max shots: </td>
+                        <td><input id="max_shots"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Background: </td>
+                        <td><input id="background"></input></td>
+                    </tr>
+                    <tr>
+                        <td>One Star Score: </td>
+                        <td><input id="one_star_score"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Two Star Score: </td>
+                        <td><input id="two_star_score"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Three Star Score: </td>
+                        <td><input id="three_star_score"></input></td>
+                    </tr>
+                    <tr>
+                        <td><button id="save_game">Save</button></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="sidebar_right">
+                <img src="images/crate-one.png" width= "100px" height= "100px" style= "padding-left: 30%;">
+            </div>
+            <div id="content">
+                <img src="images/my-background.jpg" width= "1160px" height= "820px">
+            </div>
+        </div>
+        <script type="module" src="scripts/index.js"></script>
+    </body>
+</html>
