@@ -23,7 +23,7 @@ export default class App {
         // Event handlers here
         $('#level-dropdown').on('change', event => this.loadLevel( event ));
         $('#new-level-btn').on('click', event => this.createLevel( event ));
-        $('#save-btn').on('click', event => this.saveLevel( event ));
+        $('#save_game').on('click', event => this.saveLevel( event ));
     }
 
     addDraggableHandlers( $elementList ) {
@@ -125,20 +125,8 @@ export default class App {
 
     gatherFormData( event ) {
         // TODO: gather all the data and send it off to the server
-        let baseData = $("#info-form").serializeArray();
-        /*
-        We have this...
-        let deleteMe = [{ name:"name", value:"level-1" },
-                        { name:"obstacleCount", value: "10" },
-                        {}, ...];
+        let baseData = $(".test-form").serializeArray();
 
-        We want this...
-        let levelData = {
-            name: "level-1",
-            obstacleCount: 10,
-            ...
-        };
-        */
         let levelData = {};
         for (let field of baseData) {
 
