@@ -409,35 +409,38 @@ export default class App {
             })
             .on("dragend", event => {
 
-                //if editing is activated
-                if(this.isEditing==true){
-
-                    if(event.target.id=="catapult"){
-
-                        var id = "#" + event.target.id;
-                        var off = $(id).offsetParent().offset().left;
-
-                        this.currentLevel.catapult.pos.x= event.screenX - off;
-                        this.currentLevel.catapult.pos.y=event.screenY;
-                    }
-                    else{
-
-                        var elementIndex = event.target.id.split("-")[1];
-
-                        var id = "#" + event.target.id;
-                        var off = $(id).offsetParent().offset().left;
-
-                        this.currentLevel.entityLists.collidableList[elementIndex].pos.x = event.screenX - off;
-                        this.currentLevel.entityLists.collidableList[elementIndex].pos.y = event.screenY;
-
-                    }
-    
-                    this.renderLevel();
-                }
-                else{
-                    this.showMessage("Not allowed", "you have click edit in the info panel in order to do that");
-                }
+                this.moveElement(event);
             });
+    }
+
+    moveElement(event){
+
+         //if editing is activated
+         if(this.isEditing==true){
+
+            let x = event.pageX -  $("#editor").offset().left
+            let y = event.pageY -  $("#editor").offset().top
+
+
+            if(event.target.id=="catapult"){
+
+                this.currentLevel.catapult.pos.x=x;
+                this.currentLevel.catapult.pos.y=y;
+            }
+            else{
+
+                var elementIndex = event.target.id.split("-")[1];
+
+                this.currentLevel.entityLists.collidableList[elementIndex].pos.x = x;
+                this.currentLevel.entityLists.collidableList[elementIndex].pos.y = y;
+
+            }
+
+            this.renderLevel();
+        }
+        else{
+            this.showMessage("Not allowed", "you have click edit in the info panel in order to do that");
+        }
     }
 }
 
