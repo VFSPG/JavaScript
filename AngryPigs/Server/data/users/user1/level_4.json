@@ -1,1 +1,117 @@
-{"level":{"id":0,"name":"level_4","ammo":"15","backgroud":"default-level.png","starOne":"2","starTwo":"67","starThree":"100","catapult":{"id":0,"pos":{"x":463,"y":540}},"entityLists":{"collidableList":[{"id":0,"pos":{"x":874,"y":408},"entity":{"type":0,"name":"Metal Crate","height":70,"width":70,"texture":"images/objects/crate-one.png","shape":"square","friction":1,"mass":90,"restitution":0}},{"id":1,"pos":{"x":289,"y":448},"entity":{"type":0,"name":"Stone Block","height":200,"width":30,"texture":"images/objects/stone-one.png","shape":"square","friction":1,"mass":50,"restitution":0}}],"targetList":[{"id":3,"pos":{"x":480,"y":601},"value":300,"entity":{"type":0,"name":"Enemy Catapult","height":120,"width":120,"texture":"images/catapult.png","shape":"square","friction":1,"mass":200,"restitution":0}},{"id":4,"pos":{"x":483,"y":172},"value":300,"entity":{"type":0,"name":"Enemy Catapult","height":120,"width":120,"texture":"images/catapult.png","shape":"square","friction":1,"mass":200,"restitution":0}}]}}}
+{
+    "level": {
+        "id": 0,
+        "name": "level_4",
+        "ammo": "15",
+        "backgroud": "default-level.png",
+        "starOne": "0",
+        "starTwo": "10",
+        "starThree": "15",
+        "catapult": {
+            "id": 0,
+            "pos": {
+                "x": 144,
+                "y": 524.6625003814697
+            }
+        },
+        "entityLists": {
+            "collidableList": [
+                {
+                    "id": 0,
+                    "pos": {
+                        "x": 253,
+                        "y": 363.6625003814697
+                    },
+                    "entity": {
+                        "type": 0,
+                        "name": "Metal Crate",
+                        "height": 70,
+                        "width": 70,
+                        "texture": "images/objects/crate-one.png",
+                        "shape": "square",
+                        "friction": 1,
+                        "mass": 90,
+                        "restitution": 0
+                    }
+                },
+                {
+                    "id": 1,
+                    "pos": {
+                        "x": 377,
+                        "y": 535.4624996185303
+                    },
+                    "entity": {
+                        "type": 0,
+                        "name": "Stone Block",
+                        "height": 200,
+                        "width": 30,
+                        "texture": "images/objects/stone-one.png",
+                        "shape": "square",
+                        "friction": 1,
+                        "mass": 50,
+                        "restitution": 0
+                    }
+                }
+            ],
+            "targetList": [
+                {
+                    "id": 0,
+                    "pos": {
+                        "x": 332,
+                        "y": 190.66250038146973
+                    },
+                    "value": 300,
+                    "entity": {
+                        "type": 1,
+                        "name": "green-bird",
+                        "height": 40,
+                        "width": 40,
+                        "texture": "images/objects/green-bird.png",
+                        "shape": "circle",
+                        "friction": 1,
+                        "mass": 90,
+                        "restitution": 0
+                    }
+                },
+                {
+                    "id": 1,
+                    "pos": {
+                        "x": 648,
+                        "y": 511.6625003814697
+                    },
+                    "value": 300,
+                    "entity": {
+                        "type": 1,
+                        "name": "green-bird",
+                        "height": 40,
+                        "width": 40,
+                        "texture": "images/objects/green-bird.png",
+                        "shape": "circle",
+                        "friction": 1,
+                        "mass": 90,
+                        "restitution": 0
+                    }
+                },
+                {
+                    "id": 2,
+                    "pos": {
+                        "x": 722,
+                        "y": 286.6625003814697
+                    },
+                    "value": 300,
+                    "entity": {
+                        "type": 1,
+                        "name": "red-bird",
+                        "height": 40,
+                        "width": 40,
+                        "texture": "images/objects/red-bird.png",
+                        "shape": "circle",
+                        "friction": 1,
+                        "mass": 90,
+                        "restitution": 0
+                    }
+                }
+            ]
+        }
+    }
+}

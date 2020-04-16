@@ -303,8 +303,9 @@ export default class App {
         catapult.css("left",this.currentLevel.catapult.pos.x);
         $( "#editor" ).append(catapult);
 
-        //creates collidables and other stuff
+        //creates collidables and targets
         this.renderCollidables();
+        this.renderTargets();
 
         //add draggable handler
         let $draggableElementList = $(".draggable");
@@ -326,6 +327,34 @@ export default class App {
              temp.attr('draggable', true);
 
              let id = "collidable-" + object.id;
+             temp.attr('id', id);
+
+             temp.attr("src",object.entity.texture);
+             temp.css("width",object.entity.width);
+             temp.css("height",object.entity.height);
+
+             temp.css("top",object.pos.y);
+             temp.css("left",object.pos.x);
+
+             $( "#editor" ).append(temp);     
+             
+        }
+    }
+
+    //renders all the collidables of the level
+    renderTargets(){
+
+        var list = this.currentLevel.entityLists.targetList;
+
+        for(var i=0; i < list.length; i++ ){
+
+            let object = list[i];
+
+             var temp = $("<img></img>");
+             temp.addClass("draggable");
+             temp.attr('draggable', true);
+
+             let id = "target-" + object.id;
              temp.attr('id', id);
 
              temp.attr("src",object.entity.texture);
@@ -427,12 +456,20 @@ export default class App {
                 this.currentLevel.catapult.pos.x=x;
                 this.currentLevel.catapult.pos.y=y;
             }
-            else{
+            else if(event.target.id.includes("collidable-")){
 
                 var elementIndex = event.target.id.split("-")[1];
 
                 this.currentLevel.entityLists.collidableList[elementIndex].pos.x = x;
                 this.currentLevel.entityLists.collidableList[elementIndex].pos.y = y;
+
+            }
+            else{
+
+                var elementIndex = event.target.id.split("-")[1];
+
+                this.currentLevel.entityLists.targetList[elementIndex].pos.x = x;
+                this.currentLevel.entityLists.targetList[elementIndex].pos.y = y;
 
             }
 
