@@ -97,13 +97,13 @@
                                         <label>File Name: </label>
                                         <input type="text" name="name" value="" placeholder="level-1..."><br>
                                         <label>Level Position: </label>
-                                        <input type="text" name="levelPosition" value="" placeholder="1, 2, 3..."><br>
+                                        <input type="number" name="levelPosition" value="" placeholder="1, 2, 3..."><br>
                                         <label>3 stars score: </label>
-                                        <input type="text" name="threeStarsScore" value="" placeholder="The highest score..."><br>
+                                        <input type="number" name="threeStarsScore" value="" placeholder="The highest score..."><br>
                                         <label>2 stars score: </label>
-                                        <input type="text" name="twoStartsScore" value="" placeholder="The 2nd highest score..."><br>
+                                        <input type="number" name="twoStartsScore" value="" placeholder="The 2nd highest score..."><br>
                                         <label>Shots count: </label>
-                                        <input type="text" name="ammo" value="" placeholder="Max shots per level"><br>
+                                        <input type="number" name="ammo" value="" placeholder="Max shots per level"><br>
                                         <input type="submit" name="action" value="Save level" >
                                     </form>
                                 </div>
@@ -114,7 +114,11 @@
                                         <label>File Name: </label>
                                         <input type="text" name="name" value="" placeholder="How will be stored..."><br>
                                         <label>Sprite: </label>
-                                        <select id="game-object-sprite"> Sprite </select>
+                                        <select id="game-object-sprite"> Sprite </select><br>
+                                        <label>Width:</label>
+                                        <input type="number" name="width" value="100"><br>
+                                        <label>Height:</label>
+                                        <input type="number" name="height" value="100"><br>
                                         <input type="submit" name="action" value="Save GameObject" >
                                     </form>
                                 </div>

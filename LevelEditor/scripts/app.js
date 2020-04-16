@@ -127,9 +127,11 @@ export default class App {
             else {
 
                 let gameObject = new GameObject();
-                gameObject.id = element.attr("id");
                 gameObject.transform.position = position;
+                gameObject.id = element.attr("id");
                 gameObject.sprite = element.attr("src");
+                gameObject.width = element.attr("width");
+                gameObject.height = element.attr("height");
 
                 //Add jquery handlers here
                 this.dragAndDropHandler.addDraggableHandlers( element );
@@ -147,7 +149,7 @@ export default class App {
     getSpriteSelected() {
         
         return $('#game-object-sprite').children('option:selected').val();
-    } 
+    }
 
     getGameObjectWith( id ) {
 

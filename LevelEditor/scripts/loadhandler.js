@@ -133,11 +133,12 @@ export default class LoadHandler{
             $.post('/api/load', { userid: 'Data/GameObjects', name: name, type: 'GameObject' })
             .then( result => {
     
-                let data =  result.payload.gameObject;
+                let gameObject =  result.payload.gameObject;
     
-                let id = `game-object-${data.name}`;
-                let src = `/../GameContent/Images/Sprites/${data.selectedSprite }`;
-                let element = `<img id="${id}" src="${src}" width="100px" height="100px" draggable="true">`;
+                let id = `game-object-${gameObject.name}`;
+                let src = `/../GameContent/Images/Sprites/${gameObject.selectedSprite }`;
+                let element = `<img id="${id}" src="${src}" width="${gameObject.width}px" height="${gameObject.height}px" 
+                                draggable="true">`;
                 //set width and height
 
                 $('#asset-container').append(element);
@@ -160,7 +161,7 @@ export default class LoadHandler{
 
             //Add width and height
             let element = `<img id="${id}" 
-                            src="${src}" width="100px" height="100px" draggable="true"
+                            src="${src}" width="${gameObject.width}px" height="${gameObject.height}px" draggable="true"
                             style="position: absolute; left: ${gameObject.transform.position.left}px;
                             top: ${gameObject.transform.position.top}px;" class="placed">`;
             
