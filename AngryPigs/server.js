@@ -108,7 +108,6 @@ class Server {
             path += "/users/" + body.userid;
         }
 
-        console.log(path)
         return path;
     }
 
@@ -183,8 +182,6 @@ class Server {
 
     listFilesInFolders(path, files) {
 
-        console.log(files)
-
         //create an array to store the data
         let payload = [];
 
@@ -219,7 +216,6 @@ class Server {
         //the actual path
         path = Path.join(__dirname, path)
 
-        console.log(path);
         //if there is no dir with that user id then return error
         if (!fs.existsSync(path)) {
             result.error = 1;
@@ -273,7 +269,6 @@ class Server {
             result.error = 1;
         }
 
-        console.log(result);
         return result;
     }
 

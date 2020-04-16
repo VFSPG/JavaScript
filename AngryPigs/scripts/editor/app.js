@@ -241,7 +241,6 @@ export default class App {
 
         $( "#level-list" ).html("");
         for(var level of this.levels){
-                        
             var string = "<div class='level-list-item' id='"+level.name + "'> <span>" + level.name + "</span>";
             string += "<i class='fa fa-trash' id='" + level.name + "-remove' aria-hidden='true'></i></div>";
             
@@ -260,7 +259,7 @@ export default class App {
         
         $.get('/api/load', query)   
             .then( responseData => {
- 
+                
                 //if i had a level selected before then de-select it
                 if(this.currentLevel.name!=null){
 
@@ -288,6 +287,9 @@ export default class App {
         //change the name and ammo to the ones on the level
         $( "#level-name" ).val(this.currentLevel.name);
         $( "#ammo" ).val(this.currentLevel.ammo);
+        $( "#star1" ).val(this.currentLevel.starOne);
+        $( "#star2" ).val(this.currentLevel.starTwo);
+        $( "#star3" ).val(this.currentLevel.starThree);
         
         //clean editor first
         $( "#editor" ).html(" ");
@@ -362,6 +364,9 @@ export default class App {
 
         this.currentLevel.name = $("#level-name").val();
         this.currentLevel.ammo = $("#ammo").val();
+        this.currentLevel.starOne = $("#star1").val();
+        this.currentLevel.starTwo = $("#star2").val();
+        this.currentLevel.starThree = $("#star3").val();
 
         let object = {
             userid: this.userId,
