@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Scott Henshae
+// Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict';
 
 export default class Level {

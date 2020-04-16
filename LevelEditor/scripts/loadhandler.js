@@ -9,7 +9,7 @@ export default class LoadHandler{
 
     }
 
-    initializeLevelOptions(){
+    setLevelOptions() {
 
         $.post('/api/get_level_list', { userid: 'Levels', extLength: -5 })
         .then( result => {
@@ -17,17 +17,16 @@ export default class LoadHandler{
             let data = JSON.parse( result );
             if( data.error <= 0) {
 
-                this.fillSelectWithOptions( '#level-to-load', data.payload )
+                this.fillSelectWithOptions( '#level-to-load', data.payload );
             }
             else {
                 
                 //notify
             }
-        })
+        });
     }
 
-    initalizeBackgroundOptions() {
-
+    setBackgroundOptions() {
 
         $.post('/api/get_object_list', { userid: 'Images/Backgrounds', extLength: -4 })
         .then ( result => {
@@ -35,16 +34,16 @@ export default class LoadHandler{
             let data = JSON.parse( result );
             if( data.error <= 0) {
 
-                this.fillSelectWithOptions( '#background-to-load', data.payload )
+                this.fillSelectWithOptions( '#background-to-load', data.payload );
             }
             else {
                 
                 //notify
             }
-        })
+        });
     }
 
-    initializeGameObjectOptions() {
+    setGameObjectOptions() {
 
         $.post('/api/get_object_list', { userid: 'Images/Sprites', extLength: -4 })
         .then ( result => {
@@ -52,17 +51,15 @@ export default class LoadHandler{
             let data = JSON.parse( result );
             if( data.error <= 0) {
 
-                this.fillSelectWithOptions( '#game-object-sprite', data.payload )
+                this.fillSelectWithOptions( '#game-object-sprite', data.payload );
             }
             else {
-                
                 //notify
             }
-        })
+        });
     }
 
-    fillSelectWithOptions( id, options ){
-
+    fillSelectWithOptions( id, options ) {
         
         let select = $( id );
         select.empty();
@@ -70,7 +67,7 @@ export default class LoadHandler{
         for ( let i = 0; i < options.length; i++ ) {
 
             let option = options[i];
-            select.append(`<option value= "${option.fileName}">${option.name}</option>`)
+            select.append(`<option value= "${option.fileName}">${option.name}</option>`);
         }
     }
 
@@ -92,8 +89,8 @@ export default class LoadHandler{
             }
         })
         .fail( error => {
-            console.log( error );
-        })
+
+        });
     }
 
     loadBackground( name ) {
@@ -121,13 +118,12 @@ export default class LoadHandler{
     
                     let pair = list[i];
 
-                    promises.push( 
-                        this.loadAsset( pair.name ) )
+                    promises.push( this.loadAsset( pair.name ) )
                 }
 
                 resolve(promises);
-            })
-        })
+            });
+        });
     }
 
     loadAsset ( name ) {
@@ -137,25 +133,21 @@ export default class LoadHandler{
             $.post('/api/load', { userid: 'Data/GameObjects', name: name, type: 'GameObject' })
             .then( result => {
     
-    
                 let data =  result.payload.gameObject;
-    
-                let assetContainer = $('#asset-container');
     
                 let id = `game-object-${data.name}`;
                 let src = `/../GameContent/Images/Sprites/${data.selectedSprite }`;
                 let element = `<img id="${id}" src="${src}" width="100px" height="100px" draggable="true">`;
+                //set width and height
+
+                $('#asset-container').append(element);
     
-                assetContainer.append(element);
-    
-                resolve (id);
-            })
-        })
+                resolve(id);
+            });
+        });
     }
 
     loadGameObjects( gameObjects, addHandlersTo ) {
-
-        let gameDisplay = $('#game-display');
 
         $('.placed').remove();
 
@@ -165,14 +157,16 @@ export default class LoadHandler{
 
             let id = `${gameObject.id}`;
             let src = gameObject.sprite;
+
+            //Add width and height
             let element = `<img id="${id}" 
                             src="${src}" width="100px" height="100px" draggable="true"
                             style="position: absolute; left: ${gameObject.transform.position.left}px;
                             top: ${gameObject.transform.position.top}px;" class="placed">`;
             
-            gameDisplay.append(element);
+            $('#game-display').append(element);
+            
             addHandlersTo( $(`#${id}`) );
         }
-
     }
 }

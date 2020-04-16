@@ -1,7 +1,7 @@
 // Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict';
 
-import App from './app.js';
+import App from './scripts/app.js';
 
 // MAIN
 (function Main() {
@@ -11,4 +11,4 @@ import App from './app.js';
         let app = new App();
         app.run();
     })
-})()
+})();

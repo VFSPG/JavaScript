@@ -5,6 +5,10 @@ export default class UIHandler{
 
     constructor() {
         
+    }
+
+    setAssetMenuEvents() {
+
         $('#assetMenuButton').on('click', event => {
 
             let icon = $("#assetMenuButtonIcon");
@@ -22,8 +26,6 @@ export default class UIHandler{
             $( this ).toggleClass( "buttonHoverInColor" );
             $( this ).toggleClass( "buttonHoverOutColor" );
         });
-
-        this.intializePopUps();
     }
 
     intializePopUps() {

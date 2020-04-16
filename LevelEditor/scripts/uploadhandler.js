@@ -10,16 +10,15 @@ export default class UploadHander{
 
     }
 
-    uploadLevel ( level, feedback ) {
+    uploadLevel ( level, returnData ) {
 
         let params = { userid: 'Levels', name: level.name, 
-                            type: 'Level', payload: JSON.stringify( level ) };
-
+                        type: 'Level', payload: JSON.stringify( level ) };
 
         $.post('/api/save', params)
         .then (  result => {
 
-            feedback(JSON.parse( result ));
+            returnData(JSON.parse( result ));
         })
         .fail ( error => {
             console.log( error );
@@ -27,7 +26,7 @@ export default class UploadHander{
     }
 
 
-    uploadGameObject ( gameObject, feedback ) {
+    uploadGameObject ( gameObject, returnData ) {
 
         let params = { userid: 'GameObjects', name: gameObject.name,
                         type: 'GameObject', payload: JSON.stringify( { gameObject } )};
@@ -35,10 +34,11 @@ export default class UploadHander{
         $.post('/api/save', params )
         .then( result => {
 
-            feedback( JSON.parse( result) );
+            returnData( JSON.parse( result) );
         })
         .fail( error => {
+            
             console.log( error );
-        })
+        });
     }
 }

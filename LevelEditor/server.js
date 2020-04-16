@@ -18,18 +18,18 @@ class Server {
         this.api.use( Express.json() )
                 .use( Express.urlencoded({ extended: false }))
                 .use( Express.static( Path.join( __dirname, '.')))
-                .use ( '/api', EditorAPI)
+                .use ( '/api', EditorAPI);
 
-            this.api.get('/editor', ( request, response ) => {
+        this.api.get('/editor', ( request, response ) => {
 
-                let indexFile = Path.join(__dirname + '/editor.html')
-                response.sendFile(indexFile, { title:'Editor'} );
-            });
+            let indexFile = Path.join(__dirname + '/editor.html')
+            response.sendFile(indexFile, { title:'Editor'} );
+        });
 
-            // this.api.get('/', ( request, response ) => {
+        // this.api.get('/', ( request, response ) => {
 
-            //     response.render('index', { title:'Editor'} );
-            // });
+        //     response.sendFile('index', { title:'Editor'} );
+        // });
 
         this.run()
     }

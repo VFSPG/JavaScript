@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Scott Henshaw
+// Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict';
 
 import UIHandler from './uihandler.js'
@@ -7,24 +7,36 @@ import LoadHandler from './loadhandler.js'
 import DragAndDropHandler from './draganddrophandler.js'
 import GameObject from './game/worldobjects/gameobject.js'
 import Level from './game/level.js'
-// This controlls the User Interface
+
 export default class App {
 
     constructor() {
 
         this.level = new Level();
         this.level.content.gameObjects = new Array();
+        
+        this.uiHanlder = new UIHandler();
+        this.uploadHandler = new UploadHandler();
+        this.loadHandler = new LoadHandler();
+        this.dragAndDropHandler = new DragAndDropHandler();
     }
+
     run() {
 
-        let uiHanlder = new UIHandler();
-        let uploadHandler = new UploadHandler();
-        let loadHandler = new LoadHandler();
-        let dragAndDropHandler = new DragAndDropHandler();
+        this.uiHanlder.setAssetMenuEvents();
+        this.uiHanlder.intializePopUps();
         
-        loadHandler.initializeLevelOptions();
-        loadHandler.initalizeBackgroundOptions();
-        loadHandler.initializeGameObjectOptions();
+        this.loadHandler.setLevelOptions();
+        this.loadHandler.setBackgroundOptions();
+        this.loadHandler.setGameObjectOptions();
+
+        this.initializeUploadEvents();
+        this.initializeLoadEvents();
+        this.loadAssets();
+        this.initializeDragAndDrop();
+    }
+
+    initializeUploadEvents() {
 
         $('#upload-level-form').on('submit', event => {
 
@@ -34,10 +46,10 @@ export default class App {
 
             this.level.content = { ...this.level.content, ...formData }
 
-            uploadHandler.uploadLevel( this.level.content, data => {
-                console.log(data);
-                loadHandler.initializeLevelOptions();
-            } );
+            this.uploadHandler.uploadLevel( this.level.content, data => {
+
+                this.loadHandler.setLevelOptions();
+            });
         });
 
         $('#upload-game-object-form').on('submit', event => {
@@ -48,27 +60,18 @@ export default class App {
             let selectedSprite = this.getSpriteSelected();
             let gameObject = { ...formData, selectedSprite };
 
-            uploadHandler.uploadGameObject( gameObject, data => {
-                console.log(data);
-                loadHandler.loadAssets()
-                .then( promises => {
-        
-                    for ( let i = 0; i < promises.length; i++ ) {
-        
-                        promises[i].then( id => {
-        
-                            let element = $(`#${id}`);
-                            dragAndDropHandler.addDraggableHandlers( element );
-                        } )
-                    }
-                })
-            } );
+            this.uploadHandler.uploadGameObject( gameObject, data => {
+
+                this.loadAssets();
+            });
         });
+    }
+
+    initializeLoadEvents() {
         $('#load-level-form').on('submit', event => {
 
             event.preventDefault();
-            loadHandler.loadLevel( data => {
-                //create level
+            this.loadHandler.loadLevel( data => {
 
                 this.level.content.name = data.name;
                 this.level.content.levelPosition = data.levelPosition;
@@ -78,10 +81,12 @@ export default class App {
                 this.level.content.background = data.background;
                 this.level.content.gameObjects = data.gameObjects;
 
-                loadHandler.loadBackground( this.level.content.background );
-                loadHandler.loadGameObjects( this.level.content.gameObjects, element => {
+                this.loadHandler.loadBackground( this.level.content.background );
 
-                    dragAndDropHandler.addDraggableHandlers( element );
+                this.loadHandler.loadGameObjects( this.level.content.gameObjects, element => {
+
+                    this.dragAndDropHandler.addDraggableHandlers( element );
+                    //Add jquery handlers here
                 });
             });
         });
@@ -91,10 +96,13 @@ export default class App {
             event.preventDefault();
 
             this.level.content.background = this.getBackgroundSelected()
-            loadHandler.loadBackground( this.level.content.background );
+            this.loadHandler.loadBackground( this.level.content.background );
         });
+    }
 
-        loadHandler.loadAssets()
+    loadAssets() {
+
+        this.loadHandler.loadAssets()
         .then( promises => {
 
             for ( let i = 0; i < promises.length; i++ ) {
@@ -102,33 +110,33 @@ export default class App {
                 promises[i].then( id => {
 
                     let element = $(`#${id}`);
-                    dragAndDropHandler.addDraggableHandlers( element );
-                } )
-            }
-        })
-
-        dragAndDropHandler.addDroppableHandlers( ( element, isPlaced, position ) => {
-
-            let gameObject;
-            if ( isPlaced ) {
-                gameObject = this.getGameObjectWith( element.attr("id"));
-                gameObject.transform.position = position;
-            } 
-            else {
-
-                gameObject = new GameObject();
-                gameObject.id = element.attr("id");
-                gameObject.transform.position = position;
-                gameObject.sprite = element.attr("src");
-                dragAndDropHandler.addDraggableHandlers( element );
-                
-                this.level.content.gameObjects.push( gameObject );
+                    this.dragAndDropHandler.addDraggableHandlers( element );
+                });
             }
         });
     }
 
-    loadAssets() {
-        
+    initializeDragAndDrop() {
+        this.dragAndDropHandler.addDroppableHandlers( ( element, isPlaced, position ) => {
+
+            if ( isPlaced ) {
+
+                let gameObject = this.getGameObjectWith( element.attr("id"));
+                gameObject.transform.position = position;
+            } 
+            else {
+
+                let gameObject = new GameObject();
+                gameObject.id = element.attr("id");
+                gameObject.transform.position = position;
+                gameObject.sprite = element.attr("src");
+
+                //Add jquery handlers here
+                this.dragAndDropHandler.addDraggableHandlers( element );
+                
+                this.level.content.gameObjects.push( gameObject );
+            }
+        });
     }
 
     getBackgroundSelected() {
@@ -147,6 +155,7 @@ export default class App {
         for ( let i = 0; i < gameObjects.length; i++ ) {
 
             let gameObject = gameObjects[i];
+
             if( gameObject.id == id) {
 
                 return gameObject;
@@ -154,6 +163,13 @@ export default class App {
         }
     }
 
+    notifySuccess() {
+
+    }
+
+    notifyFailure() {
+
+    }
     gatherDataFor ( id ) {
 
         let formData = $( id ).serializeArray();
@@ -166,5 +182,15 @@ export default class App {
         }
 
         return levelData;
+    }
+
+    setFormData ( data, id ) {
+
+        let formData = $( id ).serializeArray();
+
+        for (let field of formData) {
+
+            field.value = formData[field.name];
+        }
     }
 }

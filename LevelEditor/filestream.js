@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 export default class FileStream{
+    
     constructor(){
 
     }
@@ -99,7 +100,7 @@ export default class FileStream{
                     resolve( true );
                 }
 
-            })
+            });
         });
     }
 }

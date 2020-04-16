@@ -36,7 +36,6 @@ Router.post('/get_level_list/:userid?', ( request, response ) => {
 
             let file = files[i];
 
-            //level = { name: 'levelName', fileName: 'fileName.json'}
             levels.push( { name: file.slice(0, params.extLength), fileName: file } );
         }
 
@@ -69,7 +68,6 @@ Router.post('/get_object_list/:userid?', ( request, response ) => {
 
             let file = files[i];
 
-            //level = { name: 'levelName', fileName: 'fileName.json'}
             levels.push( { name: file.slice(0, params.extLength), fileName: file } );
         }
 
@@ -110,7 +108,6 @@ Router.post('/load/:userid?', ( request, response ) => {
 
     let fileDirectory = `${path}/${params.name}.json`;
     
-
     fileStream.directoryExists( fileDirectory )
     .then( exists => {
         if( exists ) {
