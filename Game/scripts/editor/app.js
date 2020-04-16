@@ -1,9 +1,9 @@
 // Copyright (C) 2020 Jonathan Dean, All Rights Reserved
 'use strict';
 
-import ClientLoad from './clientLoad.js';
-import LayoutController, { METERS_MULTIPLIER } from './layoutController.js'
-import ClientSave from './clientSave.js';
+import ClientLoad from '../clientLoad.js';
+import LayoutController, { METERS_MULTIPLIER } from '../layoutController.js'
+import ClientSave from '../clientSave.js';
 
 // App class client
 export default class App {
