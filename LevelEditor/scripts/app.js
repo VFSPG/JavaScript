@@ -73,13 +73,9 @@ export default class App {
             event.preventDefault();
             this.loadHandler.loadLevel( data => {
 
-                this.level.content.name = data.name;
-                this.level.content.levelPosition = data.levelPosition;
-                this.level.content.threeStarsScore = data.threeStarsScore;
-                this.level.content.twoStarsScore = data.twoStarsScore;
-                this.level.content.ammo = data.ammo;
-                this.level.content.background = data.background;
-                this.level.content.gameObjects = data.gameObjects;
+                this.level.content = data;
+
+                this.setFormData(data, '#upload-level-form');
 
                 this.loadHandler.loadBackground( this.level.content.background );
 
@@ -172,6 +168,7 @@ export default class App {
     notifyFailure() {
 
     }
+    
     gatherDataFor ( id ) {
 
         let formData = $( id ).serializeArray();
@@ -188,11 +185,13 @@ export default class App {
 
     setFormData ( data, id ) {
 
-        let formData = $( id ).serializeArray();
+        let inputs = $( id ).children('input');
 
-        for (let field of formData) {
+        //Minus one to avoid the submit
+        for ( let i = 0; i < inputs.length - 1; i++ ) {
 
-            field.value = formData[field.name];
+            let field = inputs[i];
+            field.value = data[field.name]
         }
     }
 }
