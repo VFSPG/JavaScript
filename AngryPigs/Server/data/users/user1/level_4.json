@@ -3,7 +3,7 @@
         "id": 0,
         "name": "level_4",
         "ammo": "15",
-        "backgroud": "default-level.png",
+        "backgroud": "snow-land.png",
         "starOne": "0",
         "starTwo": "10",
         "starThree": "15",

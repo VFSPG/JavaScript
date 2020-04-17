@@ -38,6 +38,7 @@ export default class App {
 
         //event handler to edit level
         $('#edit-button').on('click', event => this.editLevel());
+        $('#background').on('change', event => this.changeImage(event));
         $(document).on("click", "#save-button" , event => this.saveLevel( ));
 
         //manage the object library
@@ -287,12 +288,17 @@ export default class App {
         //change the name and ammo to the ones on the level
         $( "#level-name" ).val(this.currentLevel.name);
         $( "#ammo" ).val(this.currentLevel.ammo);
+        $( "#background" ).val(this.currentLevel.backgroud.split(".")[0]);
         $( "#star1" ).val(this.currentLevel.starOne);
         $( "#star2" ).val(this.currentLevel.starTwo);
         $( "#star3" ).val(this.currentLevel.starThree);
         
         //clean editor first
         $( "#editor" ).html(" ");
+
+        //change the background
+        let imageName = "url(../images/backgrounds/" + this.currentLevel.backgroud + ")";
+        $("#editor").css("background-image", imageName);  
 
         //creates the catapult and places it
         var catapult = $("<div></div>");
@@ -310,6 +316,13 @@ export default class App {
         //add draggable handler
         let $draggableElementList = $(".draggable");
         this.addHandlers( $draggableElementList );
+    }
+
+    changeImage(event){
+
+        this.currentLevel.backgroud = ($('#background').val()+ ".png");
+        let imageName = "url(../images/backgrounds/" + this.currentLevel.backgroud + ")";
+        $("#editor").css("background-image", imageName);  
     }
 
 
@@ -372,7 +385,7 @@ export default class App {
     //allows the user to edit the level
     editLevel(){
 
-        $('.temp').prop("disabled", false);
+        $('.editable').prop("disabled", false);
         $('#edit-button').hide();
         $("#save-button").css("display", "inline-block");
         this.isEditing=true;
@@ -381,7 +394,7 @@ export default class App {
     //the edit option is unable
     unableEdit(){
 
-        $('.temp').prop("disabled", true);
+        $('.editable').prop("disabled", true);
         $('#edit-button').show();
         $('#save-button').hide();
         this.isEditing=false;
