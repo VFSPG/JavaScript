@@ -1,0 +1,148 @@
+/* Header Styles */
+header {
+    width: 100%;
+    height: 3em;
+    padding: 0.75em;
+    color: white;
+    background-color: #021F59;
+}
+
+/* Options containers */
+.options-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    background-color: #0A4273;
+}
+
+/* Buttons style */
+.btn-style {
+    padding: 0.8em;
+    text-transform: uppercase;
+    background-color: #077F8C;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-style:hover {
+    opacity: 80%;
+}
+
+/* Style for the select background */
+.select-background {
+    width: 120px;
+    margin-left: 10px;
+}
+
+/* Main section */
+.main-section {
+    position: relative;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    padding: 20px;
+}
+
+/* EDITOR SCREEN */
+.editor-screen {
+    width: 1280px;
+    height: 720px;
+    display: block;
+    position: relative;
+    box-sizing: content-box;
+    overflow: hidden;
+    border: 5px solid black;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* Editor library header */
+.box-content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.editor-content h2 {
+    text-align: left;
+}
+
+/* Box Container */
+.box-container {
+    width: 400px;
+    min-height: 200px;
+    position: relative;
+    background-color: #0A4273;
+    border: 5px solid #021F59;
+    margin-left: 20px;
+}
+
+/* Form New Entity */
+.modal-box {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.close-button {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    display: block;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.close-button::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    transform: rotate(45deg);
+    top: 0;
+    left: 50%;
+    background: white;
+}
+
+.close-button::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    transform: rotate(-45deg);
+    top: 0;
+    left: 50%;
+    background: white;
+}
+
+/* Info box */
+
+#info-box  .box-container {
+    width: 700px;
+}
+
+.info-container {
+    padding: 30px;
+}
+
+.info-container ul {
+    padding-left: 20px;
+}
+
+.info-container li {
+    margin-bottom: 5px;
+}
