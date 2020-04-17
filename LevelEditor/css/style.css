@@ -10,19 +10,19 @@
    color: #103E6B;
  }
 
- .tab button.inactiveTab{
+ .tab button.inactiveTab {
    background-color: #103E6B;
    color: #0A2845;
  }
 
- label{
+ label {
    font-family: sanvito-pro-display, sans-serif;
    font-style: normal;
    font-weight: 700;
    color: #103E6B;
  }
 
- .tabContent{
+ .tabContent {
    background-color: #0A2845;
  }
  
@@ -43,14 +43,14 @@
 }
   
 
-.popUpSection{
+.popUpSection {
     background-color: rgba(0, 0, 0, 0.4);
     position: fixed;
     display: flex;
     justify-content: center;
 }
 
-.popUpContainer{
+.popUpContainer {
      width: 480px; 
      height: 320px; 
      background-color: #103E6B;
@@ -60,11 +60,11 @@
      border-radius: 30px;
 }
 
-body{
+body {
     background-color: #0A2845;
 }
 
-.topBar{
+.topBar {
     background-color: #103E6B;
     margin-bottom: 10px; 
     
@@ -73,22 +73,22 @@ body{
     font-weight: 700;
 }
 
-.buttonHoverOutColor{
-    color: #0A2845;
-    transition: 0.2s;
-}
-
-.buttonHoverInColor{
-    cursor: pointer;
+.buttonHoverOutColor {
     color: #2387EB;
     transition: 0.2s;
 }
 
-.barIcon{
+.buttonHoverInColor {
+    cursor: pointer;
+    color: rgb(114, 196, 235);
+    transition: 0.2s;
+}
+
+.barIcon {
     margin: 5px;
 }
 
-.assetMenu{
+.assetMenu {
     position: relative;
     width: 100%;
     display: flex;
@@ -96,26 +96,27 @@ body{
     align-content: center;
 }
 
-.assetMenuClosed{
+.assetMenuClosed {
     top: 610px;
     transition: 0.5s;
 }
 
-.assetMenuOpened{
+.assetMenuOpened {
     top: 400px;
     transition: 0.5s;
 }
 
-.assetContainer{
+.assetContainer {
     height: 210px;
     border-top: 5px;
     border-radius: 0px 0px 30px 30px;
     border-color:  #103E6B;
     border-style: solid;
     background-color: rgb(56, 98, 139);
+    overflow: auto;
 }
 
-.assetMenuButton{
+.assetMenuButton {
     background-color: #103E6B;
     width: 100px;
     height: 30px;
@@ -124,18 +125,20 @@ body{
     justify-content: center;
 }
 
-.gameResolution{
+.gameResolution {
     width: 960px;
     height: 640px;
     border-radius: 30px;
 }
 
-.adjustToParent{
+.adjustToParent {
     height: 100%;
     width: 100%;
 }
 
-.hide { display:none; }
+.hide { 
+    display:none; 
+}
 
 .placed {
     position: absolute;
