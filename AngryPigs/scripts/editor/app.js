@@ -45,6 +45,7 @@ export default class App {
         $('#library-button').on('click', event => this.openObjectLibrary());
         $('#dismiss-object-modal').on('click', event => $("#modal-wrapper").hide());
         $('#create-object-modal').on('click', event => this.createObject( ));
+        $('#objects-list').on('change', event => this.changeObject(event));
     }
 
     //loads the info of the user
@@ -129,10 +130,11 @@ export default class App {
         $("#objets-modal").show();
 
         $("#modal-wrapper").show();
-        $("#modal-tittle").html("Create new object");
+        $("#modal-tittle").html("Add object");
 
         //render all objects in the dropout
-        this.renderObjects();
+        this.renderObjectList();
+        this.renderObject();
 
         //render current object info
     }
@@ -140,8 +142,8 @@ export default class App {
     //load all objects
     loadObjects(){
 
-        //had to do this because of the 
-        var query = {userid : "user1"};
+        //had to do this because of the API restriccion 
+        var query = {userid : ""};
         $.get('/api/get_object_list', query)
             .then( responseData => {
 
@@ -182,7 +184,7 @@ export default class App {
         }
     }
 
-    renderObjects(){
+    renderObjectList(){
 
         $( "#objects-list" ).html("");
 
@@ -193,7 +195,33 @@ export default class App {
             $("#objects-list").append(string);
         } 
         
-        console.log($("#objects-list").children("option:selected").val());
+        this.currentObject = this.objects[$("#objects-list").children("option:selected").val().split("-")[1]];
+
+    }
+
+    renderObject(){
+
+        $( "#object-visualization" ).html("");
+
+        var objectImage = $("<img></img>");
+        objectImage.attr("src",this.currentObject.texture);
+        objectImage.css("width",this.currentObject.width);
+        objectImage.css("height",this.currentObject.height);
+        $( "#object-visualization" ).append(objectImage);
+
+        $("#object-type-list").val(this.currentObject.type);
+        $("#object-name").val(this.currentObject.name);
+        $("#object-height").val(this.currentObject.height);
+        $("#object-width").val(this.currentObject.width);
+        $("#object-shape").val(this.currentObject.shape);
+        $("#object-restitution").val(this.currentObject.restitution);
+        $("#object-friction").val(this.currentObject.friction);
+        $("#object-mass").val(this.currentObject.mass);
+    }
+
+    changeObject(event){
+        this.currentObject = this.objects[$("#objects-list").children("option:selected").val().split("-")[1]];   
+        this.renderObject(); 
     }
 
 

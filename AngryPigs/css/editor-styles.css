@@ -248,6 +248,11 @@ form div{
     display: none;
 }
 
+#object-visualization > img{
+
+    margin: 5%;
+}
+
 /*
  ******************************************
  *        THIS ARE THE MODAL STYLES       *

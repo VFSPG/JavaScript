@@ -36,7 +36,7 @@ class Server {
 
             var path = "/server/data/users";
 
-            //call method that gives files by user in that path
+            //call method that gives all the file names
             var result = this.giveAll(path);
             response.send(result);
 
@@ -61,7 +61,7 @@ class Server {
             var user_id = request.query.userid;
             var path = "/server/data/objects";
 
-            //call method that gives files by user in that path
+            //call method that gives all the objects
             var result = this.giveAllByUser(path);
             response.send(result);
 
