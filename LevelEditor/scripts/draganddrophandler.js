@@ -21,14 +21,25 @@ export default class DragAndDropHandler{
                 this.storeData( event, dragData );
                 event.originalEvent.dataTransfer.effectAllowed = 'move';
             })
-            .on("drag", event => {
-                // debug stuff?
-            })
-            .on("dragend", event => {
-                // change the look,
+    }
 
-                //remove set up
-            });
+    addNewDraggables( $newElement, updatePosition)
+    {
+        $newElement.draggable({
+            revert: () => {
+                console.log($newElement[0].offsetLeft)
+                return !this.checkValidMove($newElement[0].offsetLeft, $newElement[0].offsetTop, $newElement.width(), $newElement.height())
+            },
+            scroll: false,
+            stop: (event, ui) => {
+                if (this.checkValidMove(ui.position.left, ui.position.top)) {
+                    let pos = {x: ui.position.left, y: ui.position.top}
+                    this.setPositionTo($newElement,pos)
+                    updatePosition()
+                }
+
+            }
+        })
     }
 
     addDroppableHandlers( dropCB ) {
@@ -44,9 +55,6 @@ export default class DragAndDropHandler{
             event.preventDefault();
             // change the cursor, maybe an outline on the object?
             return false;
-        })
-        .on("dragleave", event => {
-            // do nothing? undo what we did when we entered
         })
         .on("drop", event => {
 
@@ -103,6 +111,7 @@ export default class DragAndDropHandler{
 
         element.addClass("placed");
         element.css("position", "absolute");
+        element.removeAttr("draggable");
         
         let currentId = element.attr("id");
         element.attr("id", `${currentId}-${ parent.children().length }`);
@@ -116,5 +125,16 @@ export default class DragAndDropHandler{
 
         element.css("top", position.top);
         element.css("left", position.left);
+    }
+
+    checkValidMove(offsetX, offsetY, width, height) {
+        let gameWidth = $('.gameResolution').width();
+        let gameHeight = $('.gameResolution').height();
+        console.log(gameWidth)
+        if (offsetX > gameWidth - width || offsetY > gameHeight - height
+            || offsetX < 0 || offsetY < 0) {
+            return false;
+        }
+        return true;
     }
 }

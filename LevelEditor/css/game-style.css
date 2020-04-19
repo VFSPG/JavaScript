@@ -1,0 +1,8 @@
+/* Copyright (C) 2020 Omar Pino. All Rights Reserved */
+.title {
+    background-image: url("../GameContent/Images/my_tweet.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 60px;
+}

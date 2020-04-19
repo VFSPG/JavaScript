@@ -130,7 +130,10 @@ export default class App {
                 gameObject.height = element.attr("height");
 
                 //Add jquery handlers here
-                this.dragAndDropHandler.addDraggableHandlers( element );
+                this.dragAndDropHandler.addNewDraggables( element, () => {
+                    let gameObject = this.getGameObjectWith( element.attr("id"));
+                    gameObject.transform.position = position;
+                } );
                 
                 this.level.content.gameObjects.push( gameObject );
             }

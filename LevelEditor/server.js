@@ -26,10 +26,10 @@ class Server {
             response.sendFile(indexFile, { title:'Editor'} );
         });
 
-        // this.api.get('/', ( request, response ) => {
-
-        //     response.sendFile('index', { title:'Editor'} );
-        // });
+        this.api.get('/', ( request, response ) => {
+            let indexFile = Path.join(__dirname + '/index.html')
+            response.sendFile('index', { title:'AngryPigs'} );
+        });
 
         this.run()
     }

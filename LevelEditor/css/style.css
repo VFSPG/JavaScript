@@ -67,7 +67,7 @@ body {
 .topBar {
     background-color: #103E6B;
     margin-bottom: 10px; 
-    
+    color: white;
     font-family: sanvito-pro-display, sans-serif;
     font-style: normal;
     font-weight: 700;
@@ -129,6 +129,7 @@ body {
     width: 960px;
     height: 640px;
     border-radius: 30px;
+    background-color: black;
 }
 
 .adjustToParent {
