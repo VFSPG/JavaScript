@@ -40,6 +40,10 @@ class Level {
             this.id = id;
             this.name = name;
             this.ammo = 15;
+            this.backgroud = "default-level.png";
+            this.starOne = 0;
+            this.starTwo = 10;
+            this.starThree= 15;
             this.catapult = {
                 id: 0,
                 pos: {x:20, y:525}

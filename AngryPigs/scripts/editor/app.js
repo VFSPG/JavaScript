@@ -38,6 +38,7 @@ export default class App {
 
         //event handler to edit level
         $('#edit-button').on('click', event => this.editLevel());
+        $('#background').on('change', event => this.changeImage(event));
         $(document).on("click", "#save-button" , event => this.saveLevel( ));
 
         //manage the object library
@@ -241,7 +242,6 @@ export default class App {
 
         $( "#level-list" ).html("");
         for(var level of this.levels){
-                        
             var string = "<div class='level-list-item' id='"+level.name + "'> <span>" + level.name + "</span>";
             string += "<i class='fa fa-trash' id='" + level.name + "-remove' aria-hidden='true'></i></div>";
             
@@ -260,7 +260,7 @@ export default class App {
         
         $.get('/api/load', query)   
             .then( responseData => {
- 
+                
                 //if i had a level selected before then de-select it
                 if(this.currentLevel.name!=null){
 
@@ -288,9 +288,17 @@ export default class App {
         //change the name and ammo to the ones on the level
         $( "#level-name" ).val(this.currentLevel.name);
         $( "#ammo" ).val(this.currentLevel.ammo);
+        $( "#background" ).val(this.currentLevel.backgroud.split(".")[0]);
+        $( "#star1" ).val(this.currentLevel.starOne);
+        $( "#star2" ).val(this.currentLevel.starTwo);
+        $( "#star3" ).val(this.currentLevel.starThree);
         
         //clean editor first
         $( "#editor" ).html(" ");
+
+        //change the background
+        let imageName = "url(../images/backgrounds/" + this.currentLevel.backgroud + ")";
+        $("#editor").css("background-image", imageName);  
 
         //creates the catapult and places it
         var catapult = $("<div></div>");
@@ -301,12 +309,20 @@ export default class App {
         catapult.css("left",this.currentLevel.catapult.pos.x);
         $( "#editor" ).append(catapult);
 
-        //creates collidables and other stuff
+        //creates collidables and targets
         this.renderCollidables();
+        this.renderTargets();
 
         //add draggable handler
         let $draggableElementList = $(".draggable");
         this.addHandlers( $draggableElementList );
+    }
+
+    changeImage(event){
+
+        this.currentLevel.backgroud = ($('#background').val()+ ".png");
+        let imageName = "url(../images/backgrounds/" + this.currentLevel.backgroud + ")";
+        $("#editor").css("background-image", imageName);  
     }
 
 
@@ -338,10 +354,38 @@ export default class App {
         }
     }
 
+    //renders all the collidables of the level
+    renderTargets(){
+
+        var list = this.currentLevel.entityLists.targetList;
+
+        for(var i=0; i < list.length; i++ ){
+
+            let object = list[i];
+
+             var temp = $("<img></img>");
+             temp.addClass("draggable");
+             temp.attr('draggable', true);
+
+             let id = "target-" + object.id;
+             temp.attr('id', id);
+
+             temp.attr("src",object.entity.texture);
+             temp.css("width",object.entity.width);
+             temp.css("height",object.entity.height);
+
+             temp.css("top",object.pos.y);
+             temp.css("left",object.pos.x);
+
+             $( "#editor" ).append(temp);     
+             
+        }
+    }
+
     //allows the user to edit the level
     editLevel(){
 
-        $('.temp').prop("disabled", false);
+        $('.editable').prop("disabled", false);
         $('#edit-button').hide();
         $("#save-button").css("display", "inline-block");
         this.isEditing=true;
@@ -350,7 +394,7 @@ export default class App {
     //the edit option is unable
     unableEdit(){
 
-        $('.temp').prop("disabled", true);
+        $('.editable').prop("disabled", true);
         $('#edit-button').show();
         $('#save-button').hide();
         this.isEditing=false;
@@ -362,6 +406,9 @@ export default class App {
 
         this.currentLevel.name = $("#level-name").val();
         this.currentLevel.ammo = $("#ammo").val();
+        this.currentLevel.starOne = $("#star1").val();
+        this.currentLevel.starTwo = $("#star2").val();
+        this.currentLevel.starThree = $("#star3").val();
 
         let object = {
             userid: this.userId,
@@ -404,35 +451,46 @@ export default class App {
             })
             .on("dragend", event => {
 
-                //if editing is activated
-                if(this.isEditing==true){
-
-                    if(event.target.id=="catapult"){
-
-                        var id = "#" + event.target.id;
-                        var off = $(id).offsetParent().offset().left;
-
-                        this.currentLevel.catapult.pos.x= event.screenX - off;
-                        this.currentLevel.catapult.pos.y=event.screenY;
-                    }
-                    else{
-
-                        var elementIndex = event.target.id.split("-")[1];
-
-                        var id = "#" + event.target.id;
-                        var off = $(id).offsetParent().offset().left;
-
-                        this.currentLevel.entityLists.collidableList[elementIndex].pos.x = event.screenX - off;
-                        this.currentLevel.entityLists.collidableList[elementIndex].pos.y = event.screenY;
-
-                    }
-    
-                    this.renderLevel();
-                }
-                else{
-                    this.showMessage("Not allowed", "you have click edit in the info panel in order to do that");
-                }
+                this.moveElement(event);
             });
+    }
+
+    moveElement(event){
+
+         //if editing is activated
+         if(this.isEditing==true){
+
+            let x = event.pageX -  $("#editor").offset().left
+            let y = event.pageY -  $("#editor").offset().top
+
+
+            if(event.target.id=="catapult"){
+
+                this.currentLevel.catapult.pos.x=x;
+                this.currentLevel.catapult.pos.y=y;
+            }
+            else if(event.target.id.includes("collidable-")){
+
+                var elementIndex = event.target.id.split("-")[1];
+
+                this.currentLevel.entityLists.collidableList[elementIndex].pos.x = x;
+                this.currentLevel.entityLists.collidableList[elementIndex].pos.y = y;
+
+            }
+            else{
+
+                var elementIndex = event.target.id.split("-")[1];
+
+                this.currentLevel.entityLists.targetList[elementIndex].pos.x = x;
+                this.currentLevel.entityLists.targetList[elementIndex].pos.y = y;
+
+            }
+
+            this.renderLevel();
+        }
+        else{
+            this.showMessage("Not allowed", "you have click edit in the info panel in order to do that");
+        }
     }
 }
 

@@ -1,13 +1,3 @@
-html,body{
-    background: #fff;
-    width: 100%;
-    height: 100%;
-
-    margin: 0;
-    padding: 0;
-
-    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-}
 
 body{
     display: grid;
@@ -25,14 +15,6 @@ body{
 
     grid-area: left;
     min-width: 22rem;
-
-    /*this si a gradient background, different browsers handle gradient different that´s why there are so much*/
-    /*in case a browser can´t handle gradient default is solid color*/
-    background: #10AEE8;   
-    background: -webkit-linear-gradient( top, #10AEE8, #BDE8F8);
-    background: -o-linear-gradient(bottom , #10AEE8, #BDE8F8); 
-    background: -moz-linear-gradient(bottom ,#10AEE8, #BDE8F8); 
-    background: linear-gradient(to bottom , #10AEE8, #BDE8F8); 
 
 }
 
@@ -135,14 +117,18 @@ body{
 
     grid-area: right;
     overflow-x: auto;
+    text-align: center;
  }
 
  #editor {
 
     position:relative;
+    display: inline-block;
 
-    min-width: 1280px;
-    min-height: 720px;
+    width: 1280px;
+    height: 720px;
+
+    margin-top: 2%;
 
     background-image: url('../images/backgrounds/default-level.png');
     background-size: 100% 100%;
@@ -161,6 +147,8 @@ body{
 .draggable{
 
     position: absolute;
+    transform: translate(-50%, -50%);
+
 }
 
 .draggable:hover{

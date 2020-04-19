@@ -64,29 +64,28 @@
                 <div class="panel-tittle tittle">Level Info <i class="fa fa-minus button" aria-hidden="true"></i></div>
 
                 <form id="level-form">
-
                     
                     <label class="form-item">Name: </label>
-                    <input class="form-item temp" type="text" id="level-name" value="" placeholder="level name" disabled></input><br>
+                    <input class="form-item editable" type="text" id="level-name" value="" placeholder="level name" disabled></input><br>
     
                     <label class="form-item">Background:</label>
-                    <select class="form-item" id="background" disabled>
-                        <option value="Default">Default</option>
-                        <option value="Farm">Farm</option>
-                        <option value="Snow">Snow</option>
+                    <select class="form-item editable" id="background" disabled>
+                        <option value="default-level">Default Level</option>
+                        <option value="farm-land">Farm Land</option>
+                        <option value="snow-land">Snow Land</option>
                     </select>
                     
                     <label class="form-item">Ammo:</label>
-                    <input class="form-item temp" type="number" id="ammo" min="1" max="15" placeholder="0" disabled></input><br>
+                    <input class="form-item editable" type="number" id="ammo" min="1" max="15" placeholder="0" disabled></input><br>
 
                     <label class="form-item stars"><i class="fa fa-star-o" aria-hidden="true"></i></label>
-                    <input class="form-item " type="number" id="star1"  min="0" max="50000" placeholder="0" disabled></input>
+                    <input class="form-item editable" type="number" id="star1"  min="0" max="50000" placeholder="0" disabled></input>
 
                     <label class="form-item stars"><i class="fa fa-star-o" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i></label>
-                    <input class="form-item" type="number" id="star2"  min="0" max="50000" placeholder="0" disabled></input>
+                    <input class="form-item editable" type="number" id="star2"  min="0" max="50000" placeholder="0" disabled></input>
 
                     <label class="form-item stars"><i class="fa fa-star-o" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i></label>
-                    <input class="form-item" type="number" id="star3" min="0" max="50000" placeholder="0" disabled></input><br>
+                    <input class="form-item editable" type="number" id="star3" min="0" max="50000" placeholder="0" disabled></input><br>
                     <div>
                         <span class="info-button button" id="edit-button">Edit</span>
                         <span class="info-button button" id="save-button">Save</span>

@@ -1,0 +1,11 @@
+{
+    "type": 1,
+    "name": "red-bird",
+    "height": 40,
+    "width": 40,
+    "texture": "images/objects/red-bird.png",
+    "shape": "circle",
+    "friction": 1,
+    "mass": 90,
+    "restitution": 0
+}
