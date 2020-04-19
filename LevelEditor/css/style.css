@@ -1,4 +1,25 @@
-/* Copyright (C) 2018 Scott Henshaw, All Rights Reserved */
+/* Copyright (C) 2020, Nicolas Morales Escobar. All Rights Reserved */
+
+
+/*-----------------GAME-------------------*/
+.mainMenuButton {
+    color: #2387EB;
+    background-color: #0A2845;
+    width: 200px;
+    display: flex;
+    font-size: 50px;
+    justify-content: center;
+    border-radius: 20px;
+
+    cursor: pointer;
+    
+   font-family: sanvito-pro-display, sans-serif;
+   font-style: normal;
+   font-weight: 700;
+}
+
+
+/*-----------------EDITOR-------------------*/
 .tab {
     overflow: hidden;
     border-radius: 10px 10px 0px 0px;
