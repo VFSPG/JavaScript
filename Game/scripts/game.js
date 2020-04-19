@@ -7,9 +7,12 @@ import ClientLoad from './clientLoad.js';
 export default class Game {
     constructor() 
     {
+        this.lastUpdate = 0;
+
         this.clientLoad = new ClientLoad();
 
         this.worldController = new WorldController();
+
     }
 
     // Load level
@@ -17,9 +20,9 @@ export default class Game {
     {
         // Get data from all levels
         let LevelData = await this.clientLoad.loadAllLevel(true);
-        console.log(LevelData);
+        //console.log(LevelData);
     }
- 
+
     // Do update stuff
     update( detalTime ) {
         // Physics here
@@ -31,12 +34,14 @@ export default class Game {
         this.worldController.render();
     }
 
-    run( deltaTime  = 0) {
+    run( timestep  = 0) {
+
+        let deltaTime = timestep - this.lastUpdate;
         this.update (deltaTime);
         this.render (deltaTime);
-
-        window.requestAnimationFrame((time) =>{
-            this.run(time);
+        
+        window.requestAnimationFrame((timestep) =>{
+            this.run(timestep/ 100);
         });
     }
 }

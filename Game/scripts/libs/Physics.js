@@ -38,7 +38,7 @@ const Physics = {
     RAD_2_DEG:      180 / Math.PI,    // CONSTANT to Multiply by to convert radians to degrees.
     TWO_PI:         Math.PI * 2,     // 360 degrees in radians.
 
-    WORLD_SCALE:    20.0,  // number of pixels per meter in the physics sim
+    WORLD_SCALE:    40.0,  // number of pixels per meter in the physics sim
     GRAVITY:        9.8    // The force of gravity
 }
 
