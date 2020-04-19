@@ -9,7 +9,7 @@ export default class GameObject {
         this.world = world;
         this.details =  details;
         this.isStatic = isStatic;
-        this.model = this.create (); 
+        this.body = this.create (); 
     }
 
     // Do update stuff
@@ -23,11 +23,11 @@ export default class GameObject {
     }
 
     create () {
-
         let aBody = new Physics.BodyDef();
 
         aBody.position = new Physics.Vec2(this.details.pos.x /Physics.WORLD_SCALE, this.details.pos.y /Physics.WORLD_SCALE);
-        aBody.linearVelocity = new Physics.Vec2(0, 0);
+        aBody.linearVelocity = new Physics.Vec2(1, 0);
+        aBody.userData = this;
 
         if(this.isStatic)
         {
@@ -41,40 +41,44 @@ export default class GameObject {
 
         let aFixture = new Physics.FixtureDef();
 
-        aFixture.friction = this.details.entity.friction;
+        aFixture.friction = parseInt(this.details.entity.friction);
         aFixture.density = 1;
-        aFixture.mass = this.details.entity.mass;
-        aFixture.restitution = this.details.entity.restitution;
+        aFixture.mass = parseInt(this.details.entity.mass);
+        aFixture.restitution = parseInt(this.details.entity.restitution);
 
         switch(this.details.entity.shape){
             case "circle":
-                aFixture.shape = new Physics.CircleShape(this.details.entity.height/2);
+                aFixture.shape = new Physics.CircleShape(parseInt(this.details.entity.height)/2);
                 break;
 
             case "block":
             default:
                 aFixture.shape = new Physics.PolygonShape();
-                aFixture.shape.SetAsBox(this.details.entity.width, this.details.entity.height);
+                aFixture.shape.SetAsBox(parseInt(this.details.entity.width)/2, parseInt(this.details.entity.height)/2);
         }
 
         let body = this.world.CreateBody(aBody).CreateFixture(aFixture);
-       // console.log(aBody);
+        return body;
     }
 
-    draw (context) {
-        let pos = this.body.GetPosition(), 
-            angel = this.body.GetAngle();
+    draw (context) {     
+        let pos = this.body.GetBody().GetPosition(), 
+            angle = this.body.GetBody().GetAngle();
 
         context.save();
         context.translate(pos.x, pos.y);
         context.rotate(angle);
 
+        let image = new Image();
+
+        image.src = `images/${this.details.entity.texture}`;
+
         if(this.details.entity.texture){
-            context.drawImage(this.details.image,
-                -this.details.width/2,
-                -this.details.height/2,
-                this.details.width,
-                this.details.height);
+            context.drawImage(image,
+                -parseInt(this.details.entity.width)/2,
+                -parseInt(this.details.entity.height)/2,
+                parseInt(this.details.entity.width),
+                parseInt(this.details.entity.height));
         }
 
         context.restore();

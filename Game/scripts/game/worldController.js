@@ -27,22 +27,25 @@ export default class WorldController {
         }
         
         this.world.DrawDebugData();
-    
-    }
+        this.drawObjects();
+    }   
 
     drawObjects() {
+        let context = this.$view[0].getContext('2d');
+        
         let obj = this.world.GetBodyList();
-        this.context.clearRect(0,0,this.element.width,this.element.height);
+        context.clearRect(0,0,this.$view[0].width,this.$view[0].height);
 
-        this.context.save();
-        this.context.scale(this.scale,this.scale);
+        context.save();
+        context.scale(Physics.WORLD_SCALE,Physics.WORLD_SCALE);
         while(obj) {
             let body = obj.GetUserData();
-            if(body) {  body.draw(this.context); }
+
+            if(body) {  body.draw(context); }
 
             obj = obj.GetNext();
         }
-        this.context.restore();
+        context.restore();
     }
 
     drawDebug() {

@@ -48,12 +48,21 @@ export default class Game {
     }
 
     loadLevelInfo(data) {
-
+        
         $.map(data, (item, keys) =>{
             if ($(`#${keys}`).length) {
                 $(`#${keys}`).html (item)
             }            
         });
+        // Collidables
+        $.map(data.collidableLists.obstacleList, (item) => {
+            let gameObject = new GameObject (false, this.worldController.world, item);
+        });
+
+        // // Targets
+        // $.map(data.collidableLists.targetList, (item) => {
+        //     //console.log(item);
+        // });
     }
 
     // Do update stuff
