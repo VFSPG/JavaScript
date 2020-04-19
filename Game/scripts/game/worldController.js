@@ -9,17 +9,36 @@ export default class WorldController {
 
         this.$view = $('#game-screen');
 
-        this.model = new Physics.World(gravity);
+        this.world = new Physics.World(gravity, true);
 
-
-     //   this.gameObjectTest = new GameObject();
+        this.stepAmount = 1/60;
+        this.dtRemaining = 0;
         this.addListeners();
         this.createBoudaries();
     }
 
     // Do update stuff
-    update( detalTime ) {
-        // Physics here
+    update( deltaTime ) {
+        this.dtRemaining += deltaTime;
+
+        while (this.dtRemaining > this.stepAmount) {
+            this.dtRemaining -= this.stepAmount;
+            this.world.Step(this.stepAmount,8,3);
+        }
+
+        this.world.DrawDebugData();
+        
+    }
+
+    drawDebug()
+    {
+        let draw = new Physics.DebugDraw();
+        draw.SetSprite(this.$view[0].getContext('2d'));
+        draw.SetDrawScale(Physics.WORLD_SCALE);
+        draw.SetFillAlpha(0.3);
+        draw.SetLineThickness(1.0);
+        draw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
+        this.world.SetDebugDraw(draw);
     }
 
     // Do render stuff
@@ -34,10 +53,10 @@ export default class WorldController {
     createBoudaries() {
 
         let groundBoundingBox = {
-            x: this.$view.css("width")  / Physics.WORLD_SCALE,
-            y: this.$view.css("height") / Physics.WORLD_SCALE,
-            width: this.$view.css("width")  / Physics.WORLD_SCALE,
-            height: Physics.WORLD_SCALE
+            x: this.$view[0].width  / Physics.WORLD_SCALE,
+            y: this.$view[0].height / Physics.WORLD_SCALE,
+            width: this.$view[0].width / Physics.WORLD_SCALE,
+            height: 2
         }
         // let leftSideWall = this.createWall(aBody, aFixture, boundingBox)
         // let rightSideWall = this.createWall(aBody, aFixture, boundingBox)
@@ -49,25 +68,19 @@ export default class WorldController {
 
         let aBody = new Physics.BodyDef();
 
-        aBody.type = Physics.b2_staticBody;
+        aBody.type = Physics.Body.b2_staticBody;
         
         let aFixture = new Physics.FixtureDef();
 
         aFixture.density = 1;
         aFixture.friction = 0.5;
         aFixture.shape = new Physics.PolygonShape();
-        aFixture.shape.SetAsBox(boundingBox.width, boundingBox.height);
+        aFixture.shape.SetAsBox(boundingBox.width, 0.5);
         
-        aBody.position.x = boundingBox.x;
-        aBody.position.y = boundingBox.y;
+        aBody.position.x = 16;
+        aBody.position.y = 18;
 
-        this.model.CreateBody(aBody).CreateFixture(aFixture);
+        this.world.CreateBody(aBody).CreateFixture(aFixture);
         
-        let draw = new Physics.DebugDraw();
-
-        // draw.SetSprite(this.$view.canvas.getContext('2d'));
-        draw.SetDrawScale(Physics.WORLD_SCALE);
-        draw.SetFlags(box2d.b2DebugDraw.e_shapeBit | box2d.b2DebugDraw.e_jointBit);
-        this.model.SetDebugDraw(draw);
     }
 }

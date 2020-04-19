@@ -5,8 +5,10 @@ import Physics from "../libs/Physics.js";
 
 export default class GameObject {
 
-    constructor ( $view, isStatic ) {
-        this.$view = $("#test-box");
+    constructor (isStatic, world, details) {
+        this.world = world;
+        this.details =  details;
+        this.isStatic = isStatic;
         this.model = this.create (); 
     }
 
@@ -24,17 +26,40 @@ export default class GameObject {
 
         let aBody = new Physics.BodyDef();
 
-        aBody.type = Physics.b2_dynamicBody;
-        let aFixture = new Physics.FixtureDef();
-        
-        aFixture.density = 1;
-        aFixture.friction = 0.5;
-        aFixture.shape = new Physics.PolygonShape();
-        aFixture.shape.SetAsBox(this.$view.css("width")/Physics.WORLD_SCALE, this.$view.css("height")/Physics.WORLD_SCALE);
-        
-        aBody.position.x = this.$view.css("left")/Physics.WORLD_SCALE;
-        aBody.position.y = this.$view.css("top") /Physics.WORLD_SCALE;
-        console.log(aBody);
+        aBody.position = new Physics.Vec2(this.details.pos.x /Physics.WORLD_SCALE, this.details.pos.y /Physics.WORLD_SCALE);
+        aBody.linearVelocity = new Physics.Vec2(0, 0);
 
+        if(this.isStatic)
+        {
+            aBody.type = Physics.Body.b2_staticBody;
+        }
+
+        else
+        {
+            aBody.type = Physics.Body.b2_dynamicBody;
+        }
+
+        
+
+        let aFixture = new Physics.FixtureDef();
+
+        aFixture.friction = this.details.entity.friction;
+        aFixture.density = 1;
+        aFixture.mass = this.details.entity.mass;
+        aFixture.restitution = this.details.entity.restitution;
+
+        switch(this.details.entity.shape){
+            case "circle":
+                aFixture.shape = new Physics.CircleShape(this.details.entity.height/2);
+                break;
+
+            case "block":
+            default:
+                aFixture.shape = new Physics.PolygonShape();
+                aFixture.shape.SetAsBox(this.details.entity.width, this.details.entity.height);
+        }
+
+        let body = this.world.CreateBody(aBody).CreateFixture(aFixture);
+       // console.log(aBody);
     }
 }

@@ -39,7 +39,7 @@ const Physics = {
     TWO_PI:         Math.PI * 2,     // 360 degrees in radians.
 
     WORLD_SCALE:    40.0,  // number of pixels per meter in the physics sim
-    GRAVITY:        9.8    // The force of gravity
+    GRAVITY:        9.8,    // The force of gravity
 }
 
 export default Physics;
