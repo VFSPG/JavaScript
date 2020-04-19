@@ -39,8 +39,6 @@ export default class GameObject {
             aBody.type = Physics.Body.b2_dynamicBody;
         }
 
-        
-
         let aFixture = new Physics.FixtureDef();
 
         aFixture.friction = this.details.entity.friction;
@@ -61,5 +59,24 @@ export default class GameObject {
 
         let body = this.world.CreateBody(aBody).CreateFixture(aFixture);
        // console.log(aBody);
+    }
+
+    draw (context) {
+        let pos = this.body.GetPosition(), 
+            angel = this.body.GetAngle();
+
+        context.save();
+        context.translate(pos.x, pos.y);
+        context.rotate(angle);
+
+        if(this.details.entity.texture){
+            context.drawImage(this.details.image,
+                -this.details.width/2,
+                -this.details.height/2,
+                this.details.width,
+                this.details.height);
+        }
+
+        context.restore();
     }
 }

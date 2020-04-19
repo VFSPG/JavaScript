@@ -2,7 +2,7 @@
 'use strict';
 
 import ClientLoad from '../clientLoad.js';
-import LayoutController, { METERS_MULTIPLIER } from '../layoutController.js'
+import LayoutController, { METERS_MULTIPLIER } from './layoutController.js'
 import ClientSave from '../clientSave.js';
 
 // App class client

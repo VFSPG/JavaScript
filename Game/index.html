@@ -20,12 +20,59 @@
             <h1>Angry Pigs</h1>
         </header>
 
+        <section class="level-info">
+            <button id="choose-level-btn" class="btn-style choose-level-btn">
+                Choose Level
+            </button>
+            <ul class="level-info-list">
+                <li class="level-info-item">
+                    <h4>Level Name: </h4>
+                    <p id="name"></p>
+                </li>
+                <li class="level-info-item">
+                    <h4>Ammo: </h4>
+                    <p id="ammo"></p>
+                </li>
+                <li class="level-info-item">
+                    <h4>Obstacles: </h4>
+                    <p id="obstacles"></p>
+                </li>
+                <li class="level-info-item">
+                    <h4>Targets: </h4>
+                    <p id="targets"></p>
+                </li>
+                <li class="level-info-item">
+                    <h4>One star: </h4>
+                    <p id="one_star"></p>
+                </li>
+                <li class="level-info-item">
+                    <h4>Two stars: </h4>
+                    <p id="two_stars"></p>
+                </li>
+                <li class="level-info-item">
+                    <h4>Three stars: </h4>
+                    <p id="three_stars"></p>
+                </li>
+            </ul>
+        </section>
+
         <section class="main-section">
             <!-- game screen -->
             <canvas id="game-screen" width="1280" height="720" style="background-color: black;">
             </canvas>
         </section>
 
+        <section id="level-select-screen" class="level-select modal-box">
+            <div class="box-container">
+                <header class="box-content-header">
+                    <h2>Level Selection</h2>
+                    <button id="close-level-selection" class="close-button"></button>
+                </header>
+                <ul id="levels-list" class="levels-list">
+
+                </ul>
+            </div>
+        </section>
         <script type="module" src="./scripts/index.js"></script>
     </body>
 </html>

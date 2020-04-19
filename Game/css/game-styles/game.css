@@ -1,0 +1,61 @@
+
+.level-info {
+    background-color: #0A4273;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+}
+
+.choose-level-btn {
+    margin-right: 20px;
+    width: 10%;
+}
+
+.level-info-list {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 90%;
+}
+
+.level-info-item {
+    display: flex;
+    margin-right: 30px;
+    padding: 20px;
+}
+
+.level-info-item h4 {
+    margin-right: 10px;
+}
+
+.level-info-item p {
+    color: yellow;
+    font-weight: bold;
+}
+
+#level-select-screen .box-container {
+    width: 70vw;
+}
+
+.levels-list {
+    list-style: none;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.levels-list-item {
+    width: 19%;
+    margin: 0 0.5% 10px;
+    height: 120px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.levels-list-item button {
+    background-color: transparent;
+}
+

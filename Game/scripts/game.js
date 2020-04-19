@@ -3,62 +3,63 @@
 
 //import WorldController from './game/worldController.js'
 import ClientLoad from './clientLoad.js';
-import Physics from './libs/Physics.js';
 import WorldController from './game/worldController.js';
 import GameObject from './game/gameObject.js';
 
+import LayoutController from './game/gameLayoutController.js'
 
 export default class Game {
     constructor() 
     {
         this.lastUpdate = new Date().getTime();
-
+        this.layout = new LayoutController();
         this.clientLoad = new ClientLoad();
+
         this.$view = $('#game-screen');
         this.worldController = new WorldController();
 
+        $('#close-level-selection').on('click', 
+        () => this.layout.closeLevelSelection());
 
-        this.loadLevel ()
-        
-        this.col = {
-            pos: {
-                x: 100,
-                y: 100
-            },
-            entity: {
-                type: "obstacle",
-                name: "crate",
-                height: 5,
-                width: 5,
-                texture: "crate-one.png",
-                shape: "block",
-                friction: 1,
-                mass: 90,
-                restitution: 1
-            }
-        }
-        this.gameobject = new GameObject(false, this.worldController.world, this.col);
-        
+        $('#choose-level-btn').on('click', 
+        () => this.layout.openLevelSelection());
+
+        this.layout.closeLevelSelection();
+        this.loadLevels (); 
         this.worldController.drawDebug();
-    
-        
     }
 
     // Load level
-    async loadLevel ()
+    async loadLevels ()
     {
         // Get data from all levels
         let LevelData = await this.clientLoad.loadAllLevel(true);
-        
-        
+        this.layout.CreateLevelSelection(LevelData.payload);
+        this.loadLevelInfo(LevelData.payload[Object.keys(LevelData.payload)[0]]);
+        this.AddEventsToLevelsButton();
+    }
+
+    AddEventsToLevelsButton() {
+        let $levelList = $('.levels-list-item');
+        $levelList.on('click', (event) => {
+            this.loadLevelInfo($(event.target).data("level-data"));
+            this.layout.closeLevelSelection();
+        })
+    }
+
+    loadLevelInfo(data) {
+
+        $.map(data, (item, keys) =>{
+            if ($(`#${keys}`).length) {
+                $(`#${keys}`).html (item)
+            }            
+        });
     }
 
     // Do update stuff
     update( detalTime ) {
         // Physics here
-        
-        this.worldController.update(detalTime);
-        console.log(this.worldController.world);
+        this.worldController.update(detalTime);        
     }
 
     // Do render stuff
@@ -68,19 +69,19 @@ export default class Game {
 
     run(timestep = 0) {
 
-        let tm = new Date().getTime();
-
-        let deltaTime = timestep - this.lastUpdate;
+        let time = new Date().getTime()
         
         window.requestAnimationFrame((timestep) => {
             this.run(timestep);
         });
 
-        let dt = (tm - this.lastUpdate) / 1000;
-        if(dt > 1/15) { dt = 1/15; }
+        let deltaTime = (time - this.lastUpdate) / 1000;
+        if(deltaTime > 1/15) {
+            deltaTime = 1/15; 
+        }
         
-        this.update(dt);
-        this.lastUpdate = tm;
+        this.update(deltaTime);
+        this.lastUpdate = time;
     
     } 
 }

@@ -25,13 +25,27 @@ export default class WorldController {
             this.dtRemaining -= this.stepAmount;
             this.world.Step(this.stepAmount,8,3);
         }
-
-        this.world.DrawDebugData();
         
+        this.world.DrawDebugData();
+    
     }
 
-    drawDebug()
-    {
+    drawObjects() {
+        let obj = this.world.GetBodyList();
+        this.context.clearRect(0,0,this.element.width,this.element.height);
+
+        this.context.save();
+        this.context.scale(this.scale,this.scale);
+        while(obj) {
+            let body = obj.GetUserData();
+            if(body) {  body.draw(this.context); }
+
+            obj = obj.GetNext();
+        }
+        this.context.restore();
+    }
+
+    drawDebug() {
         let draw = new Physics.DebugDraw();
         draw.SetSprite(this.$view[0].getContext('2d'));
         draw.SetDrawScale(Physics.WORLD_SCALE);

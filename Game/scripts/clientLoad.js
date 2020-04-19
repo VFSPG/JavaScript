@@ -36,7 +36,7 @@ export default class ClientLoad {
             .then( response => {
                 // Parse the data then create every item 
                 let res = JSON.parse(response);
-
+                
                 if (!fromGame)
                 {
                     // Get only the keys for now. Keys = name of the level
