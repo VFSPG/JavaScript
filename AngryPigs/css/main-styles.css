@@ -8,7 +8,7 @@ img {
     display: block;
     margin-top: 5%;
 }
-.btn_play {
+#btn_play {
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     display: block;
@@ -20,7 +20,7 @@ img {
     font-size: 30px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
-.btn_rule {
+#btn_rule {
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     display: block;

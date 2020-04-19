@@ -19,6 +19,9 @@ export default class Game {
             });
 
         // add all UI handlers here
+
+        // Event handlers to load stuff
+        $('#btn_play').on('click', Event => this.test(Event));
     }
 
     update( deltaTime ) {
@@ -42,5 +45,10 @@ export default class Game {
         this.render( deltaTime );
 
         window.requestAnimationFrame( timestep => this.run( timestep / 100 ));
+    }
+
+    test ( Event ) {
+
+        $("#btn_play").css("background-color", yellow);
     }
 }
