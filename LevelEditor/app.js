@@ -2,6 +2,7 @@
 'use strict';
 
 import Express from 'express';
+import Path from 'path';
 import HTTP from 'http';
 
 const PORT = 3000;
@@ -15,17 +16,21 @@ class Server {
 
     // eslint-disable-next-line new-cap
     this.api = Express();
-    this.api.use( Express.json() )
-      // Extended flag is set to true so that the encoding parses the json herarchy
-      // all the way instead of just the first level and spreading the rest
+    this.api
+      .use(Express.static(Path.join(__dirname, 'public')))
+      .set('views', __dirname + '/public')
+      .use( Express.json() )
       .use( Express.urlencoded({ extended: true }))
       .use('/api/level', LevelRoutes)     // Level routes
-      .use('/api/entity', EntityRoutes)   // Entity routes
-      .use(Express.static(`${__dirname}/public`)); // Specifying the views routes that the server serves
+      .use('/api/entity', EntityRoutes);   // Entity routes
 
     // Route for serving the root route
     this.api.get('/', (request, response) => {
-      response.render('index', { title: 'Angry Pigs Level Editor' });
+      response.sendFile(`${Path.join(__dirname, 'public')}/index.html`, { title: 'Angry Pigs Level Editor' });
+    });
+
+    this.api.get('/editor', (request, response) => {
+      response.sendFile(`${Path.join(__dirname, 'public')}/editor.html`, { title: 'Angry Pigs Level Editor' });
     });
   }
 

@@ -1,0 +1,144 @@
+<!-- Copyright (C) 2020 Alejandro Guereca Valdivia -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Das editor</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
+    </head>
+
+    <body>
+      <div class="container">
+        <div class="level-buttons-container">
+          <div id="new-level-btn" class="button">
+            <span>New level</span>
+          </div>
+          <div id="save-level-open-modal" class="button">
+            <span>Save level</span>
+          </div>
+          <div id="create-new-object-open-modal" class="button">
+            <span>Create new object</span>
+          </div>
+          <div id="load-level-open-modal" class="button">
+            <span>Load level</span>
+          </div>
+          <div id="ammo-container" class="text-field">
+            <label for="ammo-amount-id">Ammo for current level</label>
+            <input type="number" name="ammo" id="ammo-amount-id" placeholder="15">
+          </div>
+          <div id="background-img-selection" class="text-field">
+            <label for="background-selection-id">Ammo for current level</label>
+            <input type="text" name="background" id="background-selection-id" placeholder="my-background.jpg" value="my-background.jpg">
+          </div>
+          <div id="current-user-container" class="text-field">
+            <label for="current-user-container-id">Current user</label>
+            <input type="text" name="user" id="current-user-container-id" placeholder="pg18alex" value="pg18alex">
+          </div>
+        </div>
+        <div id="wrapper">
+            <div id="editor" class="frame">
+            </div>
+        </div>
+        <div class="objects-container">
+          
+        </div>
+      </div>
+
+    </body>
+
+    <div id="save-level-modal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <form id="save-level-form">
+          <label for="name">Level name</label>
+          <input type="text" name="name" placeholder="Level-1" id="name-level">
+        </form>
+        <div id="save-btn" class="button modal-button">
+          <span>Save level</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="new-object-modal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <form id="save-object-form" class="modal-form">
+          <div class="text-field">
+            <label for="type-object">Type</label>
+            <input type="number" name="type" placeholder="0" id="type-object">
+          </div>
+
+          <div class="text-field">
+            <label for="name-object">Name</label>
+            <input type="text" name="name" placeholder="Metal Crate" id="name-object">
+          </div>
+
+          <div class="text-field">
+            <label for="height-object">Height</label>
+            <input type="number" name="height" placeholder="70" id="height-object">
+          </div>
+
+          <div class="text-field">
+            <label for="width-object">Width</label>
+            <input type="number" name="width" placeholder="70" id="width-object">
+          </div>
+
+          <div class="text-field">
+            <label for="texture-object">Texture</label>
+            <input type="text" name="texture" placeholder="images/metalBox.png" id="texture-object">
+          </div>
+
+          <div class="text-field">
+            <label for="shape-object">Shape</label>
+            <input type="text" name="shape" placeholder="square" id="shape-object">
+          </div>
+
+          <div class="text-field">
+            <label for="friction-object">Friction</label>
+            <input type="number" name="friction" placeholder="1" id="friction-object">
+          </div>
+
+          <div class="text-field">
+            <label for="mass-object">Mass</label>
+            <input type="number" name="mass" placeholder="90" id="mass-object">
+          </div>
+
+          <div class="text-field">
+            <label for="restitution-object">Restitution</label>
+            <input type="number" name="restitution" placeholder="0" id="restitution-object">
+          </div>
+
+        </form>
+        <div id="save-object-btn" class="button modal-button">
+          <span>Save object</span>
+        </div>
+        <div id="new-object-preview">
+          
+        </div>
+      </div>
+    </div>
+
+    <div id="load-level-modal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <form id="load-level-form" class="modal-form">
+          <div class="text-field">
+            <label for="levels-names">Level to load</label>
+            <select name="levels-names" id="levels-names">
+          </div>
+
+          </select>
+        </form>
+        <div id="load-level-btn" class="button modal-button">
+          <span>Save object</span>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="scripts/index.js"></script>
+
+</html>
+
