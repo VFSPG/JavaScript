@@ -13,11 +13,11 @@ export default class WorldController {
         this.world = new Physics.World(gravity, true);
         this.stepAmount = 1/60;
         this.dtRemaining = 0;
-        this.addListeners();
         this.createBoudaries();
         this.listOfDestruction = [];
         this.collision();
         this.maxAmmo = 0;
+        this.listTarget = [];
 
         this.catapult = {
             pos: {x:0, y:0},
@@ -74,7 +74,6 @@ export default class WorldController {
         let image = new Image();
         let context = this.$view[0].getContext('2d');
         image.src = `images/canon.png`;
-        console.log(this.catapult)
         context.drawImage(image,
             this.catapult.pos.x, this.catapult.pos.y, this.catapult.width, this.catapult.height);
     }
@@ -114,8 +113,8 @@ export default class WorldController {
             };
             
         let  vector = {
-            x: point.x - 4,
-            y: point.y - 14
+            x: point.x - (this.catapult.pos.x + (this.catapult.width/2))/Physics.WORLD_SCALE ,
+            y: point.y - (this.catapult.pos.y + (this.catapult.height/2))/ Physics.WORLD_SCALE
         }
 
         let magnitude =  Math.sqrt((vector.x * vector.x)+(vector.y * vector.y));
@@ -125,8 +124,8 @@ export default class WorldController {
 
         let item = {
             pos: {
-                x: 4 * Physics.WORLD_SCALE,
-                y: 14 * Physics.WORLD_SCALE
+                x: (this.catapult.pos.x + (this.catapult.width/2)),
+                y: (this.catapult.pos.y + (this.catapult.height/2))
             },
             entity: {
                 type: "bullet",
@@ -147,44 +146,40 @@ export default class WorldController {
         }
     }
 
-    // Do render stuff
-    render( deltaTime ) {
-
-    }
-
-    addListeners() {
-
-    }
-
     collision(myWorld) { 
         this.listener = new Physics.Listener();
         this.listener.PreSolved = (contact) => {
-            console.log(contact);
-            
         } 
         this.listener.BeginContact = (contact)=> {
-            console.log(contact);
             let bodyA = contact.GetFixtureA().GetBody(),
             bodyB = contact.GetFixtureB().GetBody();
 
             // console.log("+++++++++++++++++++");
             
-            // console.log("body A");
-            // console.log(bodyA.GetUserData());
+            // console.log("body A");                                           
+            // console.log(bodyA.GetUserData());                                
             
             // console.log("body B");
             // console.log(bodyB.GetUserData());
             
             // console.log("+++++++++++++++++++");
-            /*
+            
             if (bodyA.GetUserData() != null && bodyB.GetUserData() != null) 
             {
-                if ("entity" in bodyA.GetUserData().details && "entity" in bodyB.GetUserData().details)
+                if ( bodyA.GetUserData().details.entity.type == "target" && bodyB.GetUserData().bullet == true)
                 {
                     this.listOfDestruction.push(bodyA);
-                    this.listOfDestruction.push(bodyB);
+                    this.listTarget.pop();
+                    console.log(this.listTarget.length);
                 }
-            }*/
+
+                if(bodyB.GetUserData().details.entity.type == "target" && bodyA.GetUserData().buttet == true)
+                {
+                    this.listOfDestruction.push(bodyB);
+                    this.listTarget.pop();
+                    console.log(this.listTarget.length);
+                }
+            }
         };
 
         this.world.SetContactListener(this.listener);

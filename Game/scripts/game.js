@@ -89,6 +89,7 @@ export default class Game {
         // Targets
         $.map(data.collidableLists.targetList, (item) => {
             let gameObject = new GameObject (false, this.worldController.world, item, false);
+            this.worldController.listTarget.push(gameObject);
         });
     }
 
