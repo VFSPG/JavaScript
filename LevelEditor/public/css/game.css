@@ -24,7 +24,7 @@ body {
   height:800px;
   overflow:hidden;
   cursor:pointer;
-  background: url("../images/backgrounds/my-background.jpg ");
+  /* background: url("../images/backgrounds/my-background.jpg "); */
   background-repeat: no-repeat;
   background-size: contain;
 }
