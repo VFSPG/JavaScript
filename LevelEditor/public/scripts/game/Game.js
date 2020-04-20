@@ -3,36 +3,13 @@
 import WorldController from './Contollers/WorldController.js';
 
 class Game {
-
-  constructor() {
+  run() {
     this.world = WorldController;
-
-    // TODO:Update the World View
+    this.update();
   }
 
-  // update(deltaTime) {
-  //   // This is where the physics runs
-  //   this.world.update();
-
-  //   for (const entity of this.entityList) {
-  //     entity.update();
-  //   }
-  // }
-
-  // render(deltaTime) {
-  //   // This is where we change all the stuff in the DOM
-  //   this.world.render();
-
-  //   for (const entity of this.entityList) {
-  //     entity.render();
-  //   }
-  // }
-
-  run(deltaTime = 0) {
-    // this.update(deltaTime);
-    // this.render(deltaTime);
-
-    // window.requestAnimationFrame( () => this.run());
+  update() {
+    this.world.update();
   }
 }
 
