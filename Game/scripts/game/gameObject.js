@@ -5,11 +5,14 @@ import Physics from "../libs/Physics.js";
 
 export default class GameObject {
 
-    constructor (isStatic, world, details, velocity) {
+    constructor (isStatic, world, details, bullet, velocity) {
         this.world = world;
         this.details =  details;
         this.isStatic = isStatic;
         this.velocity = velocity;
+        this.bullet = bullet;
+        this.timeAlive = 0;
+        this.destroyed = false;
         this.body = this.create (); 
     }
 
@@ -102,5 +105,18 @@ export default class GameObject {
         }
 
         context.restore();
+    }
+
+    update(deltaTime, list)
+    {
+        if(this.bullet)
+        {
+            this.timeAlive += deltaTime;
+
+            if(this.timeAlive > 5 && !this.destroyed){
+                this.destroyed = true;
+                list.push(this.body.GetBody());
+            }
+        }
     }
 }

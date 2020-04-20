@@ -70,21 +70,22 @@ export default class Game {
             }            
         });
         
-        console.log(data);
         
         $("#game-screen").css({
             backgroundImage: `url(./images/backgrounds/${data.background})`
         });
 
+        this.worldController.maxAmmo = $("#ammo").data("ammo");
+
         let cannonObject = new GameObject (true, this.worldController.world, data.cannon);
         // Collidables
         $.map(data.collidableLists.obstacleList, (item) => {
-            let gameObject = new GameObject (false, this.worldController.world, item);
+            let gameObject = new GameObject (false, this.worldController.world, item, false);
         });
 
         // Targets
         $.map(data.collidableLists.targetList, (item) => {
-            let gameObject = new GameObject (false, this.worldController.world, item);
+            let gameObject = new GameObject (false, this.worldController.world, item, false);
         });
     }
 
