@@ -1,3 +1,7 @@
+body{
+    text-align: center;
+}
+
 img {
     display: block;
     margin-left: auto;
@@ -8,7 +12,7 @@ img {
     display: block;
     margin-top: 5%;
 }
-#btn_play {
+.btn {
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     display: block;
@@ -18,18 +22,20 @@ img {
     background-color: aliceblue;
     letter-spacing: 1px;
     font-size: 30px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: Impact, "Haettenschweiler", 'Arial Narrow Bold', sans-serif;
 }
-#btn_rule {
-    padding-top: 0.5%;
-    padding-bottom: 0.5%;
-    display: block;
+
+#levels{
+    display: none;
+}
+
+#level-list{
+    height: 90px;
+    width: 100px;
+    background: #fff;
+
     margin-top: 2%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 25%;
-    background-color: aliceblue;
-    letter-spacing: 1px;
-    font-size: 30px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
+    direction: rtl;
+    overflow:auto;
 }
