@@ -15,7 +15,7 @@ class Server {
 
         this.api = Express();
         this.api.use( Express.json() )
-                .use( Express.urlencoded({ extended: false }))
+                .use( Express.urlencoded({ extended: true }))
                 .use( Express.static( Path.join( __dirname, '.')))
                 .use ( '/api', EditorAPI);
 

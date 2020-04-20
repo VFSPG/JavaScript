@@ -6,13 +6,19 @@ import CollisionDetector from './collisiondetector.js'
 
 export default class GameObject {
 
-    constructor() {
+    constructor( $view = undefined, isStatic = false) {
         
+        this.$view = $view
+        this.model = create(x,y,height,width, isStatic)
         this.id = "";
         this.sprite = "";
         
         this.transform = new Transform();
         this.CollisionDetector = new CollisionDetector( this.transform.position, 
                                                         this.transform.scale );
+    }
+
+    create(x,y,height,width, isStatic){
+        
     }
 }
