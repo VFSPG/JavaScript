@@ -1,7 +1,7 @@
 // Copyright (C) 2020 Omar Pino. All rights Reserved
 'use strict';
 
-import Game from './scripts/game/game.js';
+import Game from './game.js';
 
 // MAIN
 (function Main() {

@@ -4,7 +4,6 @@
 import Express from 'express'
 import Path from 'path'
 import HTTP from 'http'
-import FileSystem from 'fs'
 
 import EditorAPI from './EditorAPI'
 
