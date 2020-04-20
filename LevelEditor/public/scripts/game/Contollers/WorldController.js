@@ -124,15 +124,19 @@ class Catapult extends GameObject {
         y: this.y
       },
       entity: {
-        height: 10,
-        width: 10,
-        texture: 'crate-one.png',
+        height: 20,
+        width: 20,
+        texture: 'cannon_ball.png',
         shape: 'circle'
       }
+
     };
 
     // eslint-disable-next-line no-new
-    new Bullet(bulletData, this.world, impulseVector);
+    const bullet = new Bullet(bulletData, this.world, impulseVector);
+    const event = new CustomEvent('spawnedBullet', { detail: bullet });
+
+    document.dispatchEvent(event);
   }
 
   render() {
@@ -160,9 +164,17 @@ class WorldController {
 
     this.model = new Physics.World(gravity, true);
 
+    $(document).on('spawnedBullet', (event) => this.addBulletToWorld(event));
+
     this.setBoundaries();
     this.createLevelObjects();
     this.setUpDrawing();
+  }
+
+  addBulletToWorld(event) {
+    const { detail: bullet } = event;
+
+    this.collidables.push(bullet);
   }
 
   createLevelObjects() {
