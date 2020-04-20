@@ -9,24 +9,26 @@ import GameObject from './worldobjects/gameobject.js'
 import MainMenu from './gamemanagement/mainmenu.js'
 
 const GRAVITY = Physics.GRAVITY
-export default class worldController{
+export default class worldController {
 
     constructor() {
-        this.gVector = Physics.Vec2(0.0,GRAVITY)
+        this.gVector = Physics.Vec2(0.0, GRAVITY)
         this.world = Physics.World(this.gVector)
         this.$view = $('#game-display')
-        this.gVector = new Physics.Vec2(0.0,GRAVITY)
+        this.gVector = new Physics.Vec2(0.0, GRAVITY)
         this.model = new Physics.World(this.gVector, true)
         this.phyHeight = window.innerHeight / Physics.WORLD_SCALE;
         this.phyWidth = window.innerWidth / Physics.WORLD_SCALE;
-
+        this.aFixture = new Physics.FixtureDef;
+        this.aBody = new Physics.BodyDef;
+        this.testBody;
         this.level = new Level();
 
-        this.createBoundaries();
+
         this.addListeners();
         this.mainMenu = new MainMenu();
 
-        this.mainMenu.initializeLoadEvents( content => {
+        this.mainMenu.initializeLoadEvents(content => {
 
             this.level.content = { ...content };
             this.level.content.gameObjects = new Array();
@@ -48,13 +50,17 @@ export default class worldController{
                 this.level.content.gameObjects.push(gameObject);
             }
         }, element => {
-            
-            this.createGameObjectFrom( element );
+
+            this.createGameObjectFrom(element);
+            this.createBoundaries();
         });
+
+        
     }
 
-    createGameObjectFrom( element ) {
+    createGameObjectFrom(element) {
 
+        console.log(this.aBody)
         let gameObject = new GameObject();
         gameObject.id = element.attr("id");
         gameObject.sprite = element.attr("src");
@@ -62,38 +68,39 @@ export default class worldController{
         gameObject.height = element.attr("height");
         gameObject.transform.position.left = element.css("left");
         gameObject.transform.position.top = element.css("top");
+        this.aBody.type = Physics.Body.b2_dynamicBody;
+        this.aFixture.shape = new Physics.PolygonShape;
+        this.aFixture.shape.SetAsBox(gameObject.transform.scale.x / 2, gameObject.transform.scale.y / 2)
+        this.aBody.position.Set(gameObject.transform.position.x / Physics.WORLD_SCALE, gameObject.transform.position.y / Physics.WORLD_SCALE)
+        this.testBody = this.model.CreateBody(aBody).CreateFixture(this.aFixture);
+        
     }
 
-    createBoundaries(){
+    createBoundaries() {
 
-        let aFixture = new Physics.FixtureDef;
-        aFixture.shape = new Physics.PolygonShape;
-        console.log(aFixture);
-        let aBody = new Physics.BodyDef;
-        aBody.type = Physics.Body.b2_staticBody;
+        this.aFixture.shape = new Physics.PolygonShape;
+        this.aBody.type = Physics.Body.b2_staticBody;
         // let leftWall = this.createWall(aBody, aFixture, {x:-1 ,y:3,width:2,height:20})
         // let rightWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
         // let topWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
-        let bottomWall = this.createWall(aBody, aFixture,  {x:0 ,y:this.phyHeight,width:this.phyWidth,height:2})
+        let bottomWall = this.createWall(this.aBody, this.aFixture, { x: 0, y: this.phyHeight, width: this.phyWidth, height: 2 })
 
-        aBody.type = Physics.Body.b2_dynamicBody;
+        
     }
 
-    createWall(aBody, aFixture, boundingBox)
-    {
-        aFixture.shape.SetAsBox(boundingBox.width,boundingBox.height)
-        aBody.position.Set(boundingBox.x,boundingBox.y)
+    createWall(aBody, aFixture, boundingBox) {
+        aFixture.shape.SetAsBox(boundingBox.width, boundingBox.height)
+        aBody.position.Set(boundingBox.x, boundingBox.y)
         this.model.CreateBody(aBody).CreateFixture(aFixture);
-        console.log(aBody)
     }
 
-    addListeners(){
+    addListeners() {
 
     }
 
     update() {
 
-        for(let gameObject of this.level.content.gameObjects) {
+        for (let gameObject of this.level.content.gameObjects) {
 
             gameObject.update();
         }
@@ -101,7 +108,15 @@ export default class worldController{
 
     render() {
         
-        for(let gameObject of this.level.content.gameObjects) {
+        if (this.testBody != undefined) {
+            let test = $('#game-object-pig-hurt-1')
+            test.css(top, this.testBody.GetPosition().y * Physics.WORLD_SCALE)
+            test.css(left, this.testBody.GetPosition().x * Physics.WORLD_SCALE)
+        }
+       
+        
+        for (let gameObject of this.level.content.gameObjects) {
+
 
             gameObject.render();
         }
