@@ -12,7 +12,6 @@ const GRAVITY = Physics.GRAVITY
 export default class worldController{
 
     constructor() {
-    constructor(){
         this.gVector = Physics.Vec2(0.0,GRAVITY)
         this.world = Physics.World(this.gVector)
 
@@ -29,6 +28,8 @@ export default class worldController{
                 let gameObject = new GameObject();
                 gameObject.id = data.name;
                 gameObject.tag = data.tag;
+                gameObject.transform.position.left = data.left;
+                gameObject.transform.position.top = data.top;
                 gameObject.transform.scale.x = data.width;
                 gameObject.transform.scale.y = data.height;
                 gameObject.physicsStats.friction = data.friction;

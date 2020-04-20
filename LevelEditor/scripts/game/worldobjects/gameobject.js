@@ -9,6 +9,7 @@ export default class GameObject {
     constructor() {
         
         this.id = "";
+        this.name = "";
         this.sprite = "";
         this.tag = "";
 
