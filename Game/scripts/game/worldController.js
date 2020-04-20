@@ -11,13 +11,12 @@ export default class WorldController {
         this.$view = $('#game-screen');
 
         this.world = new Physics.World(gravity, true);
-        this.listOfDestruction = [];
-
         this.stepAmount = 1/60;
         this.dtRemaining = 0;
         this.addListeners();
         this.createBoudaries();
-        this.collision(this.world, this.listOfDestruction);
+        this.listOfDestruction = [];
+        this.collision();
 
         this.$view[0].addEventListener("click", event => this.handleClick( event ));
         this.$view[0].addEventListener("touchstart",event => this.handleClick( event ));
@@ -30,11 +29,13 @@ export default class WorldController {
         while (this.dtRemaining > this.stepAmount) {
             this.dtRemaining -= this.stepAmount;
             this.world.Step(this.stepAmount,8,3);
+            this.destroyObjects();
         }
         
-        this.world.DrawDebugData();
+      //  this.world.DrawDebugData();
+
         this.drawObjects();
-        this.die(this.world);
+
     }   
 
     clearWorld() {
@@ -44,6 +45,14 @@ export default class WorldController {
             if(body) {  body.world.DestroyBody(obj); }
             obj = obj.GetNext();
         }
+    }
+
+    destroyObjects () {
+        while( this.listOfDestruction.length ) {
+            let obj = this.listOfDestruction.pop();
+            obj.m_world.DestroyBody(obj);
+        }
+
     }
 
     drawObjects() {
@@ -77,10 +86,10 @@ export default class WorldController {
     handleClick( event ) {
         event.preventDefault();
         let point = {
-              x: (event.offsetX || event.layerX) / Physics.WORLD_SCALE,
-              y: (event.offsetY || event.layerY) / Physics.WORLD_SCALE
+                x: (event.offsetX || event.layerX) / Physics.WORLD_SCALE,
+                y: (event.offsetY || event.layerY) / Physics.WORLD_SCALE
             };
-          
+            
         let  vector = {
             x: point.x - 4,
             y: point.y - 14
@@ -97,7 +106,7 @@ export default class WorldController {
                 y: 14 * Physics.WORLD_SCALE
             },
             entity: {
-                type: 1,
+                type: "bullet",
                 name: "bullet",
                 height: 2,
                 width: 2,
@@ -112,20 +121,6 @@ export default class WorldController {
         let gameObject = new GameObject (false, this.world, item, vector);
     }
 
-    collision(myWorld, listDest) {
-        this.listener = new Physics.Listener();
-        this.listener.PostSolve = function (contact) {
-
-        let bodyA = contact.GetFixtureA().GetBody().GetUserData(),
-        bodyB = contact.GetFixtureB().GetBody().GetUserData();
-
-        if(bodyA) { listDest.push(bodyA); }
-        if(bodyB) { listDest.push(bodyB); }
-        };
-
-        this.world.SetContactListener(this.listener);
-    };
-
     // Do render stuff
     render( deltaTime ) {
 
@@ -134,6 +129,36 @@ export default class WorldController {
     addListeners() {
 
     }
+
+    collision(myWorld) { 
+        this.listener = new Physics.Listener();
+        this.listener.BeginContact = (contact)=> {
+
+            let bodyA = contact.GetFixtureA().GetBody(),
+            bodyB = contact.GetFixtureB().GetBody();
+            
+            console.log("+++++++++++++++++++");
+            
+            console.log("body A");
+            console.log(bodyA.GetUserData());
+            
+            console.log("body B");
+            console.log(bodyB.GetUserData());
+            
+            console.log("+++++++++++++++++++");
+            
+            if (bodyA.GetUserData() != null && bodyB.GetUserData() != null) 
+            {
+                if ("entity" in bodyA.GetUserData().details && "entity" in bodyB.GetUserData().details)
+                {
+                    this.listOfDestruction.push(bodyA);
+                    this.listOfDestruction.push(bodyB);
+                }
+            }
+        };
+
+        this.world.SetContactListener(this.listener);
+    };
 
     createBoudaries() {
 

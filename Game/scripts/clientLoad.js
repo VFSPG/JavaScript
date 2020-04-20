@@ -82,33 +82,52 @@ export default class ClientLoad {
             })
     }
 
-
-    async loadUser(username) {
-        console.log(username);
+    loadUser(username) {
         return new Promise( (resolve, reject) => {
-            $.post(`user/get_user/${username}`)
-            .then( response => {
+            $.post(`user/get_user/pg18Jonathan/${username}`)
+            .then( async response => {
                 // Parse the data then create every item 
                 let res = JSON.parse(response);
-
-                // let allLevels = await this.loadAllLevel(true);
-                // allLevels = allLevels.payload;
-        
-                // $.map(allLevels, (level) => {
-                //     level = {
-                //         ...level,
-                //         totalScore: 0,
-                //         levelPassed: false
-                //     }
-                //     allLevels[level.name] = level;
-                // })
-        
-                // // let dataToSend = allLevels
-                // // console.log(allLevels);
-                resolve(res);
+                if (res.error == 201) {
+                    let savedUser = await this.saveUser(username); 
+                    resolve(savedUser);
+                }
+                else {
+                    resolve(res);
+                }        
+                
             })
             .catch (error => reject(error))
         });
     }
 
+    async saveUser (username) {
+        let allLevels = await this.loadAllLevel(true);
+        allLevels = allLevels.payload;
+
+        $.map(allLevels, (level) => {
+            level = {
+                ...level,
+                totalScore: 0,
+                levelPassed: false
+            }
+            allLevels[level.name] = level;
+        })
+        let dataToSend = {}
+        dataToSend["name"] = username;
+        dataToSend["levels"] = allLevels;
+        // Create the data to pass to the serve
+        let dataToSave = {
+            "userid": "pg18jonathan",
+            "username": username,
+            "payload" : JSON.stringify(dataToSend)
+        }
+
+        return new Promise( (resolve, reject) => {
+            $.post(`user/save/pg18Jonathan/${username}`, dataToSave)
+            .then((res) => {
+                resolve(JSON.parse(res));
+            })
+        });
+    }
 }

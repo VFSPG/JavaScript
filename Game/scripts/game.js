@@ -37,9 +37,9 @@ export default class Game {
     {
         // Get data from all levels
         let UserData = await this.clientLoad.loadUser(username);
-        // this.layout.CreateLevelSelection(UserData.payload);
-        // this.loadLevelInfo(UserData.payload[Object.keys(UserData.payload)[0]]);
-        // this.AddEventsToLevelsButton();
+        this.layout.CreateLevelSelection(UserData.payload.levels);
+        this.loadLevelInfo(UserData.payload.levels[Object.keys(UserData.payload.levels)[0]]);
+        this.AddEventsToLevelsButton();
     }
 
     AddEventsToLevelsButton() {
@@ -62,6 +62,7 @@ export default class Game {
 
     loadLevelInfo(data) {
         this.worldController.clearWorld();
+        
         $.map(data, (item, keys) =>{
             if ($(`#${keys}`).length) {
                 $(`#${keys}`).html(item)
@@ -81,7 +82,8 @@ export default class Game {
     // Do update stuff
     update( detalTime ) {
         // Physics here
-        this.worldController.update(detalTime);        
+        this.worldController.update(detalTime);    
+    
     }
 
     // Do render stuff
@@ -104,5 +106,6 @@ export default class Game {
         
         this.update(deltaTime);
         this.lastUpdate = time;
+    
     } 
 }

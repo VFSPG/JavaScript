@@ -13,18 +13,6 @@ export default class GameObject {
         this.body = this.create (); 
     }
 
-
-
-    // Do update stuff
-    update( detalTime ) {
-        // Physics here
-    }
-
-    // Do render stuff
-    render( deltaTime ) {
-
-    }
-
     create () {
         let aBody = new Physics.BodyDef();
 
@@ -95,7 +83,9 @@ export default class GameObject {
         context.restore();
     }
 
-    die(myWorld){
-       myWorld.DestroyBody(this.body);
-    }
+    // die(myWorld){
+    //     console.log("teste");
+        
+    //     myWorld.DestroyBody(this.body);
+    // }
 }
