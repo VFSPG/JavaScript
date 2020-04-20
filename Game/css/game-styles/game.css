@@ -1,4 +1,11 @@
 
+#game-screen {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: content-box;
+    border: 2px solid black;
+}
 .level-info {
     background-color: #0A4273;
     display: flex;

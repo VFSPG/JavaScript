@@ -39,21 +39,32 @@ export default class GameObject {
         }
 
         let aFixture = new Physics.FixtureDef();
+        if (this.details.entity) {
+            aFixture.friction = parseInt(this.details.entity.friction);
+            aFixture.density = 1;
+            aFixture.mass = parseInt(this.details.entity.mass);
+            aFixture.restitution = parseInt(this.details.entity.restitution);
+    
+            switch(this.details.entity.shape){
+                case "circle":
+                    aFixture.shape = new Physics.CircleShape(parseInt(this.details.entity.height)/2);
+                    break;
+    
+                case "block":
+                default:
+                    aFixture.shape = new Physics.PolygonShape();
+                    aFixture.shape.SetAsBox(parseInt(this.details.entity.width)/2, parseInt(this.details.entity.height)/2);
+            }
+        }
+        else {
+            aFixture.friction = 1;
+            aFixture.density = 1;
+            aFixture.mass = 1;
+            aFixture.restitution = 0;
 
-        aFixture.friction = parseInt(this.details.entity.friction);
-        aFixture.density = 1;
-        aFixture.mass = parseInt(this.details.entity.mass);
-        aFixture.restitution = parseInt(this.details.entity.restitution);
+            aFixture.shape = new Physics.PolygonShape();
 
-        switch(this.details.entity.shape){
-            case "circle":
-                aFixture.shape = new Physics.CircleShape(parseInt(this.details.entity.height)/2);
-                break;
-
-            case "block":
-            default:
-                aFixture.shape = new Physics.PolygonShape();
-                aFixture.shape.SetAsBox(parseInt(this.details.entity.width)/2, parseInt(this.details.entity.height)/2);
+            aFixture.shape.SetAsBox(1, 1);
         }
 
         let body = this.world.CreateBody(aBody).CreateFixture(aFixture);
@@ -67,25 +78,29 @@ export default class GameObject {
         context.save();
         context.translate(pos.x, pos.y);
         context.rotate(angle);
-
         let image = new Image();
-
-        image.src = `images/${this.details.entity.texture}`;
-
-        if(this.details.entity.texture){
+        if (this.details.entity)
+        {
+            image.src = `images/${this.details.entity.texture}`;
+    
+            if(this.details.entity.texture){
+                context.drawImage(image,
+                -parseInt(this.details.entity.width)/2,
+                    -parseInt(this.details.entity.height)/2,
+                    parseInt(this.details.entity.width),
+                    parseInt(this.details.entity.height));
+            }
+        }
+        else 
+        {
+            image.src = `images/canon.png`;
             context.drawImage(image,
-            -parseInt(this.details.entity.width)/2,
-                -parseInt(this.details.entity.height)/2,
-                parseInt(this.details.entity.width),
-                parseInt(this.details.entity.height));
+                -(100/Physics.WORLD_SCALE)/2,
+                -(80/Physics.WORLD_SCALE)/2,
+                (100/Physics.WORLD_SCALE),
+                (80/Physics.WORLD_SCALE))
         }
 
         context.restore();
     }
-
-    // die(myWorld){
-    //     console.log("teste");
-        
-    //     myWorld.DestroyBody(this.body);
-    // }
 }

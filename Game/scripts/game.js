@@ -65,9 +65,18 @@ export default class Game {
         
         $.map(data, (item, keys) =>{
             if ($(`#${keys}`).length) {
-                $(`#${keys}`).html(item)
+                $(`#${keys}`).data(keys, item);
+                $(`#${keys}`).html(item);
             }            
         });
+        
+        console.log(data);
+        
+        $("#game-screen").css({
+            backgroundImage: `url(./images/backgrounds/${data.background})`
+        });
+
+        let cannonObject = new GameObject (true, this.worldController.world, data.cannon);
         // Collidables
         $.map(data.collidableLists.obstacleList, (item) => {
             let gameObject = new GameObject (false, this.worldController.world, item);

@@ -52,7 +52,6 @@ export default class WorldController {
             let obj = this.listOfDestruction.pop();
             obj.m_world.DestroyBody(obj);
         }
-
     }
 
     drawObjects() {
@@ -137,15 +136,15 @@ export default class WorldController {
             let bodyA = contact.GetFixtureA().GetBody(),
             bodyB = contact.GetFixtureB().GetBody();
             
-            console.log("+++++++++++++++++++");
+            // console.log("+++++++++++++++++++");
             
-            console.log("body A");
-            console.log(bodyA.GetUserData());
+            // console.log("body A");
+            // console.log(bodyA.GetUserData());
             
-            console.log("body B");
-            console.log(bodyB.GetUserData());
+            // console.log("body B");
+            // console.log(bodyB.GetUserData());
             
-            console.log("+++++++++++++++++++");
+            // console.log("+++++++++++++++++++");
             
             if (bodyA.GetUserData() != null && bodyB.GetUserData() != null) 
             {
