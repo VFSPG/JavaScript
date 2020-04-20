@@ -13,11 +13,17 @@ export default class Game
     update(deltaTime){
         //Where physics go
         this.world.update()
+        for (const ele of this.entityList) {
+            ele.update()
+        }
     }
 
     render(deltaTime){
         //where DOM stuff goes
         this.world.render();
+        for (const ele of this.entityList) {
+            ele.render()
+        }
     }
 
     run(deltaTime = 0){

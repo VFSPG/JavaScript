@@ -2,13 +2,19 @@
 // Copyright (C) 2020 Nicolas Morales Escobar. All rights Reserved.
 'use strict';
 
+import Physics from '../lib/Physics.js'
+import LoadHandler from '../loadhandler.js'
 import Level from './level.js'
 import GameObject from './worldobjects/gameobject.js'
 import MainMenu from './gamemanagement/mainmenu.js'
 
+const GRAVITY = Physics.GRAVITY
 export default class worldController{
 
     constructor() {
+    constructor(){
+        this.gVector = Physics.Vec2(0.0,GRAVITY)
+        this.world = Physics.World(this.gVector)
 
         this.level = new Level();
         this.mainMenu = new MainMenu();
