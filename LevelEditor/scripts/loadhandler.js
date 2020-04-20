@@ -148,7 +148,7 @@ export default class LoadHandler{
         });
     }
 
-    loadGameObjects( gameObjects, addHandlersTo ) {
+    loadGameObjects( gameObjects, createdGO ) {
 
         $('.placed').remove();
 
@@ -167,7 +167,7 @@ export default class LoadHandler{
             
             $('#game-display').append(element);
             
-            addHandlersTo( $(`#${id}`) );
+            createdGO( $(`#${id}`) );
         }
     }
 }
