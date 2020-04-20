@@ -15,10 +15,11 @@ export default class worldController{
         this.$view = $('#game-display')
         this.gVector = new Physics.Vec2(0.0,GRAVITY)
         this.model = new Physics.World(this.gVector, true)
+        this.phyHeight = window.innerHeight / Physics.WORLD_SCALE;
+        this.phyWidth = window.innerWidth / Physics.WORLD_SCALE;
 
         this.level = new Level();
 
-        this.initializeLoadEvents();
         this.createBoundaries();
         this.addListeners();
         this.mainMenu = new MainMenu();
@@ -66,10 +67,12 @@ export default class worldController{
         console.log(aFixture);
         let aBody = new Physics.BodyDef;
         aBody.type = Physics.Body.b2_staticBody;
-        let leftWall = this.createWall(aBody, aFixture, {x:-1 ,y:3,width:2,height:20})
-        let rightWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
-        let topWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
-        let bottomWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
+        // let leftWall = this.createWall(aBody, aFixture, {x:-1 ,y:3,width:2,height:20})
+        // let rightWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
+        // let topWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
+        let bottomWall = this.createWall(aBody, aFixture,  {x:0 ,y:this.phyHeight,width:this.phyWidth,height:2})
+
+        aBody.type = Physics.Body.b2_dynamicBody;
     }
 
     createWall(aBody, aFixture, boundingBox)
@@ -77,6 +80,7 @@ export default class worldController{
         aFixture.shape.SetAsBox(boundingBox.width,boundingBox.height)
         aBody.position.Set(boundingBox.x,boundingBox.y)
         this.model.CreateBody(aBody).CreateFixture(aFixture);
+        console.log(aBody)
     }
 
     addListeners(){

@@ -8,8 +8,8 @@ export default class GameObject {
 
     constructor( $view = undefined, isStatic = false) {
         
-        this.$view = $view
-        this.model = create(x,y,height,width, isStatic)
+        // this.$view = $view
+        // this.model = create(x,y,height,width, isStatic)
         this.id = "";
         this.sprite = "";
         this.tag = "";
