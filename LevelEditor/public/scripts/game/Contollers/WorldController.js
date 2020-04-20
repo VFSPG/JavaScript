@@ -2,156 +2,14 @@
 'use strict';
 
 import Physics from '../lib/Physics.js';
+import GameObject from './GameObject.js';
+import Catapult from './Catapult.js';
 
-const CANVAS_WIDTH = document.getElementById('canvas').width;
-const CANVAS_HEIGHT = document.getElementById('canvas').height;
-const texturesImagesPath = '../../../images/textures';
+export const CANVAS_WIDTH = document.getElementById('canvas').width;
+export const CANVAS_HEIGHT = document.getElementById('canvas').height;
+export const texturesImagesPath = '../../../images/textures';
 
-const SCALE = 100;
-
-class GameObject {
-  constructor(params, world, isDynamic = true) {
-    const { pos, entity } = params;
-    const data = { ...pos, ...entity };
-    const {
-      x,
-      y,
-      height,
-      width,
-      shape,
-      texture,
-      friction,
-      mass,
-      restitution,
-    } = data;
-
-    this.isDynamic = isDynamic;
-    this.x = x;
-    this.y = y;
-    this.height = height;
-    this.width = width;
-    this.shape = shape;
-    this.texture = texture;
-    this.friction = friction;
-    this.mass = mass;
-    this.restitution = restitution;
-    this.world = world;
-    this.createRigidbody();
-    this.createElement();
-  }
-
-  createRigidbody() {
-    const {
-      x,
-      y,
-      mass,
-      friction,
-      restitution,
-      width,
-      height
-    } = this;
-    const bodyDef = new Physics.BodyDef();
-    const fixDef = new Physics.FixtureDef();
-
-    fixDef.shape = new Physics.PolygonShape();
-    fixDef.density = mass;
-    fixDef.friction = friction;
-    fixDef.restitution = restitution;
-
-    bodyDef.type = this.isDynamic ? Physics.Body.b2_dynamicBody : Physics.Body.b2_staticBody;
-
-    if (this.shape === 'square') {
-      fixDef.shape = new Physics.PolygonShape();
-      fixDef.shape.SetAsBox(
-        width / SCALE,
-        height / SCALE
-      );
-    } else {
-      fixDef.shape = new Physics.CircleShape(
-        width / SCALE
-      );
-    }
-
-    bodyDef.position.x = x / SCALE + width / SCALE;
-    bodyDef.position.y = y / SCALE + height / SCALE;
-    this.rigidbody = this.world.CreateBody(bodyDef);
-    this.rigidbody.CreateFixture(fixDef);
-  }
-
-  createElement() {
-    const {
-      x,
-      y,
-      height,
-      width,
-      texture
-    } = this;
-
-    this.objectRepresentation = $('<div></div>');
-    this.objectRepresentation.addClass('item');
-    this.objectRepresentation.css('padding', `${height}px ${width}px`);
-    this.objectRepresentation.css('left', `${x}px`);
-    this.objectRepresentation.css('top', `${y}px`);
-    this.objectRepresentation.css('background', `url('${texturesImagesPath}/${texture}')`);
-    this.objectRepresentation.css('background-repeat', 'no-repeat');
-    this.objectRepresentation.css('background-size', 'contain');
-
-    $('#editor').append(this.objectRepresentation);
-  }
-
-  render() {
-    const { width, height } = this;
-    const { x, y } = this.rigidbody.GetPosition();
-    const angle = this.rigidbody.GetAngle() * Physics.RAD_2_DEG;
-
-    this.objectRepresentation.css('left', `${x * SCALE - width}px`);
-    this.objectRepresentation.css('top', `${y * SCALE - height}px`);
-    this.objectRepresentation.css('transform', `rotate(${angle}deg)`);
-  }
-}
-
-class Catapult extends GameObject {
-  constructor(params, world) {
-    super(params, world, false);
-  }
-
-  shoot(impulse) {
-    const { x, y } = impulse;
-    const impulseVector = new Physics.Vec2(x / SCALE, y /SCALE);
-    const bulletData = {
-      pos: {
-        x: this.x + this.width * 2,
-        y: this.y
-      },
-      entity: {
-        height: 20,
-        width: 20,
-        texture: 'cannon_ball.png',
-        shape: 'circle'
-      }
-
-    };
-
-    // eslint-disable-next-line no-new
-    const bullet = new Bullet(bulletData, this.world, impulseVector);
-    const event = new CustomEvent('spawnedBullet', { detail: bullet });
-
-    document.dispatchEvent(event);
-  }
-
-  render() {
-    return;
-  }
-}
-
-class Bullet extends GameObject {
-  constructor(params, world, impulseVector) {
-    super(params, world);
-    const position = new Physics.Vec2(this.x / SCALE, this.y / SCALE);
-
-    this.rigidbody.ApplyImpulse(impulseVector, position);
-  }
-}
+export const SCALE = 100;
 
 class WorldController {
   constructor() {
@@ -189,7 +47,7 @@ class WorldController {
       entity: { height: 70, width: 70, texture: 'catapult.png', shape: 'square' }
     };
 
-    this.catapult = new Catapult(data, this.model)
+    this.catapult = new Catapult(data, this.model);
     this.collidables = collidableList.map(collidable => new GameObject(collidable, this.model));
     this.targets = targetList.map(target => new GameObject(target, this.model));
   }
@@ -225,9 +83,9 @@ class WorldController {
 
     debugDraw.SetSprite(this.context);
     debugDraw.SetDrawScale(100.0);
-    debugDraw.SetFillAlpha(0.5);
-    debugDraw.SetLineThickness(1.0);
-    debugDraw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
+    // debugDraw.SetFillAlpha(0.5);
+    // debugDraw.SetLineThickness(1.0);
+    // debugDraw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
     this.model.SetDebugDraw(debugDraw);
 
   }
@@ -262,26 +120,8 @@ const levelData = {
       {
         id: 0,
         pos: {
-          x: 439,
-          y: 83
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 90,
-          restitution: 0
-        }
-      },
-      {
-        id: 0,
-        pos: {
-          x: 499,
-          y: 0
+          x: 1200,
+          y: 700
         },
         entity: {
           type: 0,
@@ -298,8 +138,8 @@ const levelData = {
       {
         id: 0,
         pos: {
-          x: 649,
-          y: 10
+          x: 1200,
+          y: 500
         },
         entity: {
           type: 0,
@@ -309,15 +149,15 @@ const levelData = {
           texture: 'crate-one.png',
           shape: 'square',
           friction: 1,
-          mass: 90,
+          mass: 10,
           restitution: 0
         }
       },
       {
         id: 0,
         pos: {
-          x: 139,
-          y: 83
+          x: 1200,
+          y: 600
         },
         entity: {
           type: 0,
@@ -327,7 +167,25 @@ const levelData = {
           texture: 'crate-one.png',
           shape: 'square',
           friction: 1,
-          mass: 90,
+          mass: 10,
+          restitution: 0
+        }
+      },
+      {
+        id: 0,
+        pos: {
+          x: 1200,
+          y: 500
+        },
+        entity: {
+          type: 0,
+          name: 'asdf',
+          height: 50,
+          width: 50,
+          texture: 'crate-one.png',
+          shape: 'square',
+          friction: 1,
+          mass: 10,
           restitution: 0
         }
       }
