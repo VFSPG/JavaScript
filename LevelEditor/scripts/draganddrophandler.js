@@ -36,7 +36,6 @@ export default class DragAndDropHandler{
                     this.setPositionTo($newElement,pos)
                     updatePosition(pos);
                 }
-
             }
         })
     }

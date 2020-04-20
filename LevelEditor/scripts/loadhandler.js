@@ -161,7 +161,7 @@ export default class LoadHandler{
 
             //Add width and height
             let element = `<img id="${id}" 
-                            src="${src}" width="${gameObject.width}px" height="${gameObject.height}px" draggable="true"
+                            src="${src}" width="${gameObject.transform.scale.x}px" height="${gameObject.transform.scale.y}px" draggable="true"
                             style="position: absolute; left: ${gameObject.transform.position.left}px;
                             top: ${gameObject.transform.position.top}px;" class="placed">`;
             
