@@ -15,7 +15,6 @@ export default class Helpers {
             let name  = content.name.toLowerCase();
             name = name.replace(/[- ]/g,'_');
             if (!FileSystem.existsSync(path)){
-                console.log(path)
                 FileSystem.mkdirSync(path, { recursive: true });
             }
             FileSystem.writeFile(`${path}${name}.json`, 
@@ -47,9 +46,14 @@ export default class Helpers {
     // Receive path of the folder as parametes
     filesInFolder (path) {
         return new Promise ( (resolve, reject) => {
-            FileSystem.readdir(path, (err, files) => {
+            FileSystem.readdir(path, (err, files) => {  
+                if(files == undefined) {
+                    resolve("");
+                }
+                else {
+                    resolve(files);
+                }
                 if(err) reject();
-                resolve(files);
             });
         });
     }

@@ -24,19 +24,22 @@ export default class Game {
         $('#choose-level-btn').on('click', 
         () => this.layout.openLevelSelection());
 
+        $('#start-game-btn').on('click', () =>{
+            this.startGame();
+        })
         this.layout.closeLevelSelection();
-        this.loadLevels (); 
-        this.worldController.drawDebug();
+
+       // this.worldController.drawDebug();
     }
 
     // Load level
-    async loadLevels ()
+    async loadUser (username)
     {
         // Get data from all levels
-        let LevelData = await this.clientLoad.loadAllLevel(true);
-        this.layout.CreateLevelSelection(LevelData.payload);
-        this.loadLevelInfo(LevelData.payload[Object.keys(LevelData.payload)[0]]);
-        this.AddEventsToLevelsButton();
+        let UserData = await this.clientLoad.loadUser(username);
+        // this.layout.CreateLevelSelection(UserData.payload);
+        // this.loadLevelInfo(UserData.payload[Object.keys(UserData.payload)[0]]);
+        // this.AddEventsToLevelsButton();
     }
 
     AddEventsToLevelsButton() {
@@ -47,11 +50,21 @@ export default class Game {
         })
     }
 
+    startGame() {
+        let $nameInput = $("#user-name");
+    
+        if ($nameInput.val() != "") 
+        {
+            this.layout.closeStartScreen();
+            this.loadUser($nameInput.val());
+        }
+    }
+
     loadLevelInfo(data) {
-        
+        this.worldController.clearWorld();
         $.map(data, (item, keys) =>{
             if ($(`#${keys}`).length) {
-                $(`#${keys}`).html (item)
+                $(`#${keys}`).html(item)
             }            
         });
         // Collidables
@@ -59,10 +72,10 @@ export default class Game {
             let gameObject = new GameObject (false, this.worldController.world, item);
         });
 
-        // // Targets
-        // $.map(data.collidableLists.targetList, (item) => {
-        //     //console.log(item);
-        // });
+        // Targets
+        $.map(data.collidableLists.targetList, (item) => {
+            let gameObject = new GameObject (false, this.worldController.world, item);
+        });
     }
 
     // Do update stuff
@@ -91,6 +104,5 @@ export default class Game {
         
         this.update(deltaTime);
         this.lastUpdate = time;
-    
     } 
 }

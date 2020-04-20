@@ -7,7 +7,8 @@ import HTTP from 'http';
 
 const PORT = 3000;
 
-import LevelAPI from "./scripts/levelAPI"
+import LevelAPI from "./scripts/levelAPI";
+import GameApi from './scripts/gameAPI';
 
 class Server {
     constructor () {
@@ -17,7 +18,8 @@ class Server {
         this.api.use( Express.json()) 
                 .use( Express.urlencoded({ extended: false })) 
                 .use( Express.static( Path.join(__dirname, '.') ))
-                .use( '/api', LevelAPI ); //Using the Level API
+                .use( '/api', LevelAPI )
+                .use( '/user', GameApi ); //Using the Level API
         
         // Creting get method to render the index.html in the server path
         // Server side renderer.

@@ -59,3 +59,24 @@
     background-color: transparent;
 }
 
+.start-game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 22;   
+}
+
+.base-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.base-info p {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.base-info input {
+    margin-bottom: 10px;
+}

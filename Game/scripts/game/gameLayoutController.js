@@ -29,4 +29,8 @@ export default class LayoutController {
     closeLevelSelection() {
         $("#level-select-screen").hide();
     }
+
+    closeStartScreen() {
+        $("#start-screen").hide();
+    }
 }

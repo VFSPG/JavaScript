@@ -82,4 +82,33 @@ export default class ClientLoad {
             })
     }
 
+
+    async loadUser(username) {
+        console.log(username);
+        return new Promise( (resolve, reject) => {
+            $.post(`user/get_user/${username}`)
+            .then( response => {
+                // Parse the data then create every item 
+                let res = JSON.parse(response);
+
+                // let allLevels = await this.loadAllLevel(true);
+                // allLevels = allLevels.payload;
+        
+                // $.map(allLevels, (level) => {
+                //     level = {
+                //         ...level,
+                //         totalScore: 0,
+                //         levelPassed: false
+                //     }
+                //     allLevels[level.name] = level;
+                // })
+        
+                // // let dataToSend = allLevels
+                // // console.log(allLevels);
+                resolve(res);
+            })
+            .catch (error => reject(error))
+        });
+    }
+
 }

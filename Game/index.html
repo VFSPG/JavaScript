@@ -20,6 +20,16 @@
             <h1>Angry Pigs</h1>
         </header>
 
+        <section id="start-screen" class="level-select modal-box">
+            <div class="box-container start-game">
+                <div class="base-info">
+                    <p>Enter your name:</p>
+                    <input id="user-name" type="text" name="username" value="">
+                    <button id="start-game-btn" class="btn-style">Start Game</button>
+                </div>
+            </div>
+        </section>
+
         <section class="level-info">
             <button id="choose-level-btn" class="btn-style choose-level-btn">
                 Choose Level
@@ -67,11 +77,10 @@
                     <h2>Level Selection</h2>
                     <button id="close-level-selection" class="close-button"></button>
                 </header>
-                <ul id="levels-list" class="levels-list">
-
-                </ul>
+                <ul id="levels-list" class="levels-list"></ul>
             </div>
         </section>
+
         <script type="module" src="./scripts/index.js"></script>
     </body>
 </html>

@@ -30,6 +30,15 @@ export default class WorldController {
         this.drawObjects();
     }   
 
+    clearWorld() {
+        let obj = this.world.GetBodyList();
+        while(obj) {
+            let body = obj.GetUserData();
+            if(body) {  body.world.DestroyBody(obj); }
+            obj = obj.GetNext();
+        }
+    }
+
     drawObjects() {
         let context = this.$view[0].getContext('2d');
         
