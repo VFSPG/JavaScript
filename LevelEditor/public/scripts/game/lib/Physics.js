@@ -40,6 +40,6 @@ const Physics = {
 
   WORLD_SCALE:    20.0,  // number of pixels per meter in the physics sim
   GRAVITY:        9.8    // The force of gravity
-}
+};
 
 export default Physics;

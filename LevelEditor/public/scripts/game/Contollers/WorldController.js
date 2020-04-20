@@ -10,7 +10,7 @@ const texturesImagesPath = '../../../images/textures';
 const SCALE = 100;
 
 class GameObject {
-  constructor(params, world) {
+  constructor(params, world, isDynamic = true) {
     const { pos, entity } = params;
     const data = { ...pos, ...entity };
     const {
@@ -18,16 +18,19 @@ class GameObject {
       y,
       height,
       width,
+      shape,
       texture,
       friction,
       mass,
       restitution,
     } = data;
 
+    this.isDynamic = isDynamic;
     this.x = x;
     this.y = y;
     this.height = height;
     this.width = width;
+    this.shape = shape;
     this.texture = texture;
     this.friction = friction;
     this.mass = mass;
@@ -55,13 +58,19 @@ class GameObject {
     fixDef.friction = friction;
     fixDef.restitution = restitution;
 
-    bodyDef.type = Physics.Body.b2_dynamicBody;
+    bodyDef.type = this.isDynamic ? Physics.Body.b2_dynamicBody : Physics.Body.b2_staticBody;
 
-    fixDef.shape = new Physics.PolygonShape();
-    fixDef.shape.SetAsBox(
-      width / SCALE,
-      height / SCALE
-    );
+    if (this.shape === 'square') {
+      fixDef.shape = new Physics.PolygonShape();
+      fixDef.shape.SetAsBox(
+        width / SCALE,
+        height / SCALE
+      );
+    } else {
+      fixDef.shape = new Physics.CircleShape(
+        width / SCALE
+      );
+    }
 
     bodyDef.position.x = x / SCALE + width / SCALE;
     bodyDef.position.y = y / SCALE + height / SCALE;
@@ -81,7 +90,6 @@ class GameObject {
     this.objectRepresentation = $('<div></div>');
     this.objectRepresentation.addClass('item');
     this.objectRepresentation.css('padding', `${height}px ${width}px`);
-    this.objectRepresentation.addClass('draggable');
     this.objectRepresentation.css('left', `${x}px`);
     this.objectRepresentation.css('top', `${y}px`);
     this.objectRepresentation.css('background', `url('${texturesImagesPath}/${texture}')`);
@@ -102,6 +110,45 @@ class GameObject {
   }
 }
 
+class Catapult extends GameObject {
+  constructor(params, world) {
+    super(params, world, false);
+  }
+
+  shoot(impulse) {
+    const { x, y } = impulse;
+    const impulseVector = new Physics.Vec2(x / SCALE, y /SCALE);
+    const bulletData = {
+      pos: {
+        x: this.x + this.width * 2,
+        y: this.y
+      },
+      entity: {
+        height: 10,
+        width: 10,
+        texture: 'crate-one.png',
+        shape: 'circle'
+      }
+    };
+
+    // eslint-disable-next-line no-new
+    new Bullet(bulletData, this.world, impulseVector);
+  }
+
+  render() {
+    return;
+  }
+}
+
+class Bullet extends GameObject {
+  constructor(params, world, impulseVector) {
+    super(params, world);
+    const position = new Physics.Vec2(this.x / SCALE, this.y / SCALE);
+
+    this.rigidbody.ApplyImpulse(impulseVector, position);
+  }
+}
+
 class WorldController {
   constructor() {
     // World gravity
@@ -119,9 +166,20 @@ class WorldController {
   }
 
   createLevelObjects() {
-    const { entityLists: { collidableList = [], targetList = [] } } = levelData;
+    const {
+      catapult: { pos: { x, y } },
+      entityLists: { collidableList = [], targetList = [] }
+    } = levelData;
 
+
+    const data = {
+      pos: { x, y },
+      entity: { height: 70, width: 70, texture: 'catapult.png', shape: 'square' }
+    };
+
+    this.catapult = new Catapult(data, this.model)
     this.collidables = collidableList.map(collidable => new GameObject(collidable, this.model));
+    this.targets = targetList.map(target => new GameObject(target, this.model));
   }
 
   setBoundaries() {
@@ -162,14 +220,16 @@ class WorldController {
 
   }
 
+  shoot(impulseVector) {
+    this.catapult.shoot(impulseVector);
+  }
+
   update() {
     this.model.Step(1 / 30, 10, 10);
     this.model.ClearForces();
     this.model.DrawDebugData();
 
     this.collidables.forEach(collidable => collidable.render());
-
-    requestAnimationFrame(() => this.update());
   }
 }
 
@@ -182,7 +242,7 @@ const levelData = {
     id: 0,
     pos: {
       x: 20,
-      y: 550
+      y: 650
     }
   },
   entityLists: {

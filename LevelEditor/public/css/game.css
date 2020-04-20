@@ -3,10 +3,6 @@ body {
   background-color: #2D4770;
 }
 
-.draggable {
-    cursor: progress;
-}
-
 #wrapper {
   grid-column-start: 2;
   grid-column-end: 3;
@@ -23,7 +19,6 @@ body {
   width:1200px;
   height:800px;
   overflow:hidden;
-  cursor:pointer;
   /* background: url("../images/backgrounds/my-background.jpg "); */
   background-repeat: no-repeat;
   background-size: contain;
@@ -40,15 +35,6 @@ body {
   margin: 5px;
   background-color: #00f;
   color: #fff;
-}
-
-#item2 {
-  background: url('../images/crate-one.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  padding: 75px;
-  left: 300px;
-  top: 6px;
 }
 
 .container {
