@@ -17,6 +17,7 @@ export default class WorldController {
         this.createBoudaries();
         this.listOfDestruction = [];
         this.collision();
+        this.maxAmmo = 0;
 
         this.$view[0].addEventListener("click", event => this.handleClick( event ));
         this.$view[0].addEventListener("touchstart",event => this.handleClick( event ));
@@ -30,12 +31,11 @@ export default class WorldController {
             this.dtRemaining -= this.stepAmount;
             this.world.Step(this.stepAmount,8,3);
             this.destroyObjects();
+            this.timeObjects(deltaTime);
         }
         
       //  this.world.DrawDebugData();
-
         this.drawObjects();
-
     }   
 
     clearWorld() {
@@ -53,6 +53,15 @@ export default class WorldController {
             obj.m_world.DestroyBody(obj);
         }
 
+    }
+
+    timeObjects(deltaTime){
+        let obj = this.world.GetBodyList();
+        while(obj) {
+            let body = obj.GetUserData();
+            if(body) {  body.update(deltaTime, this.listOfDestruction); }
+            obj = obj.GetNext();
+        }
     }
 
     drawObjects() {
@@ -118,7 +127,10 @@ export default class WorldController {
             }
         }
         
-        let gameObject = new GameObject (false, this.world, item, vector);
+        if(this.maxAmmo > 0){
+            this.maxAmmo--;
+            let gameObject = new GameObject (false, this.world, item, true, vector);
+        }
     }
 
     // Do render stuff
@@ -146,7 +158,7 @@ export default class WorldController {
             console.log(bodyB.GetUserData());
             
             console.log("+++++++++++++++++++");
-            
+            /*
             if (bodyA.GetUserData() != null && bodyB.GetUserData() != null) 
             {
                 if ("entity" in bodyA.GetUserData().details && "entity" in bodyB.GetUserData().details)
@@ -154,7 +166,7 @@ export default class WorldController {
                     this.listOfDestruction.push(bodyA);
                     this.listOfDestruction.push(bodyB);
                 }
-            }
+            }*/
         };
 
         this.world.SetContactListener(this.listener);

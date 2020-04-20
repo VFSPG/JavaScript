@@ -65,17 +65,21 @@ export default class Game {
         
         $.map(data, (item, keys) =>{
             if ($(`#${keys}`).length) {
+                $(`#${keys}`).data(keys, item);
                 $(`#${keys}`).html(item)
             }            
         });
+
+        this.worldController.maxAmmo = $("#ammo").data("ammo");
+
         // Collidables
         $.map(data.collidableLists.obstacleList, (item) => {
-            let gameObject = new GameObject (false, this.worldController.world, item);
+            let gameObject = new GameObject (false, this.worldController.world, item, false);
         });
 
         // Targets
         $.map(data.collidableLists.targetList, (item) => {
-            let gameObject = new GameObject (false, this.worldController.world, item);
+            let gameObject = new GameObject (false, this.worldController.world, item, false);
         });
     }
 
