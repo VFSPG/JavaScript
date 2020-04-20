@@ -5,12 +5,15 @@ import Physics from "../libs/Physics.js";
 
 export default class GameObject {
 
-    constructor (isStatic, world, details) {
+    constructor (isStatic, world, details, velocity) {
         this.world = world;
         this.details =  details;
         this.isStatic = isStatic;
+        this.velocity = velocity;
         this.body = this.create (); 
     }
+
+
 
     // Do update stuff
     update( detalTime ) {
@@ -26,7 +29,15 @@ export default class GameObject {
         let aBody = new Physics.BodyDef();
 
         aBody.position = new Physics.Vec2(this.details.pos.x /Physics.WORLD_SCALE, this.details.pos.y /Physics.WORLD_SCALE);
-        aBody.linearVelocity = new Physics.Vec2(1, 0);
+        
+        if(this.velocity){
+            aBody.linearVelocity = new Physics.Vec2(this.velocity.x, this.velocity.y);
+        }
+
+        else{
+            aBody.linearVelocity = new Physics.Vec2(0, 0);
+        }
+
         aBody.userData = this;
 
         if(this.isStatic)
@@ -75,12 +86,16 @@ export default class GameObject {
 
         if(this.details.entity.texture){
             context.drawImage(image,
-                -parseInt(this.details.entity.width)/2,
+            -parseInt(this.details.entity.width)/2,
                 -parseInt(this.details.entity.height)/2,
                 parseInt(this.details.entity.width),
                 parseInt(this.details.entity.height));
         }
 
         context.restore();
+    }
+
+    die(myWorld){
+       myWorld.DestroyBody(this.body);
     }
 }

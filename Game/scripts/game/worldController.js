@@ -2,6 +2,7 @@
 'use strict';
 
 import Physics from '../libs/Physics.js';
+import GameObject from './gameObject.js';
 
 export default class WorldController {
     constructor () {
@@ -10,11 +11,16 @@ export default class WorldController {
         this.$view = $('#game-screen');
 
         this.world = new Physics.World(gravity, true);
+        this.listOfDestruction = [];
 
         this.stepAmount = 1/60;
         this.dtRemaining = 0;
         this.addListeners();
         this.createBoudaries();
+        this.collision(this.world, this.listOfDestruction);
+
+        this.$view[0].addEventListener("click", event => this.handleClick( event ));
+        this.$view[0].addEventListener("touchstart",event => this.handleClick( event ));
     }
 
     // Do update stuff
@@ -28,6 +34,7 @@ export default class WorldController {
         
         this.world.DrawDebugData();
         this.drawObjects();
+        this.die(this.world);
     }   
 
     clearWorld() {
@@ -66,6 +73,58 @@ export default class WorldController {
         draw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
         this.world.SetDebugDraw(draw);
     }
+
+    handleClick( event ) {
+        event.preventDefault();
+        let point = {
+              x: (event.offsetX || event.layerX) / Physics.WORLD_SCALE,
+              y: (event.offsetY || event.layerY) / Physics.WORLD_SCALE
+            };
+          
+        let  vector = {
+            x: point.x - 4,
+            y: point.y - 14
+        }
+
+        let magnitude =  Math.sqrt((vector.x * vector.x)+(vector.y * vector.y));
+
+        vector.x *= 2;
+        vector.y *= 2;
+
+        let item = {
+            pos: {
+                x: 4 * Physics.WORLD_SCALE,
+                y: 14 * Physics.WORLD_SCALE
+            },
+            entity: {
+                type: 1,
+                name: "bullet",
+                height: 2,
+                width: 2,
+                texture: "bird.png",
+                shape: "circle",
+                friction: 0.5,
+                mass: 80,
+                restitution: 1
+            }
+        }
+        
+        let gameObject = new GameObject (false, this.world, item, vector);
+    }
+
+    collision(myWorld, listDest) {
+        this.listener = new Physics.Listener();
+        this.listener.PostSolve = function (contact) {
+
+        let bodyA = contact.GetFixtureA().GetBody().GetUserData(),
+        bodyB = contact.GetFixtureB().GetBody().GetUserData();
+
+        if(bodyA) { listDest.push(bodyA); }
+        if(bodyB) { listDest.push(bodyB); }
+        };
+
+        this.world.SetContactListener(this.listener);
+    };
 
     // Do render stuff
     render( deltaTime ) {
