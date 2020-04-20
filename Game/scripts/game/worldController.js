@@ -19,6 +19,12 @@ export default class WorldController {
         this.collision();
         this.maxAmmo = 0;
 
+        this.catapult = {
+            pos: {x:0, y:0},
+            height: 0,
+            width: 0
+        }
+        
         this.$view[0].addEventListener("click", event => this.handleClick( event ));
         this.$view[0].addEventListener("touchstart",event => this.handleClick( event ));
     }
@@ -36,6 +42,7 @@ export default class WorldController {
         
       //  this.world.DrawDebugData();
         this.drawObjects();
+        this.drawCatapult();
     }   
 
     clearWorld() {
@@ -63,9 +70,17 @@ export default class WorldController {
         }
     }
 
+    drawCatapult() {
+        let image = new Image();
+        let context = this.$view[0].getContext('2d');
+        image.src = `images/canon.png`;
+        console.log(this.catapult)
+        context.drawImage(image,
+            this.catapult.pos.x, this.catapult.pos.y, this.catapult.width, this.catapult.height);
+    }
+
     drawObjects() {
         let context = this.$view[0].getContext('2d');
-        
         let obj = this.world.GetBodyList();
         context.clearRect(0,0,this.$view[0].width,this.$view[0].height);
 
@@ -143,11 +158,15 @@ export default class WorldController {
 
     collision(myWorld) { 
         this.listener = new Physics.Listener();
+        this.listener.PreSolved = (contact) => {
+            console.log(contact);
+            
+        } 
         this.listener.BeginContact = (contact)=> {
-
+            console.log(contact);
             let bodyA = contact.GetFixtureA().GetBody(),
             bodyB = contact.GetFixtureB().GetBody();
-            
+
             // console.log("+++++++++++++++++++");
             
             // console.log("body A");
@@ -156,7 +175,7 @@ export default class WorldController {
             // console.log("body B");
             // console.log(bodyB.GetUserData());
             
-            console.log("+++++++++++++++++++");
+            // console.log("+++++++++++++++++++");
             /*
             if (bodyA.GetUserData() != null && bodyB.GetUserData() != null) 
             {

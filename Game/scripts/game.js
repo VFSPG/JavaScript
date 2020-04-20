@@ -70,14 +70,17 @@ export default class Game {
             }            
         });
         
-        
         $("#game-screen").css({
             backgroundImage: `url(./images/backgrounds/${data.background})`
         });
 
         this.worldController.maxAmmo = $("#ammo").data("ammo");
-
-        let cannonObject = new GameObject (true, this.worldController.world, data.cannon);
+        this.worldController.catapult = { 
+            ...data.cannon,
+            height:100,
+            width:120
+        }
+        
         // Collidables
         $.map(data.collidableLists.obstacleList, (item) => {
             let gameObject = new GameObject (false, this.worldController.world, item, false);
