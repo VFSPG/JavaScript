@@ -12,7 +12,7 @@ const GRAVITY = Physics.GRAVITY
 export default class worldController {
 
     constructor() {
-        this.gVector = new Physics.Vec2(0,- GRAVITY)
+        this.gVector = new Physics.Vec2(0,-GRAVITY)
         this.world = new Physics.World(this.gVector)
         this.$view = $('#game-display')
         this.model = new Physics.World(this.gVector, true)
@@ -50,7 +50,7 @@ export default class worldController {
                 this.level.content.gameObjects.push(gameObject);
                 this.aBody.type = Physics.Body.b2_dynamicBody;
                 this.aFixture.shape = new Physics.PolygonShape;
-                this.aFixture.shape.SetAsBox(gameObject.transform.scale.x / 2, gameObject.transform.scale.y / 2)
+                this.aFixture.shape.SetAsBox((100/Physics.WORLD_SCALE) / 2, (100/ Physics.WORLD_SCALE) / 2)
                 this.aBody.position.Set(gameObject.transform.position.left / Physics.WORLD_SCALE, gameObject.transform.position.top / Physics.WORLD_SCALE)
                 this.testBody = this.model.CreateBody(this.aBody);
                 this.testBody.CreateFixture(this.aFixture);
@@ -76,10 +76,10 @@ export default class worldController {
 
         this.aFixture.shape = new Physics.PolygonShape;
         this.aBody.type = Physics.Body.b2_staticBody;
-        // let leftWall = this.createWall(aBody, aFixture, {x:-1 ,y:3,width:2,height:20})
-        // let rightWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
-        // let topWall = this.createWall(aBody, aFixture,  {x:-1 ,y:3,width:2,height:20})
-        let bottomWall = this.createWall({ x: 12.65, y: 30, width: 20, height: 5 })
+        let rightWall = this.createWall({x:46 ,y:15,width:1,height:50})
+        let leftWall = this.createWall( {x:-8 ,y:15,width:1,height:50})
+        let topWall = this.createWall( {x:5 ,y:-3,width:50,height:1})
+        let bottomWall = this.createWall({ x: 5, y: 30, width:50, height:1 })
 
         
     }
@@ -87,7 +87,9 @@ export default class worldController {
     createWall(boundingBox) {
         this.aFixture.shape.SetAsBox(boundingBox.width, boundingBox.height)
         this.aBody.position.Set(boundingBox.x, boundingBox.y)
-        this.model.CreateBody(this.aBody).CreateFixture(this.aFixture);
+        let temp = this.model.CreateBody(this.aBody);
+        temp.CreateFixture(this.aFixture);
+        return temp;
     }
 
     addListeners() {
@@ -108,7 +110,6 @@ export default class worldController {
         
         if (this.testBody != undefined) {
             let test = $('#game-object-pig-hurt-1')
-            console.log(this.testBody.GetPosition());
             test.css('top', this.testBody.GetPosition().y * Physics.WORLD_SCALE)
             test.css('left', this.testBody.GetPosition().x * Physics.WORLD_SCALE)
             
