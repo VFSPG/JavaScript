@@ -159,7 +159,6 @@ export default class LoadHandler{
             let id = `${gameObject.id}`;
             let src = gameObject.sprite;
 
-            //Add width and height
             let element = `<img id="${id}" 
                             src="${src}" width="${gameObject.transform.scale.x}px" height="${gameObject.transform.scale.y}px" draggable="true"
                             style="position: absolute; left: ${gameObject.transform.position.left}px;

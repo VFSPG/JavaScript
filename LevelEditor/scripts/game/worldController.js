@@ -31,37 +31,35 @@ export default class worldController{
             this.level.content = { ...content };
             this.level.content.gameObjects = new Array();
 
-            for (let data of this.level.content.gameObjects) {
+            for (let data of content.gameObjects) {
 
                 let gameObject = new GameObject();
-                gameObject.id = data.name;
+                gameObject.id = data.id;
+                gameObject.name = data.name;
                 gameObject.tag = data.tag;
-                gameObject.transform.position.left = data.left;
-                gameObject.transform.position.top = data.top;
-                gameObject.transform.scale.x = data.width;
-                gameObject.transform.scale.y = data.height;
-                gameObject.physicsStats.friction = data.friction;
-                gameObject.physicsStats.restitution = data.restitution;
-                gameObject.physicsStats.shape = data.selectedShape;
-                gameObject.sprite = data.selectedSprite;
+                gameObject.transform.position.left = data.transform.position.left;
+                gameObject.transform.position.top = data.transform.position.top;
+                gameObject.transform.scale.x = data.transform.scale.x;
+                gameObject.transform.scale.y = data.transform.scale.y;
+                gameObject.physicsStats.friction = data.physicsStats.friction;
+                gameObject.physicsStats.restitution = data.physicsStats.restitution;
+                gameObject.physicsStats.shape = data.physicsStats.shape;
+                gameObject.sprite = data.sprite;
 
                 this.level.content.gameObjects.push(gameObject);
             }
-        }, element => {
-            
-            this.createGameObjectFrom( element );
         });
     }
 
-    createGameObjectFrom( element ) {
+    getGameObjectBy( id ) {
 
-        let gameObject = new GameObject();
-        gameObject.id = element.attr("id");
-        gameObject.sprite = element.attr("src");
-        gameObject.width = element.attr("width");
-        gameObject.height = element.attr("height");
-        gameObject.transform.position.left = element.css("left");
-        gameObject.transform.position.top = element.css("top");
+        for (let gameObject of this.level.content.gameObjects) {
+
+            if (gameObject.id == id) {
+                
+                return id;
+            }
+        }
     }
 
     createBoundaries(){
