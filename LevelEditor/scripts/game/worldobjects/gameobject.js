@@ -6,8 +6,10 @@ import CollisionDetector from './collisiondetector.js';
 
 export default class GameObject {
 
-    constructor() {
+    constructor( $view = undefined, isStatic = false) {
         
+        // this.$view = $view
+        // this.model = create(x,y,height,width, isStatic)
         this.id = "";
         this.name = "";
         this.sprite = "";
@@ -24,6 +26,8 @@ export default class GameObject {
                                                         this.transform.scale );
     }
 
+    create(x,y,height,width, isStatic){
+    }
     update() {
 
     }

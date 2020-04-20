@@ -99,8 +99,8 @@ export default class DragAndDropHandler{
 
     offsetPosition( event, data ) {
         return {
-            left: event.clientX - data.dx,
-            top: event.clientY - data.dy,
+            left: event.offsetX - data.dx,
+            top: event.offsetY - data.dy,
         }
     }
 
@@ -133,8 +133,8 @@ export default class DragAndDropHandler{
         let gameHeight = gameDisplay.height();
 
         let position = gameDisplay.position();
-        if (offsetX < position.left || offsetY < position.top
-            || offsetX > position.left + gameWidth - width || offsetY > position.top + gameHeight - height) {
+        if (offsetX < 0 || offsetY < 0
+            || offsetX >  gameWidth - width || offsetY >  gameHeight - height) {
             return false;
         }
         return true;
