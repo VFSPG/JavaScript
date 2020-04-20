@@ -27,7 +27,6 @@ export default class DragAndDropHandler{
     {
         $newElement.draggable({
             revert: () => {
-                console.log($newElement[0].offsetLeft)
                 return !this.checkValidMove($newElement[0].offsetLeft, $newElement[0].offsetTop, $newElement.width(), $newElement.height())
             },
             scroll: false,
@@ -35,7 +34,7 @@ export default class DragAndDropHandler{
                 if (this.checkValidMove(ui.position.left, ui.position.top)) {
                     let pos = {x: ui.position.left, y: ui.position.top}
                     this.setPositionTo($newElement,pos)
-                    updatePosition()
+                    updatePosition(pos);
                 }
 
             }
@@ -128,11 +127,14 @@ export default class DragAndDropHandler{
     }
 
     checkValidMove(offsetX, offsetY, width, height) {
-        let gameWidth = $('.gameResolution').width();
-        let gameHeight = $('.gameResolution').height();
-        console.log(gameWidth)
-        if (offsetX > gameWidth - width || offsetY > gameHeight - height
-            || offsetX < 0 || offsetY < 0) {
+
+        let gameDisplay = $('#game-display');
+        let gameWidth = gameDisplay.width();
+        let gameHeight = gameDisplay.height();
+
+        let position = gameDisplay.position();
+        if (offsetX < position.left || offsetY < position.top
+            || offsetX > position.left + gameWidth - width || offsetY > position.top + gameHeight - height) {
             return false;
         }
         return true;
