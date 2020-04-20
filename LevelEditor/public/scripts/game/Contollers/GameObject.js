@@ -86,7 +86,7 @@ export default class GameObject {
     this.objectRepresentation.css('top', `${y}px`);
     this.objectRepresentation.css('background', `url('${texturesImagesPath}/${texture}')`);
     this.objectRepresentation.css('background-repeat', 'no-repeat');
-    this.objectRepresentation.css('background-size', 'contain');
+    this.objectRepresentation.css('background-size', '100% 100%');
 
     $('#editor').append(this.objectRepresentation);
   }

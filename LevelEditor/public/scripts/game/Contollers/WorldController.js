@@ -4,6 +4,7 @@
 import Physics from '../lib/Physics.js';
 import GameObject from './GameObject.js';
 import Catapult from './Catapult.js';
+import Bird from './Bird.js';
 
 export const CANVAS_WIDTH = document.getElementById('canvas').width;
 export const CANVAS_HEIGHT = document.getElementById('canvas').height;
@@ -15,14 +16,14 @@ class WorldController {
   constructor() {
     // World gravity
     this.context = document.getElementById('canvas').getContext('2d');
-    this.levelWidth = this.context.width;
-    this.levelHeight = this.context.height;
-
+    this.currentScore = 0;
     const gravity = new Physics.Vec2(0, Physics.GRAVITY);
 
     this.model = new Physics.World(gravity, true);
 
     $(document).on('spawnedBullet', (event) => this.addBulletToWorld(event));
+    $(document).on('destroyedBullet', (event) => this.removeBulletFromWorld(event));
+    $(document).on('scoreBird', (event) => this.scoreBird(event));
 
     this.setBoundaries();
     this.createLevelObjects();
@@ -35,6 +36,33 @@ class WorldController {
     this.collidables.push(bullet);
   }
 
+  removeBulletFromWorld(event) {
+    const { detail: bullet } = event;
+    const bulletIndex = this.collidables.indexOf(bullet);
+
+    // Remove it based in the index
+    if (bulletIndex > -1) {
+      this.collidables.splice(bulletIndex, 1);
+      this.model.DestroyBody(bullet.rigidbody);
+      $(bullet.objectRepresentation).remove();
+    }
+
+  }
+
+  scoreBird(event) {
+    const { detail: bird } = event;
+    const tarkIndex = this.targets.indexOf(bird);
+
+    // Remove it based in the index
+    if (tarkIndex > -1) {
+      this.currentScore += bird.value;
+      this.model.DestroyBody(bird.rigidbody);
+      $(bird.objectRepresentation).remove();
+      this.targets.splice(tarkIndex, 1);
+    }
+
+  }
+
   createLevelObjects() {
     const {
       catapult: { pos: { x, y } },
@@ -44,12 +72,11 @@ class WorldController {
 
     const data = {
       pos: { x, y },
-      entity: { height: 70, width: 70, texture: 'catapult.png', shape: 'square' }
     };
 
     this.catapult = new Catapult(data, this.model);
     this.collidables = collidableList.map(collidable => new GameObject(collidable, this.model));
-    this.targets = targetList.map(target => new GameObject(target, this.model));
+    this.targets = targetList.map(target => new Bird(target, this.model));
   }
 
   setBoundaries() {
@@ -68,8 +95,8 @@ class WorldController {
     fixDef.shape.SetAsBox(CANVAS_WIDTH / SCALE / 2, 10 / SCALE);
     bodyDef.position.Set(CANVAS_WIDTH / SCALE / 2, CANVAS_HEIGHT / SCALE);
     this.model.CreateBody(bodyDef).CreateFixture(fixDef);
-    bodyDef.position.Set(18 / 2, 0);
-    this.model.CreateBody(bodyDef).CreateFixture(fixDef);
+    // bodyDef.position.Set(CANVAS_WIDTH / SCALE / 2, 0);
+    // this.model.CreateBody(bodyDef).CreateFixture(fixDef);
 
     fixDef.shape.SetAsBox(10 / SCALE, CANVAS_HEIGHT / SCALE / 2);
     bodyDef.position.Set(0, CANVAS_HEIGHT / SCALE / 2);
@@ -82,12 +109,11 @@ class WorldController {
     const debugDraw = new Physics.DebugDraw();
 
     debugDraw.SetSprite(this.context);
-    debugDraw.SetDrawScale(100.0);
-    // debugDraw.SetFillAlpha(0.5);
-    // debugDraw.SetLineThickness(1.0);
-    // debugDraw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
+    debugDraw.SetDrawScale(SCALE);
+    debugDraw.SetFillAlpha(0.5);
+    debugDraw.SetLineThickness(1.0);
+    debugDraw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
     this.model.SetDebugDraw(debugDraw);
-
   }
 
   shoot(impulseVector) {
@@ -95,11 +121,16 @@ class WorldController {
   }
 
   update() {
+    if (!this.targets.length) {
+      console.log(`YOU WON: ${this.currentScore}`);
+    }
+
     this.model.Step(1 / 30, 10, 10);
     this.model.ClearForces();
     this.model.DrawDebugData();
 
     this.collidables.forEach(collidable => collidable.render());
+    this.targets.forEach(target => target.render());
   }
 }
 
@@ -131,25 +162,7 @@ const levelData = {
           texture: 'crate-one.png',
           shape: 'square',
           friction: 1,
-          mass: 10,
-          restitution: 0
-        }
-      },
-      {
-        id: 0,
-        pos: {
-          x: 1200,
-          y: 500
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 10,
+          mass: 5,
           restitution: 0
         }
       },
@@ -167,7 +180,7 @@ const levelData = {
           texture: 'crate-one.png',
           shape: 'square',
           friction: 1,
-          mass: 10,
+          mass: 5,
           restitution: 0
         }
       },
@@ -185,7 +198,100 @@ const levelData = {
           texture: 'crate-one.png',
           shape: 'square',
           friction: 1,
-          mass: 10,
+          mass: 5,
+          restitution: 0
+        }
+      },
+      {
+        id: 0,
+        pos: {
+          x: 1200,
+          y: 400
+        },
+        entity: {
+          type: 0,
+          name: 'asdf',
+          height: 50,
+          width: 200,
+          texture: 'crate-one.png',
+          shape: 'square',
+          friction: 1,
+          mass: 5,
+          restitution: 0
+        }
+      },
+      {
+        id: 0,
+        pos: {
+          x: 1500,
+          y: 700
+        },
+        entity: {
+          type: 0,
+          name: 'asdf',
+          height: 50,
+          width: 50,
+          texture: 'crate-one.png',
+          shape: 'square',
+          friction: 1,
+          mass: 5,
+          restitution: 0
+        }
+      },
+      {
+        id: 0,
+        pos: {
+          x: 1500,
+          y: 600
+        },
+        entity: {
+          type: 0,
+          name: 'asdf',
+          height: 50,
+          width: 50,
+          texture: 'crate-one.png',
+          shape: 'square',
+          friction: 1,
+          mass: 5,
+          restitution: 0
+        }
+      },
+      {
+        id: 0,
+        pos: {
+          x: 1500,
+          y: 500
+        },
+        entity: {
+          type: 0,
+          name: 'asdf',
+          height: 50,
+          width: 50,
+          texture: 'crate-one.png',
+          shape: 'square',
+          friction: 1,
+          mass: 5,
+          restitution: 0
+        }
+      },
+    ],
+    targetList: [
+      {
+        id: 0,
+        pos: {
+          x: 1400,
+          y: 500
+        },
+        value: 100,
+        entity: {
+          type: 0,
+          name: 'asdf',
+          height: 50,
+          width: 50,
+          texture: 'bird.jpg',
+          shape: 'square',
+          friction: 1,
+          mass: 2,
           restitution: 0
         }
       }

@@ -5,8 +5,20 @@ import Bullet from './Bullet.js';
 import Physics from '../lib/Physics.js';
 import { SCALE } from './WorldController.js';
 
+const HEIGHT = 70;
+const WIDTH = 80;
+const TEXTURE = 'catapult.png';
+const SHAPE = 'square';
+
 export default class Catapult extends GameObject {
   constructor(params, world) {
+    params.entity = {
+      height: HEIGHT,
+      width: WIDTH,
+      texture: TEXTURE,
+      shape: SHAPE
+    };
+
     super(params, world, false);
   }
 
@@ -15,19 +27,9 @@ export default class Catapult extends GameObject {
     const impulseVector = new Physics.Vec2(x / SCALE, y / SCALE);
     const bulletData = {
       pos: {
-        x: this.x + this.width * 2,
-        y: this.y
-      },
-      entity: {
-        mass: 30,
-        friction: 1,
-        restitution: 0,
-        height: 20,
-        width: 20,
-        texture: 'cannon_ball.png',
-        shape: 'circle'
+        x: this.x + this.width * 2 + 1,
+        y: this.y - this.height + 1
       }
-
     };
 
     // eslint-disable-next-line no-new

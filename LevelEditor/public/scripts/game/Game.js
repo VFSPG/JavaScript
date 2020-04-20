@@ -45,7 +45,7 @@ class Game {
       const { clientX: x, clientY: y } = event;
       const { x: x0, y: y0 } =  this.initialMousePosition;
 
-      const impulse = { x: (x0 - x) * 10, y: (y0 - y) * 10 };
+      const impulse = { x: (x0 - x) * 50, y: (y0 - y) * 50 };
 
       this.world.shoot(impulse);
     }
