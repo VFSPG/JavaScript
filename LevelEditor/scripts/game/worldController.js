@@ -1,45 +1,67 @@
-// Copyright (C) 2020 Omar Pino. All rights Reserved
+// Copyright (C) 2020 Omar Pino. All rights Reserved.
+// Copyright (C) 2020 Nicolas Morales Escobar. All rights Reserved.
 'use strict';
 
-import LoadHandler from '../loadhandler.js'
 import Level from './level.js'
+import GameObject from './worldobjects/gameobject.js'
+import MainMenu from './gamemanagement/mainmenu.js'
 
 export default class worldController{
 
-    constructor(){
+    constructor() {
 
-        this.loadHandler = new LoadHandler();
         this.level = new Level();
+        this.mainMenu = new MainMenu();
 
-        this.initializeLoadEvents();
-    }
+        this.mainMenu.initializeLoadEvents( content => {
 
-    initializeLoadEvents() {
+            this.level.content = { ...content };
+            this.level.content.gameObjects = new Array();
 
-        this.loadHandler.setLevelOptions();
+            for (let data of this.level.content.gameObjects) {
 
-        $('#load-level-form').on('submit', event => {
+                let gameObject = new GameObject();
+                gameObject.id = data.name;
+                gameObject.tag = data.tag;
+                gameObject.transform.scale.x = data.width;
+                gameObject.transform.scale.y = data.height;
+                gameObject.physicsStats.friction = data.friction;
+                gameObject.physicsStats.restitution = data.restitution;
+                gameObject.physicsStats.shape = data.selectedShape;
+                gameObject.sprite = data.selectedSprite;
 
-            event.preventDefault();
-
-            this.loadHandler.loadLevel( content => {
-
-                this.level.content = content;
-                this.loadHandler.loadBackground( this.level.content.background );
-
-                this.loadHandler.loadGameObjects( this.level.content.gameObjects, element => {
-
-                    element.removeAttr('draggable');
-                });
-            });
+                this.level.content.gameObjects.push(gameObject);
+            }
+        }, element => {
+            
+            this.createGameObjectFrom( element );
         });
     }
 
-    update(){
+    createGameObjectFrom( element ) {
 
+        let gameObject = new GameObject();
+        gameObject.id = element.attr("id");
+        gameObject.sprite = element.attr("src");
+        gameObject.width = element.attr("width");
+        gameObject.height = element.attr("height");
+        gameObject.transform.position.left = element.css("left");
+        gameObject.transform.position.top = element.css("top");
     }
 
-    render(){
+    update() {
+
+        for(let gameObject of this.level.content.gameObjects) {
+
+            gameObject.update();
+        }
+    }
+
+    render() {
         
+        for(let gameObject of this.level.content.gameObjects) {
+
+            gameObject.render();
+        }
     }
 }

@@ -58,7 +58,8 @@ export default class App {
             let formData = this.gatherDataFor( '#upload-game-object-form' );
 
             let selectedSprite = this.getSpriteSelected();
-            let gameObject = { ...formData, selectedSprite };
+            let selectedShape = this.getShapeSelected();
+            let gameObject = { ...formData, selectedSprite, selectedShape };
 
             this.uploadHandler.uploadGameObject( gameObject, data => {
 
@@ -126,13 +127,13 @@ export default class App {
                 gameObject.transform.position = position;
                 gameObject.id = element.attr("id");
                 gameObject.sprite = element.attr("src");
-                gameObject.width = element.attr("width");
-                gameObject.height = element.attr("height");
+                gameObject.transform.scale.x = element.attr("width");
+                gameObject.transform.scale.y = element.attr("height");
 
                 //Add jquery handlers here
-                this.dragAndDropHandler.addNewDraggables( element, () => {
+                this.dragAndDropHandler.addNewDraggables( element, pos => {
                     let gameObject = this.getGameObjectWith( element.attr("id"));
-                    gameObject.transform.position = position;
+                    gameObject.transform.position = pos;
                 } );
                 
                 this.level.content.gameObjects.push( gameObject );
@@ -148,6 +149,11 @@ export default class App {
     getSpriteSelected() {
         
         return $('#game-object-sprite').children('option:selected').val();
+    }
+
+    getShapeSelected() {
+        
+        return $('#game-object-shape').children('option:selected').val();
     }
 
     getGameObjectWith( id ) {

@@ -2,7 +2,7 @@
 'use strict'
 
 import Transform from './transform.js';
-import CollisionDetector from './collisiondetector.js'
+import CollisionDetector from './collisiondetector.js';
 
 export default class GameObject {
 
@@ -10,9 +10,24 @@ export default class GameObject {
         
         this.id = "";
         this.sprite = "";
+        this.tag = "";
+
+        this.physicsStats = {
+            shape: "",
+            restitution: 1,
+            friction: 1
+        }
         
         this.transform = new Transform();
-        this.CollisionDetector = new CollisionDetector( this.transform.position, 
+        this.collisionDetector = new CollisionDetector( this.transform.position, 
                                                         this.transform.scale );
+    }
+
+    update() {
+
+    }
+
+    render() {
+        
     }
 }
