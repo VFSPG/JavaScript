@@ -75,6 +75,24 @@ export default class Game {
                 this.showMessage("There was an error", "something went wrong while trying to load the levels");
             });
     }
+    loadRules() {
+
+        var query = { userid: this.userId };
+        //tries a get to the server apo
+        $.get('/api/get_all_levels', query)
+
+            .then(showMessage => {
+
+                $("#main").hide();
+                $("#levels").show();
+                this.showMessage("There was an error", "something went wrong while trying to load the levels");
+            })
+            .catch(error => {
+                //if there was an error then show the message
+                console.log(error)
+                this.showMessage("There was an error", "something went wrong while trying to load the levels");
+            });
+    }
 
     renderList(levels) {
 
@@ -106,5 +124,5 @@ export default class Game {
                 this.showMessage("There was an error", "something went wrong while trying to load the level");
             });
     }
-
+    
 }

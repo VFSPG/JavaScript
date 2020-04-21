@@ -8,6 +8,16 @@ img {
     margin-right: auto;
     width: 60%;
 }
+#main_logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+#main {
+    display: block;
+    margin: auto;
+}
 #main_button {
     display: block;
     margin-top: 5%;
@@ -16,26 +26,59 @@ img {
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     display: block;
+    margin-top: 2%;
+    margin-bottom: 2.8%;
     margin-left: auto;
     margin-right: auto;
-    width: 25%;
+    width: 50%;
     background-color: aliceblue;
     letter-spacing: 1px;
-    font-size: 30px;
+    font-size: 60px;
     font-family: Impact, "Haettenschweiler", 'Arial Narrow Bold', sans-serif;
 }
-
+.btn:hover {
+    background-color: #d80026;
+    color: white;
+}
 #levels{
     display: none;
 }
 
 #level-list{
-    height: 90px;
-    width: 100px;
+    height: 50%;
+    width: 20%;
+    border-style: double;
+    border-color: black;
     background: #fff;
-
     margin-top: 2%;
-
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 30px;
+    font-family: Impact, "Haettenschweiler", 'Arial Narrow Bold', sans-serif;
     direction: rtl;
     overflow:auto;
+}
+div {
+    padding: 2.5%;
+    border-width: 10px;
+    border-style: outset;
+    border-color: white;
+}
+.level-list-item:hover{
+
+    background:gray;
+    color: white;
+    cursor: pointer;
+}
+.cannon-images {
+    display: block;
+    width: 15%;
+    margin-bottom: 20px;
+    float: left;
+}
+.redBird-images {
+    display: block;
+    width: 15%;
+    margin-bottom: 20px;
+    float: right;
 }
