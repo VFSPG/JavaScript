@@ -1,162 +1,162 @@
 {
   "userid": "pg18alex",
-  "id": "0",
+  "id": 0,
   "name": "asdf",
-  "ammo": "15",
+  "ammo": 15,
   "catapult": {
-    "id": "0",
+    "id": 0,
     "pos": {
-      "x": "20",
-      "y": "650"
+      "x": 20,
+      "y": 650
     }
   },
   "entityLists": {
     "collidableList": [
       {
-        "id": "0",
+        "id": 0,
         "pos": {
-          "x": "1200",
-          "y": "700"
+          "x": 1200,
+          "y": 700
         },
         "entity": {
-          "type": "0",
+          "type": 0,
           "name": "asdf",
-          "height": "50",
-          "width": "50",
+          "height": 50,
+          "width": 50,
           "texture": "crate-one.png",
           "shape": "square",
-          "friction": "1",
-          "mass": "5",
-          "restitution": "0"
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
         }
       },
       {
-        "id": "0",
+        "id": 0,
         "pos": {
-          "x": "1200",
-          "y": "600"
+          "x": 1200,
+          "y": 600
         },
         "entity": {
-          "type": "0",
+          "type": 0,
           "name": "asdf",
-          "height": "50",
-          "width": "50",
+          "height": 50,
+          "width": 50,
           "texture": "crate-one.png",
           "shape": "square",
-          "friction": "1",
-          "mass": "5",
-          "restitution": "0"
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
         }
       },
       {
-        "id": "0",
+        "id": 0,
         "pos": {
-          "x": "1200",
-          "y": "500"
+          "x": 1200,
+          "y": 500
         },
         "entity": {
-          "type": "0",
+          "type": 0,
           "name": "asdf",
-          "height": "50",
-          "width": "50",
+          "height": 50,
+          "width": 50,
           "texture": "crate-one.png",
           "shape": "square",
-          "friction": "1",
-          "mass": "5",
-          "restitution": "0"
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
         }
       },
       {
-        "id": "0",
+        "id": 0,
         "pos": {
-          "x": "1200",
-          "y": "400"
+          "x": 1200,
+          "y": 400
         },
         "entity": {
-          "type": "0",
+          "type": 0,
           "name": "asdf",
-          "height": "50",
-          "width": "200",
+          "height": 50,
+          "width": 200,
           "texture": "crate-one.png",
           "shape": "square",
-          "friction": "1",
-          "mass": "5",
-          "restitution": "0"
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
         }
       },
       {
-        "id": "0",
+        "id": 0,
         "pos": {
-          "x": "1500",
-          "y": "700"
+          "x": 1500,
+          "y": 700
         },
         "entity": {
-          "type": "0",
+          "type": 0,
           "name": "asdf",
-          "height": "50",
-          "width": "50",
+          "height": 50,
+          "width": 50,
           "texture": "crate-one.png",
           "shape": "square",
-          "friction": "1",
-          "mass": "5",
-          "restitution": "0"
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
         }
       },
       {
-        "id": "0",
+        "id": 0,
         "pos": {
-          "x": "1500",
-          "y": "600"
+          "x": 1500,
+          "y": 600
         },
         "entity": {
-          "type": "0",
+          "type": 0,
           "name": "asdf",
-          "height": "50",
-          "width": "50",
+          "height": 50,
+          "width": 50,
           "texture": "crate-one.png",
           "shape": "square",
-          "friction": "1",
-          "mass": "5",
-          "restitution": "0"
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
         }
       },
       {
-        "id": "0",
+        "id": 0,
         "pos": {
-          "x": "1500",
-          "y": "500"
+          "x": 1500,
+          "y": 500
         },
         "entity": {
-          "type": "0",
+          "type": 0,
           "name": "asdf",
-          "height": "50",
-          "width": "50",
+          "height": 50,
+          "width": 50,
           "texture": "crate-one.png",
           "shape": "square",
-          "friction": "1",
-          "mass": "5",
-          "restitution": "0"
-        }
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
+       }
       }
     ],
     "targetList": [
       {
-        "id": "0",
+        "id": 0,
         "pos": {
-          "x": "1400",
-          "y": "500"
+          "x": 1400,
+          "y": 500
         },
         "value": "100",
         "entity": {
-          "type": "0",
+          "type": 0,
           "name": "asdf",
-          "height": "50",
-          "width": "50",
+          "height": 50,
+          "width": 50,
           "texture": "bird.jpg",
           "shape": "square",
-          "friction": "1",
-          "mass": "2",
-          "restitution": "0"
+          "friction": 1,
+          "mass": 2,
+          "restitution": 0
         }
       }
     ]
