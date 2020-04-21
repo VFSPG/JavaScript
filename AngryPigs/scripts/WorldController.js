@@ -115,7 +115,7 @@ export default class WorldController {
         $(".game-object").remove();
 
         //uncomment this to see the debug data
-        this.world.DrawDebugData();
+        //this.world.DrawDebugData();
 
         for(var i =0; i < this.objects.length; i++){
 
