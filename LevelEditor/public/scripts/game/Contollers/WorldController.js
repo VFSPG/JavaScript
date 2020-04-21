@@ -149,9 +149,9 @@ export default class WorldController {
 
     debugDraw.SetSprite(this.context);
     debugDraw.SetDrawScale(SCALE);
-    debugDraw.SetFillAlpha(0.5);
-    debugDraw.SetLineThickness(1.0);
-    debugDraw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
+    // debugDraw.SetFillAlpha(0.5);
+    // debugDraw.SetLineThickness(1.0);
+    // debugDraw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
     this.model.SetDebugDraw(debugDraw);
   }
 

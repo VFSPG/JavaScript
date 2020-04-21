@@ -7,6 +7,8 @@ import WorldController from './Contollers/WorldController.js';
 export default class Game {
   constructor() {
     // List of the data of the levels sequence
+    this.initialX = 0;
+    this.initialY = 0;
     this.leveData = [
       {
         name: 'asdf',
@@ -59,10 +61,13 @@ export default class Game {
 
   // Get save the initial mouse position
   down(event) {
-    const { offsetX: x, offsetY: y } = event;
+    if (!this.shotLockedIn) {
+      const { clientX: x, clientY: y } = event;
 
-    this.shotLockedIn = true;
-    this.initialMousePosition = { x, y };
+      this.shotLockedIn = true;
+      this.initialX = x;
+      this.initialY = y;
+    }
   }
 
   // If we go out and it isnt a child of the editor we reset everything
@@ -79,13 +84,16 @@ export default class Game {
   up(event) {
     if (this.shotLockedIn) {
       const { clientX: x, clientY: y } = event;
-      const { x: x0, y: y0 } =  this.initialMousePosition;
 
-      const impulse = { x: Math.abs((x0 - x) * 50), y: (y0 - y) * 50 };
+      const impulse = { x: (this.initialX - x) * 20, y: (this.initialY - y) * 20 };
 
       this.world.shoot(impulse);
     }
-  } 
+
+    this.shotLockedIn = false;
+    this.initialX = 0;
+    this.initialY = 0;
+  }
 
   update() {
     this.world.update();
