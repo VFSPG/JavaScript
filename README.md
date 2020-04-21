@@ -61,8 +61,3 @@ there is a lot that doesnt work just now...
 - the birds aren't dissapearing on hit 
 - you can't restart or go back to select a level
 - your progress or score isn't recorded
-
-
-THINGS I WANT TO SAY:
-
-MAYBE YOU SHOULD TRY LEVEL 4
