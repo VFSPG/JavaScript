@@ -12,7 +12,7 @@ export default class Game
 
     update(deltaTime){
         //Where physics go
-        this.world.update()
+        this.world.update(deltaTime)
         for (const ele of this.entityList) {
             ele.update()
         }

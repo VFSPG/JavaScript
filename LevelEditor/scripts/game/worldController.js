@@ -31,7 +31,7 @@ export default class worldController {
             
             for (let data of content.gameObjects) {
 
-                let gameObject = new GameObject();
+                let gameObject = new GameObject(Physics.WORLD_SCALE);
                 gameObject.id = data.id;
                 gameObject.name = data.name;
                 gameObject.tag = data.tag;
@@ -43,7 +43,10 @@ export default class worldController {
                 gameObject.physicsStats.restitution = data.physicsStats.restitution;
                 gameObject.physicsStats.shape = data.physicsStats.shape;
                 gameObject.sprite = data.sprite;
-                gameObject.create(this.model);
+
+                this.aBody.type = Physics.Body.b2_dynamicBody;
+                this.aFixture.shape = new Physics.PolygonShape;
+                gameObject.create(this.model,this.aBody,this.aFixture);
                 this.level.content.gameObjects.push(gameObject);
                 
             }
@@ -89,9 +92,9 @@ export default class worldController {
 
     }
 
-    update() {
+    update(delta) {
 
-        this.model.Step(1/60,3,3);
+        this.model.Step(1/30,3,3);
         this.model.ClearForces();
         for (let gameObject of this.level.content.gameObjects) {
 
