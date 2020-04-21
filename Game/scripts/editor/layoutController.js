@@ -2,7 +2,7 @@
 'use strict';
 
 // Pixel to meters proportion
-export const METERS_MULTIPLIER = 40;
+export const METERS_MULTIPLIER = 30;
 
 // Layout controller class
 // Class to control layout aspects

@@ -21,7 +21,9 @@ export default class GameObject {
     create () {
         //create the bodyDef (world properties) and define position, userData, linearVelocity and type (dynamic or static)
         let aBody = new Physics.BodyDef();
-        aBody.position = new Physics.Vec2(this.details.pos.x /Physics.WORLD_SCALE, this.details.pos.y /Physics.WORLD_SCALE);
+        aBody.position = new Physics.Vec2((this.details.pos.x  /Physics.WORLD_SCALE) + (this.details.entity.width/2), (this.details.pos.y / Physics.WORLD_SCALE) + (this.details.entity.height/2));
+
+        console.log(aBody.position);
         aBody.userData = this;
         
         if(this.velocity){
