@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Jonathan Dean and Alejandro, All Rights Reserved
+// Copyright (C) 2020 Jonathan Dean & Alejandro Lopez, All Rights Reserved
 'use strict';
 
 // Importing everything
