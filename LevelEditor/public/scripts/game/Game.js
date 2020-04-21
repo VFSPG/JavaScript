@@ -15,6 +15,10 @@ export default class Game {
       {
         name: 'perrito',
         userid: 'pg18alex'
+      },
+      {
+        name: 'layers',
+        userid: 'pg18alex'
       }
     ];
 
@@ -77,11 +81,11 @@ export default class Game {
       const { clientX: x, clientY: y } = event;
       const { x: x0, y: y0 } =  this.initialMousePosition;
 
-      const impulse = { x: (x0 - x) * 50, y: (y0 - y) * 50 };
+      const impulse = { x: Math.abs((x0 - x) * 50), y: (y0 - y) * 50 };
 
       this.world.shoot(impulse);
     }
-  }
+  } 
 
   update() {
     this.world.update();

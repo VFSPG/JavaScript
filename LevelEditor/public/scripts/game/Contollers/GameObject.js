@@ -20,18 +20,18 @@ export default class GameObject {
     } = data;
 
     this.isDynamic = isDynamic;
-    this.x = x;
-    this.y = y;
-    this.height = height;
-    this.width = width;
+    this.x = parseFloat(x);
+    this.y = parseFloat(y);
+    this.height = parseFloat(height);
+    this.width = parseFloat(width);
     this.shape = shape;
     this.texture = texture;
-    this.friction = friction;
-    this.mass = mass;
-    this.restitution = restitution;
+    this.friction = parseFloat(friction);
+    this.mass = parseFloat(mass);
+    this.restitution = parseFloat(restitution);
     this.world = world;
-    this.createRigidbody();
     this.createElement();
+    this.createRigidbody();
   }
 
   createRigidbody() {
