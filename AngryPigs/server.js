@@ -32,13 +32,6 @@ class Server {
             response.sendFile(editorFile, { title: 'Level editor' })
         });
 
-        this.api.get('/testing', (request, response) => {
-
-            let editorFile = Path.join(__dirname, "./game.html")
-
-            response.sendFile(editorFile, { title: 'Level editor' })
-        });
-
         this.api.get('/api/get_all_levels', (request, response) => {
 
             var path = "/server/data/users";

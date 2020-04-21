@@ -62,8 +62,8 @@ export default class GameObject {
                 temp.attr("src", b.m_userData.imgsrc);
                 temp.css("width", b.m_userData.imgWidth);
                 temp.css("height", b.m_userData.imgHeight);
-                temp.css("top", position.y * Physics.WORLD_SCALE);
-                temp.css("left", position.x * Physics.WORLD_SCALE);
+                temp.css("top", (position.y * Physics.WORLD_SCALE)-( b.m_userData.imgHeight/2));
+                temp.css("left", (position.x * Physics.WORLD_SCALE)-( b.m_userData.imgWidth/2));
 
                 var trans = "rotate(" + b.GetAngle() * Physics.RAD_2_DEG + "deg)";
                 temp.css("transform", trans);

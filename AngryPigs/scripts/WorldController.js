@@ -34,7 +34,7 @@ export default class WorldController {
         fixDef.shape.SetAsBox(world_pixel_width / (2 * Physics.WORLD_SCALE), 0.1);
 
         //creates bottom
-        bodyDef.position.Set(world_pixel_width / (2 * Physics.WORLD_SCALE), (world_pixel_height/Physics.WORLD_SCALE)-bottom_line);
+        bodyDef.position.Set(world_pixel_width / (2 * Physics.WORLD_SCALE), (world_pixel_height/Physics.WORLD_SCALE));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
 
         //creates top
@@ -79,7 +79,7 @@ export default class WorldController {
     render(deltaTime) {
 
         $(".game-object").remove();
-        this.world.DrawDebugData();
+        //this.world.DrawDebugData();
 
         for(var i =0; i < this.objects.length; i++){
 

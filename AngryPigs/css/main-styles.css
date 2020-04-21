@@ -1,14 +1,10 @@
+/*STYLES FOR THE TITTLE SCREEN*/
+
 body{
     text-align: center;
 }
 
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 60%;
-}
-#main_logo {
+.main_logo {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -58,7 +54,7 @@ img {
     direction: rtl;
     overflow:auto;
 }
-div {
+.style-div {
     padding: 2.5%;
     border-width: 10px;
     border-style: outset;
@@ -81,4 +77,44 @@ div {
     width: 15%;
     margin-bottom: 20px;
     float: right;
+}
+
+
+
+/*STYLES FOR THE ACTUAL GAME*/
+
+#game{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+}
+
+#level-screen{
+
+    position:relative;
+    display: inline-block;
+
+    width: 1280px;
+    height: 720px;
+
+    background-size: 100% 100%;
+
+}
+
+#catapult{
+
+    background-image: url('../images/cannon.png');
+    background-size: 100% 100%;
+
+    width: 150px;
+    height: 150px;
+}
+
+.game-object{
+    position: absolute;
+    transform: translate(-50%, -50%);
 }

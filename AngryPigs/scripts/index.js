@@ -9,7 +9,6 @@ import Game from './game.js';
     $(document).ready( event => {
 
         let game = new Game();
-        game.run();
     })
 })()
 

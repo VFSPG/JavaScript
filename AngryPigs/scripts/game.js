@@ -1,7 +1,7 @@
 // Copyright (C) 2020 Daniela Marino, Ava Cheng
 'use strict';
 
-//import WorldController from "./WorldController";
+import WorldController from "./WorldController.js";
 
 export default class Game {
 
@@ -9,51 +9,35 @@ export default class Game {
         // put all the UI and setup here
         this.lastUpdate = 0;
         this.entityList = [];
-        //this.world = new WorldController();
-        //this.currentLevel = new Level('level-1');
-        //this.currentLevel.load()
-        //    .then( levelData => {
-
-        //        this.currentLevel.parse( levelData );
-        //       this.run();
-        //    });
-
-        // add all UI handlers here
+        this.currentLevel = {};
+        this.world = new WorldController();
 
         // Event handlers to load stuff
         $('#btn_play').on('click', Event => this.loadLevels());
+
+        //
+        $(document).on("click", ".level-list-item", e => this.selectLevel(e));
     }
 
     update(deltaTime) {
 
-        //this.world.update( deltaTime );
+        this.world.update(deltaTime);
     }
 
     render(deltaTime) {
 
-        //this.world.render( deltaTime );
-        //this.entityList.forEach( entity => {
-        //    entity.render( deltaTime );
-        //});
+        this.world.render(deltaTime);
     }
 
     run(timestep = 0) {
 
-        //let deltaTime = timestep - this.lastUpdate;
+        let deltaTime = timestep - this.lastUpdate;
 
-        //this.update( deltaTime );
-        //this.render( deltaTime );
+        this.update(deltaTime);
+        this.render(deltaTime);
 
-        //window.requestAnimationFrame( timestep => this.run( timestep / 100 ));
+        window.requestAnimationFrame(timestep => this.run(timestep / 100));
     }
-
-    test(Event) {
-
-        console.log("this work!");
-        $("#main").hide();
-        $("#levels").show();
-    }
-
 
     //gets the list of levels by id
     loadLevels() {
@@ -67,25 +51,6 @@ export default class Game {
                 $("#main").hide();
                 $("#levels").show();
                 this.renderList(responseData.payload)
-                console.log(responseData);
-            })
-            .catch(error => {
-                //if there was an error then show the message
-                console.log(error)
-                this.showMessage("There was an error", "something went wrong while trying to load the levels");
-            });
-    }
-    loadRules() {
-
-        var query = { userid: this.userId };
-        //tries a get to the server apo
-        $.get('/api/get_all_levels', query)
-
-            .then(showMessage => {
-
-                $("#main").hide();
-                $("#levels").show();
-                this.showMessage("There was an error", "something went wrong while trying to load the levels");
             })
             .catch(error => {
                 //if there was an error then show the message
@@ -99,7 +64,7 @@ export default class Game {
         $("#level-list").html("");
         for (var level of levels) {
 
-            var string = "<div class='level-list-item' id='" + level.name + "'> <span>" + level.name + "</span></div>";
+            var string = "<div class='level-list-item' id='" + level.userid + "-" + level.name + "'>" + level.name + "</div>";
             $("#level-list").append(string);
         }
     }
@@ -107,22 +72,65 @@ export default class Game {
 
     //if the user selects a level then try to load it
     selectLevel(e) {
+        var user = e.target.id.split("-")[0];
+        var name = e.target.id.split("-")[1];
 
         var query = {
-            userid: this.userId,
-            name: e.target.id,
+            userid: user,
+            name: name,
             type: "level"
         };
 
         $.get('/api/load', query)
             .then(responseData => {
 
-                //do stuff to show level
+                $("#levels").hide();
+                $("#game").show();
+                this.currentLevel = responseData.payload.level;
+                this.renderLevel();
+                this.run();
             })
             .catch(error => {
                 console.log(error)
                 this.showMessage("There was an error", "something went wrong while trying to load the level");
             });
     }
-    
+
+    renderLevel() {
+
+        //change the background
+        let imageName = "url(../images/backgrounds/" + this.currentLevel.backgroud + ")";
+        $("#level-background").css("background-image", imageName);
+
+        //creates the catapult and places it
+        var catapult = $("<div></div>");
+        catapult.addClass("game-object");
+        catapult.attr('id', 'catapult');
+        catapult.css("top", this.currentLevel.catapult.pos.y);
+        catapult.css("left", this.currentLevel.catapult.pos.x);
+        $("#level-background").append(catapult);
+
+        this.renderObjects();
+    }
+
+    //renders all the collidables of the level
+    renderObjects() {
+
+        var listO = this.currentLevel.entityLists.collidableList;
+        for (var i = 0; i < listO.length; i++) {
+
+            this.world.addObject(listO[i])
+        }
+
+
+        var listT = this.currentLevel.entityLists.targetList;
+
+        for (var i = 0; i < listT.length; i++) {
+
+            this.world.addObject(listT[i]);
+        }
+
+
+    }
+
 }
