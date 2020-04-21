@@ -13,7 +13,7 @@ const GRAVITY = Physics.GRAVITY
 export default class worldController {
 
     constructor() {
-        this.gVector = new Physics.Vec2(GRAVITY,GRAVITY)
+        this.gVector = new Physics.Vec2(0,GRAVITY)
         this.world = new Physics.World(this.gVector)
         this.$view = $('#game-display')
         this.model = new Physics.World(this.gVector, true)
@@ -21,12 +21,19 @@ export default class worldController {
         this.circleFixture = new Physics.FixtureDef;
         this.aFixture.shape = new Physics.PolygonShape;
         this.circleFixture.shape = new Physics.CircleShape;
+        this.aFixture.density = this.circleFixture.density = 1
         this.aBody = new Physics.BodyDef;
         this.level = new Level();
         this.createBoundaries();
         this.cannon;
 
         this.addListeners();
+        this.mainMenu;
+        this.loadLevelListener();
+    }
+
+    loadLevelListener()
+    {
         this.mainMenu = new MainMenu();
 
         this.mainMenu.initializeLoadEvents(content => {
@@ -65,12 +72,7 @@ export default class worldController {
                 this.level.content.gameObjects.push(gameObject);
             }
             
-        }, element => {
-
-            //Añadale las físicas acá
         });
-
-        
     }
         
     getGameObjectBy( id ) {
@@ -89,8 +91,8 @@ export default class worldController {
         this.aFixture.shape = new Physics.PolygonShape;
         this.aBody.type = Physics.Body.b2_staticBody;
         let rightWall = this.createWall({x:46 ,y:15,width:1,height:50})
-        let leftWall = this.createWall( {x:-8 ,y:15,width:1,height:50})
-        let topWall = this.createWall( {x:5 ,y:-3,width:50,height:1})
+        let leftWall = this.createWall( {x:-1 ,y:15,width:1,height:50})
+        let topWall = this.createWall( {x:5 ,y:-1,width:50,height:1})
         let bottomWall = this.createWall({ x: 5, y: 30, width:50, height:1 })  
     }
 
