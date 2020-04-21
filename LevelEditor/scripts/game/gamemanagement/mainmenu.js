@@ -18,13 +18,6 @@ export default class MainMenu {
 
             $('#popUpWindow').toggleClass('hide');
         });
-
-        $('#closePopUp').on('click', event => {
-
-            $('#popUpWindow').toggleClass('hide');
-
-            $('#play-button').toggleClass('hide');
-        });
     }
 
     initializeLoadEvents( levelCB, gameObjectCB ) {
@@ -34,6 +27,8 @@ export default class MainMenu {
         $('#load-level-form').on('submit', event => {
 
             event.preventDefault();
+            $('#popUpWindow').toggleClass('hide');
+            $('#play-button').toggleClass('hide');
 
             this.loadHandler.loadLevel( content => {
 
