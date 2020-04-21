@@ -13,7 +13,7 @@ export const texturesImagesPath = '../../../images/textures';
 export const SCALE = 100;
 
 export default class WorldController {
-  constructor(levelData) {
+  constructor() {
     // World gravity
     this.levelData = levelData;
     this.context = document.getElementById('canvas').getContext('2d');
@@ -25,8 +25,14 @@ export default class WorldController {
     $(document).on('spawnedBullet', (event) => this.addBulletToWorld(event));
     $(document).on('destroyedBullet', (event) => this.removeBulletFromWorld(event));
     $(document).on('scoreBird', (event) => this.scoreBird(event));
-
     this.setBoundaries();
+  }
+
+  setLevelData(levelData) {
+    this.levelData = levelData;
+  }
+
+  initialize() {
     this.createLevelObjects();
     this.setUpDrawing();
   }
@@ -121,7 +127,18 @@ export default class WorldController {
 
   update() {
     if (!this.targets.length) {
-      console.log(`YOU WON: ${this.currentScore}`);
+      this.collidables.forEach(collidable => collidable.suicide());
+      this.targets.forEach(target => target.suicide());
+
+      if (this.catapult.suicide) {
+        this.catapult.suicide();
+      }
+
+      this.catapult = {};
+      this.collidables = [];
+      this.targets = [];
+      // const event = new CustomEvent('nextLevel');
+      // document.dispatchEvent(event);
     }
 
     this.model.Step(1 / 30, 10, 10);

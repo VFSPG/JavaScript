@@ -91,6 +91,11 @@ export default class GameObject {
     $('#editor').append(this.objectRepresentation);
   }
 
+  suicide() {
+    this.world.DestroyBody(this.rigidbody);
+    $(this.objectRepresentation).remove();
+  }
+
   render() {
     const { width, height } = this;
     const { x, y } = this.rigidbody.GetPosition();
