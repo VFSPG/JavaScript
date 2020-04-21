@@ -102,7 +102,7 @@ export default class Level {
     return {
       id,
       name,
-      ammo,
+      ammo: parseFloat(ammo),
       catapult: {
         id: catapultId,
         pos: catapultPos

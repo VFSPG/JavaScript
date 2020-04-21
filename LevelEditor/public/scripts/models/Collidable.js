@@ -63,13 +63,16 @@ export default class Collidable {
   getRaw() {
     const {
       id,
-      pos,
+      pos: { x, y },
       entity
     } = this;
 
     return {
       id,
-      pos,
+      pos: {
+        x: parseFloat(x),
+        y: parseFloat(y)
+      },
       entity: entity.getRaw()
     };
   }

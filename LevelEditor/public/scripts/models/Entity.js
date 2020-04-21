@@ -65,13 +65,13 @@ export default class Entity {
     return {
       type,
       name,
-      height,
-      width,
+      height: parseFloat(height),
+      width: parseFloat(width),
       texture,
       shape,
-      friction,
-      mass,
-      restitution
+      friction: parseFloat(friction),
+      mass: parseFloat(mass),
+      restitution: parseFloat(restitution)
     };
   }
 }
