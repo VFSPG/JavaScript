@@ -3,47 +3,44 @@
 
 import Physics from "./lib/Physics.js";
 
-export default class GameObject {
+export default class Ammo {
 
-    constructor(world, object) {
+    constructor(world, x,y) {
 
         // Create fixture definition
         var fixDef = new Physics.FixtureDef();
         fixDef.density = 1;
-        fixDef.friction = 0.3;
-        fixDef.restitution = 0.2;
+        fixDef.friction = 0.1;
+        fixDef.restitution = 0.8;
 
         //creates the dinamic boody
         var bodyDef = new Physics.BodyDef();
         bodyDef.type = Physics.Body.b2_dynamicBody;
-
-        if (object.entity.shape == "circle") {
-
-            //if its a circle create a circle 
-            //circle just have a radius but my entity has two sizes, width and height
-            //so i decided that the raidus is the max between the width and the height
-            var max = Math.max(object.entity.width,object.entity.height);
-            fixDef.shape = new Physics.CircleShape(max/(2*Physics.WORLD_SCALE));
-        }
-        else {
-            fixDef.shape = new Physics.PolygonShape;
-            fixDef.shape.SetAsBox( object.entity.width/(2*Physics.WORLD_SCALE), object.entity.height/(2*Physics.WORLD_SCALE));
-        }
+        fixDef.shape = new Physics.CircleShape(40/(2*Physics.WORLD_SCALE));
 
         //i know i have to do something here
-        bodyDef.position.x = object.pos.x/Physics.WORLD_SCALE;
-        bodyDef.position.y = object.pos.y/Physics.WORLD_SCALE;
+        bodyDef.position.x = x/Physics.WORLD_SCALE;
+        bodyDef.position.y = y/Physics.WORLD_SCALE;
 
         var data = {
-            imgsrc: object.entity.texture,
-            imgWidth: object.entity.width,
-            imgHeight: object.entity.height
+            imgsrc: "images/pig.png",
+            imgWidth: 40,
+            imgHeight: 40
         }
         bodyDef.userData = data;
 
         this.body = world.CreateBody(bodyDef);
-        this.body.CreateFixture(fixDef);
+        this.fixture = this.body.CreateFixture(fixDef);
     }
+
+    addForce(xForce, yForce){
+
+        this.fixture.GetBody().ApplyImpulse(
+			new Physics.Vec2(xForce,yForce),
+			this.fixture.GetBody().GetWorldCenter()
+		);
+    }
+    
 
     render() {
 

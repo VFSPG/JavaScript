@@ -3,6 +3,7 @@
 
 import Physics from "./lib/Physics.js";
 import GameObject from "./GameObject.js";
+import Proyectyle from "./Proyectyle.js";
 
 export const world_pixel_width = 1280;
 export const world_pixel_height = 720;
@@ -13,6 +14,8 @@ export default class WorldController {
     constructor() {
 
         this.objects = [];
+        this.ammo ={};
+
         let gravity = new Physics.Vec2(0, Physics.GRAVITY);
         this.world = new Physics.World(gravity);
         this.createBoundaries();
@@ -55,9 +58,17 @@ export default class WorldController {
         this.setUpDebugger();
     }
 
+
+
     addObject(object) {
 
         var on = new GameObject(this.world, object);
+        this.objects.push(on);
+    }
+
+    shoot(x,y){
+        var on = new Proyectyle(this.world, x,y);
+        on.addForce(100,-100);
         this.objects.push(on);
     }
 

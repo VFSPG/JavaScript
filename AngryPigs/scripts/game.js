@@ -15,28 +15,11 @@ export default class Game {
         // Event handlers to load stuff
         $('#btn_play').on('click', Event => this.loadLevels());
 
-        //
+        //select a level
         $(document).on("click", ".level-list-item", e => this.selectLevel(e));
-    }
 
-    update(deltaTime) {
-
-        this.world.update(deltaTime);
-    }
-
-    render(deltaTime) {
-
-        this.world.render(deltaTime);
-    }
-
-    run(timestep = 0) {
-
-        let deltaTime = timestep - this.lastUpdate;
-
-        this.update(deltaTime);
-        this.render(deltaTime);
-
-        window.requestAnimationFrame(timestep => this.run(timestep / 100));
+        //shoot
+        $(document).on("click", "#catapult" , event => this.shoot(event));
     }
 
     //gets the list of levels by id
@@ -104,7 +87,6 @@ export default class Game {
 
         //creates the catapult and places it
         var catapult = $("<div></div>");
-        catapult.addClass("game-object");
         catapult.attr('id', 'catapult');
         catapult.css("top", this.currentLevel.catapult.pos.y);
         catapult.css("left", this.currentLevel.catapult.pos.x);
@@ -117,20 +99,42 @@ export default class Game {
     renderObjects() {
 
         var listO = this.currentLevel.entityLists.collidableList;
-        for (var i = 0; i < listO.length; i++) {
-
-            this.world.addObject(listO[i])
-        }
-
+        for (var i = 0; i < listO.length; i++) { this.world.addObject(listO[i])}
 
         var listT = this.currentLevel.entityLists.targetList;
 
-        for (var i = 0; i < listT.length; i++) {
-
-            this.world.addObject(listT[i]);
-        }
+        for (var i = 0; i < listT.length; i++) {this.world.addObject(listT[i]);}
 
 
+    }
+
+    update(deltaTime) {
+
+        this.world.update(deltaTime);
+    }
+
+    render(deltaTime) {
+
+        this.world.render(deltaTime);
+    }
+
+    run(timestep = 0) {
+
+        let deltaTime = timestep - this.lastUpdate;
+
+        this.update(deltaTime);
+        this.render(deltaTime);
+
+        window.requestAnimationFrame(timestep => this.run(timestep / 100));
+    }
+
+    shoot(e){
+
+        let x = e.pageX -  $("#level-background").offset().left
+        let y = e.pageY -  $("#level-background").offset().top
+
+        console.log("shooot");
+        this.world.shoot(x,y);
     }
 
 }
