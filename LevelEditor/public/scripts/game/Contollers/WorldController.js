@@ -15,6 +15,7 @@ export const SCALE = 100;
 export default class WorldController {
   constructor(levelList) {
     // World gravity
+    this.currentLevel = 0;
     this.levelList = levelList;
     this.collidables = [];
     this.targets = [];
@@ -34,23 +35,26 @@ export default class WorldController {
 
   setLevelData() {
     this.clearLevel();
-    const { name, userid } = this.levelList[this.currentLevelIndex];
 
-    
-    this.currentLevelIndex++;
-    $.post(`/api/level/load/${userid}`, { fileName: name })
-      .then( responseData => {
-        const { payload: { levelData } } = responseData;
+    Promise.all(this.levelList.map(levelData => {
+      const { name, userid } = levelData;
 
-        $('#loading-screen').css('display', 'none');
-        $('#game').css('display', 'block');
-        this.levelData = levelData;
-        this.initialize();
-      })
-      .catch(error => {
-        console.log(error);
-        alert('We couldnt load the requested level, wooops');
-      });
+      return $.post(`/api/level/load/${userid}`, { fileName: name })
+        .then( responseData => {
+          const { payload: { levelData } } = responseData;
+
+          $('#loading-screen').css('display', 'none');
+          $('#game').css('display', 'block');
+          return levelData;
+        })
+        .catch(error => {
+          console.log(error);
+          alert('We couldnt load the requested level, wooops');
+        });
+    })).then(levelData => {
+      this.levelData = levelData;
+      this.initialize();
+    });
   }
 
   initialize() {
@@ -93,7 +97,7 @@ export default class WorldController {
     const {
       catapult: { pos: { x, y } },
       entityLists: { collidableList = [], targetList = [] }
-    } = this.levelData;
+    } = this.levelData[this.currentLevel];
 
     const data = {
       pos: { x, y },
@@ -159,6 +163,11 @@ export default class WorldController {
   }
 
   update() {
+    if (!this.targets.length && this.currentScore) {
+      this.currentLevel++;
+      this.clearLevel();
+      this.createLevelObjects();
+    }
 
     this.model.Step(1 / 30, 10, 10);
     this.model.ClearForces();
