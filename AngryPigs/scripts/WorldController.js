@@ -58,7 +58,25 @@ export default class WorldController {
         this.setUpDebugger();
     }
 
+    addCatapult(x,y){
 
+        // Create fixture definition
+        var fixDef = new Physics.FixtureDef();
+        fixDef.density = 1.0;
+        fixDef.friction = 0.5;
+        fixDef.restitution = 0.2;
+
+
+        //creates top and bottom square shape
+        var bodyDef = new Physics.BodyDef();
+        bodyDef.type = Physics.Body.b2_staticBody;
+        fixDef.shape = new Physics.PolygonShape();
+        fixDef.shape.SetAsBox(150 / (2 * Physics.WORLD_SCALE), 150 / (2 * Physics.WORLD_SCALE));
+
+        //creates bottom
+        bodyDef.position.Set(x / (Physics.WORLD_SCALE), (y/Physics.WORLD_SCALE));
+        this.world.CreateBody(bodyDef).CreateFixture(fixDef);
+    }
 
     addObject(object) {
 
@@ -90,6 +108,8 @@ export default class WorldController {
     render(deltaTime) {
 
         $(".game-object").remove();
+
+        //uncomment this to see the debug data
         //this.world.DrawDebugData();
 
         for(var i =0; i < this.objects.length; i++){

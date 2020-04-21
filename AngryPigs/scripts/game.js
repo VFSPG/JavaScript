@@ -11,6 +11,7 @@ export default class Game {
         this.entityList = [];
         this.currentLevel = {};
         this.world = new WorldController();
+        this.ammoCount=0;
 
         // Event handlers to load stuff
         $('#btn_play').on('click', Event => this.loadLevels());
@@ -92,6 +93,9 @@ export default class Game {
         catapult.css("left", this.currentLevel.catapult.pos.x);
         $("#level-background").append(catapult);
 
+        //adds a rigidbody 
+        this.world.addCatapult(this.currentLevel.catapult.pos.x, this.currentLevel.catapult.pos.y);
+
         this.renderObjects();
     }
 
@@ -130,11 +134,16 @@ export default class Game {
 
     shoot(e){
 
-        let x = e.pageX -  $("#level-background").offset().left
-        let y = e.pageY -  $("#level-background").offset().top
+        if(this.ammoCount < this.currentLevel.ammo){
 
-        console.log("shooot");
-        this.world.shoot(x,y);
+            let x = $("#catapult").position().left + $("#catapult").width() -10;
+            let y = $("#catapult").position().top +20;
+            this.world.shoot(x,y);
+
+            this.ammoCount++;
+        }
+
+
     }
 
 }
