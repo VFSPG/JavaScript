@@ -163,7 +163,8 @@ export default class WorldController {
   }
 
   update() {
-    if (!this.targets.length && this.currentScore) {
+    if (!this.targets.length && this.currentScore && !this.cleaning) {
+      this.cleaning = true;
       this.currentLevel++;
       this.clearLevel();
       this.createLevelObjects();
