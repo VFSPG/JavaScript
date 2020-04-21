@@ -1,1 +1,1 @@
-{"gameObject":{"name":"Cannon","tag":"cannon","width":"125","height":"125","friction":"1","restitution":"1","selectedSprite":"cannon.png","selectedShape":"AABB"}}
+{"gameObject":{"name":"Cannon","tag":"cannon","width":"125","height":"125","friction":"0.5","restitution":"0.5","selectedSprite":"cannon.png","selectedShape":"AABB"}}

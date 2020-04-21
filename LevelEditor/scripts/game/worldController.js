@@ -57,16 +57,24 @@ export default class worldController {
                 gameObject.sprite = data.sprite;
 
                 this.aBody.type = Physics.Body.b2_dynamicBody;
-                if (gameObject.physicsStats.shape == "AABB") {
-                    gameObject.create(this.model,this.aBody,this.aFixture, "AABB");
-                }
-                else{
-                    gameObject.create(this.model,this.aBody,this.circleFixture, "Circle");
-                }
+                
 
                 if( gameObject.tag == "cannon" ) {
 
-                    this.cannon = new Cannon( gameObject );
+                    this.cannon = new Cannon( gameObject, bullet => {
+                        
+                    this.level.content.gameObjects.push(bullet);
+                    bullet.create(this.model,this.aBody,this.circleFixture, "Circle");
+                    });
+                }
+                else {
+                    
+                    if (gameObject.physicsStats.shape == "AABB") {
+                        gameObject.create(this.model,this.aBody,this.aFixture, "AABB");
+                    }
+                    else{
+                        gameObject.create(this.model,this.aBody,this.circleFixture, "Circle");
+                    }
                 }
 
                 this.level.content.gameObjects.push(gameObject);
