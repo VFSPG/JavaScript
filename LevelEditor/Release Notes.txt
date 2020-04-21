@@ -1,6 +1,7 @@
 # *** PG18 T2 JavaScript Web Apps - A1: Level Editor ***
 ---------------------------------------
 Alejandro Güereca Valdivia
+Pedro Henrique Brandão Avelino
 14-04-2020
 
 Level editor for angry pigs
@@ -47,7 +48,7 @@ To remove an object right click on it
 
 Click anywhere in the map and drag it to aim, release it to shoot a bullet.
 
-Free all the birds to win!
+Free all the birds to win.
 
 
 # *** Caveats *** (optional)

@@ -1,6 +1,7 @@
 # *** PG18 T2 JavaScript Web Apps - A1: Level Editor ***
 ---------------------------------------
 Alejandro Güereca Valdivia
+Pedro Henrique Brandão Avelino
 14-04-2020
 
 Level editor for angry pigs
@@ -41,6 +42,14 @@ To set a new collidable drag the entity from the right container into the editor
 To move a object in the editor click and move the element
 
 To remove an object right click on it
+
+# *** How to Play ***
+---------------------------------------
+
+Click anywhere in the map and drag it to aim, release it to shoot a bullet.
+
+Free all the birds to win.
+
 
 # *** Caveats *** (optional)
 ---------------------------------------
