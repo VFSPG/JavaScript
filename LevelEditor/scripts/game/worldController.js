@@ -12,17 +12,14 @@ const GRAVITY = Physics.GRAVITY
 export default class worldController {
 
     constructor() {
-        this.gVector = new Physics.Vec2(0,-GRAVITY)
+        this.gVector = new Physics.Vec2(0,GRAVITY)
         this.world = new Physics.World(this.gVector)
         this.$view = $('#game-display')
         this.model = new Physics.World(this.gVector, true)
-        this.phyHeight = window.innerHeight / Physics.WORLD_SCALE;
-        this.phyWidth = window.innerWidth / Physics.WORLD_SCALE;
         this.aFixture = new Physics.FixtureDef;
         this.aBody = new Physics.BodyDef;
-        this.testBody;
         this.level = new Level();
-
+        this.createBoundaries();
 
         this.addListeners();
         this.mainMenu = new MainMenu();
@@ -31,7 +28,7 @@ export default class worldController {
 
             this.level.content = { ...content };
             this.level.content.gameObjects = new Array();
-            this.createBoundaries();
+            
             for (let data of content.gameObjects) {
 
                 let gameObject = new GameObject();
@@ -46,14 +43,9 @@ export default class worldController {
                 gameObject.physicsStats.restitution = data.physicsStats.restitution;
                 gameObject.physicsStats.shape = data.physicsStats.shape;
                 gameObject.sprite = data.sprite;
-
+                gameObject.create(this.model);
                 this.level.content.gameObjects.push(gameObject);
-                this.aBody.type = Physics.Body.b2_dynamicBody;
-                this.aFixture.shape = new Physics.PolygonShape;
-                this.aFixture.shape.SetAsBox((100/Physics.WORLD_SCALE) / 2, (100/ Physics.WORLD_SCALE) / 2)
-                this.aBody.position.Set(gameObject.transform.position.left / Physics.WORLD_SCALE, gameObject.transform.position.top / Physics.WORLD_SCALE)
-                this.testBody = this.model.CreateBody(this.aBody);
-                this.testBody.CreateFixture(this.aFixture);
+                
             }
             
         });
@@ -79,9 +71,7 @@ export default class worldController {
         let rightWall = this.createWall({x:46 ,y:15,width:1,height:50})
         let leftWall = this.createWall( {x:-8 ,y:15,width:1,height:50})
         let topWall = this.createWall( {x:5 ,y:-3,width:50,height:1})
-        let bottomWall = this.createWall({ x: 5, y: 30, width:50, height:1 })
-
-        
+        let bottomWall = this.createWall({ x: 5, y: 30, width:50, height:1 })  
     }
 
     createWall(boundingBox) {
@@ -107,18 +97,7 @@ export default class worldController {
     }
 
     render() {
-        
-        if (this.testBody != undefined) {
-            let test = $('#game-object-pig-hurt-1')
-            test.css('top', this.testBody.GetPosition().y * Physics.WORLD_SCALE)
-            test.css('left', this.testBody.GetPosition().x * Physics.WORLD_SCALE)
-            
-        }
-       
-        
         for (let gameObject of this.level.content.gameObjects) {
-
-
             gameObject.render();
         }
     }
