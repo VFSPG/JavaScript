@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Jonathan Dean, All Rights Reserved
+// Copyright (C) 2020 Jonathan Dean & Alejandro Lopez, All Rights Reserved
 'use strict';
 
 import Physics from '../libs/Physics.js';
@@ -15,7 +15,7 @@ export default class WorldController {
         this.world = new Physics.World(gravity, true);
         this.stepAmount = 1/60;
         this.dtRemaining = 0;
-        this.createBoudaries();
+        this.createBoundaries();
         this.listOfDestruction = [];
         this.collision();
         this.maxAmmo = 0;
@@ -28,6 +28,7 @@ export default class WorldController {
             width: 0
         }
         
+        //handlers of the click
         this.$view[0].addEventListener("click", event => this.handleClick( event ));
         this.$view[0].addEventListener("touchstart",event => this.handleClick( event ));
     }
@@ -43,13 +44,16 @@ export default class WorldController {
             this.timeObjects(deltaTime);
         }
         
-      //  this.world.DrawDebugData();
+        //drawing functions
         this.drawObjects();
         this.drawCatapult();
     }   
 
+    //destroys (remove) every gameObject in the world
     clearWorld() {
+        //take the gameObject list from the world
         let obj = this.world.GetBodyList();
+        //goes throw the list, take the objects and destroy them
         while(obj) {
             let body = obj.GetUserData();
             if(body) {  body.world.DestroyBody(obj); }
@@ -57,6 +61,7 @@ export default class WorldController {
         }
     }
 
+    //destroy the gameObjects from the listOfDestruction
     destroyObjects () {
         while( this.listOfDestruction.length ) {
             let obj = this.listOfDestruction.pop();
@@ -64,6 +69,7 @@ export default class WorldController {
         }
     }
 
+    //call the update function of the gameObjects
     timeObjects(deltaTime){
         let obj = this.world.GetBodyList();
         while(obj) {
@@ -73,21 +79,29 @@ export default class WorldController {
         }
     }
 
+    //prints the catapult in the world
     drawCatapult() {
-        let image = new Image();
         let context = this.$view[0].getContext('2d');
+
+         //create the image and load it from the source
+        let image = new Image();
         image.src = `images/canon.png`;
+
+        //draw the image with the specific dimensions
         context.drawImage(image,
             this.catapult.pos.x, this.catapult.pos.y, this.catapult.width, this.catapult.height);
     }
 
+    //prints the images of the gameObjects in the world
     drawObjects() {
         let context = this.$view[0].getContext('2d');
         let obj = this.world.GetBodyList();
-        context.clearRect(0,0,this.$view[0].width,this.$view[0].height);
 
+        context.clearRect(0,0,this.$view[0].width,this.$view[0].height);
         context.save();
         context.scale(Physics.WORLD_SCALE,Physics.WORLD_SCALE);
+
+        //goes throw the list of objects in the world calling the draw function inside them
         while(obj) {
             let body = obj.GetUserData();
 
@@ -95,9 +109,11 @@ export default class WorldController {
 
             obj = obj.GetNext();
         }
+
         context.restore();
     }
 
+    //prints default colors for the gameObjects taking their shapes
     drawDebug() {
         let draw = new Physics.DebugDraw();
         draw.SetSprite(this.$view[0].getContext('2d'));
@@ -108,23 +124,27 @@ export default class WorldController {
         this.world.SetDebugDraw(draw);
     }
 
+    //function which defines what happens when the user clicks on the world
     handleClick( event ) {
         event.preventDefault();
+
+        //take the point of the world where the player clicked
         let point = {
                 x: (event.offsetX || event.layerX) / Physics.WORLD_SCALE,
                 y: (event.offsetY || event.layerY) / Physics.WORLD_SCALE
             };
-            
+        
+        // vector with the direction we want to shoot the bullet   
         let  vector = {
             x: point.x - (this.catapult.pos.x + (this.catapult.width/2))/Physics.WORLD_SCALE ,
             y: point.y - (this.catapult.pos.y + (this.catapult.height/2))/ Physics.WORLD_SCALE
         }
 
-        let magnitude =  Math.sqrt((vector.x * vector.x)+(vector.y * vector.y));
-
+        // we can adjust the force of the shoot adjusting this multiplication
         vector.x *= 2;
         vector.y *= 2;
 
+        //create the collidable of the bullet
         let item = {
             pos: {
                 x: (this.catapult.pos.x + (this.catapult.width/2)),
@@ -143,6 +163,7 @@ export default class WorldController {
             }
         }
         
+        //create a bullet if there is no other bullet and if there is ammo in the level
         if(this.maxAmmo > 0 && !this.bullet){
             this.maxAmmo--;
             $("#ammo").html(this.maxAmmo.toString());
@@ -156,14 +177,21 @@ export default class WorldController {
         }
     }
 
+    //function that sets the collision listener and the effect is going to produce
     collision(myWorld) { 
+        //create the listener
         this.listener = new Physics.Listener();
         this.listener.PreSolved = (contact) => {
         } 
+
+        //what happen when the listener detects the begining of a contact
         this.listener.BeginContact = (contact)=> {
+
+            //get the two bodies of the collision
             let bodyA = contact.GetFixtureA().GetBody(),
             bodyB = contact.GetFixtureB().GetBody();
             
+            //if one of the objects is a target include it in the destruction list
             if (bodyA.GetUserData() != null && bodyB.GetUserData() != null) 
             {
                 if ( bodyA.GetUserData().details.entity.type == "target" && bodyB.GetUserData().bullet == true)
@@ -192,7 +220,8 @@ export default class WorldController {
         this.world.SetContactListener(this.listener);
     };
 
-    createBoudaries() {
+    //function that creates the current walls of the world
+    createBoundaries() {
 
         let groundBoundingBox = {
             x: (this.$view[0].width / Physics.WORLD_SCALE) / 2,
@@ -227,6 +256,7 @@ export default class WorldController {
         let bottomSideWall = this.createWall(groundBoundingBox)
     }
 
+    //function that creates the walls of the world
     createWall(boundingBox) {
 
         let aBody = new Physics.BodyDef();
