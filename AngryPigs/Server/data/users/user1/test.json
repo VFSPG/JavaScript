@@ -1,1 +1,22 @@
-{"level":{"id":3,"name":"test","ammo":"15","backgroud":"default-level.png","starOne":"7","starTwo":"10","starThree":"15","catapult":{"id":0,"pos":{"x":360,"y":328.6625003814697}},"entityLists":{"collidableList":[],"targetList":[]}}}
+{
+    "level": {
+        "id": 3,
+        "name": "test",
+        "ammo": "15",
+        "backgroud": "default-level.png",
+        "starOne": "7",
+        "starTwo": "10",
+        "starThree": "15",
+        "catapult": {
+            "id": 0,
+            "pos": {
+                "x": 360,
+                "y": 328.6625003814697
+            }
+        },
+        "entityLists": {
+            "collidableList": [],
+            "targetList": []
+        }
+    }
+}

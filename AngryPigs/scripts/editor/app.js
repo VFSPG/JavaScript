@@ -270,9 +270,7 @@ export default class App {
 
         $( "#level-list" ).html("");
         for(var level of this.levels){
-            var string = "<div class='level-list-item' id='"+level.name + "'> <span>" + level.name + "</span>";
-            string += "<i class='fa fa-trash' id='" + level.name + "-remove' aria-hidden='true'></i></div>";
-            
+            var string = "<div class='level-list-item' id='"+level.name + "'>" + level.name + "</div>";
             $( "#level-list" ).append(string);
         }
     }
