@@ -56,6 +56,9 @@ export default class worldController {
                 this.testBody.CreateFixture(this.aFixture);
             }
             
+        }, element => {
+
+            //Añadale las físicas acá
         });
 
         

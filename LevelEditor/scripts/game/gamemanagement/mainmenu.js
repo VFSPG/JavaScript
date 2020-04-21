@@ -27,7 +27,7 @@ export default class MainMenu {
         });
     }
 
-    initializeLoadEvents( levelCB ) {
+    initializeLoadEvents( levelCB, gameObjectCB ) {
 
         this.loadHandler.setLevelOptions();
 
@@ -43,6 +43,7 @@ export default class MainMenu {
                 this.loadHandler.loadGameObjects( content.gameObjects, element => {
 
                     element.removeAttr('draggable');
+                    gameObjectCB( element );
                 });
             });
         });
