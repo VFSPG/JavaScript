@@ -177,7 +177,14 @@ export default class WorldController {
   update() {
     if (!this.targets.length && this.running && !this.reseting) {
       this.reseting = true;
-      this.currentLevel++;
+
+      if(this.currentLevel >= this.levelList.length)
+      {
+        this.showWinScreen();
+      }else
+      {
+        this.currentLevel++;
+      }
       this.clearLevel();
       if (this.levelList.length <= this.currentLevel) {
         cancelAnimationFrame(this.requestedAnimation);
@@ -227,6 +234,13 @@ export default class WorldController {
     this.shotCount--;
 
     $ShotCount.text(`Shot Count: ${this.shotCount}`);
+  }
+
+  showWinScreen()
+  {
+    let $winScreen = $('#win-screen');
+    
+    $winScreen.css("display", "flex");
   }
 
 }
