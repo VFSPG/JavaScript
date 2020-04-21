@@ -2,12 +2,12 @@
   "userid": "pg18alex",
   "id": 0,
   "name": "asdf",
-  "ammo": 15,
+  "ammo": 2,
   "catapult": {
     "id": 0,
     "pos": {
       "x": 20,
-      "y": 650
+      "y": 550
     }
   },
   "entityLists": {
@@ -15,8 +15,8 @@
       {
         "id": 0,
         "pos": {
-          "x": 1200,
-          "y": 700
+          "x": 900,
+          "y": 500
         },
         "entity": {
           "type": 0,
@@ -33,14 +33,50 @@
       {
         "id": 0,
         "pos": {
-          "x": 1200,
-          "y": 600
+          "x": 900,
+          "y": 400
         },
         "entity": {
           "type": 0,
           "name": "asdf",
           "height": 50,
           "width": 50,
+          "texture": "crate-one.png",
+          "shape": "square",
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
+        }
+      },
+      {
+        "id": 0,
+        "pos": {
+          "x": 900,
+          "y": 300
+        },
+        "entity": {
+          "type": 0,
+          "name": "asdf",
+          "height": 50,
+          "width": 50,
+          "texture": "crate-one.png",
+          "shape": "square",
+          "friction": 1,
+          "mass": 5,
+          "restitution": 0
+        }
+      },
+      {
+        "id": 0,
+        "pos": {
+          "x": 900,
+          "y": 200
+        },
+        "entity": {
+          "type": 0,
+          "name": "asdf",
+          "height": 50,
+          "width": 200,
           "texture": "crate-one.png",
           "shape": "square",
           "friction": 1,
@@ -76,24 +112,6 @@
           "type": 0,
           "name": "asdf",
           "height": 50,
-          "width": 200,
-          "texture": "crate-one.png",
-          "shape": "square",
-          "friction": 1,
-          "mass": 5,
-          "restitution": 0
-        }
-      },
-      {
-        "id": 0,
-        "pos": {
-          "x": 1500,
-          "y": 700
-        },
-        "entity": {
-          "type": 0,
-          "name": "asdf",
-          "height": 50,
           "width": 50,
           "texture": "crate-one.png",
           "shape": "square",
@@ -105,26 +123,8 @@
       {
         "id": 0,
         "pos": {
-          "x": 1500,
-          "y": 600
-        },
-        "entity": {
-          "type": 0,
-          "name": "asdf",
-          "height": 50,
-          "width": 50,
-          "texture": "crate-one.png",
-          "shape": "square",
-          "friction": 1,
-          "mass": 5,
-          "restitution": 0
-        }
-      },
-      {
-        "id": 0,
-        "pos": {
-          "x": 1500,
-          "y": 500
+          "x": 1200,
+          "y": 300
         },
         "entity": {
           "type": 0,
@@ -143,8 +143,8 @@
       {
         "id": 0,
         "pos": {
-          "x": 1400,
-          "y": 500
+          "x": 1100,
+          "y": 300
         },
         "value": "100",
         "entity": {

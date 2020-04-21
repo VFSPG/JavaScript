@@ -48,6 +48,27 @@
           "restitution": 0
         }
       }
+    ],
+    "targetList": [
+      {
+        "id": 0,
+        "pos": {
+          "x": 1100,
+          "y": 300
+        },
+        "value": "100",
+        "entity": {
+          "type": 0,
+          "name": "asdf",
+          "height": 50,
+          "width": 50,
+          "texture": "bird.jpg",
+          "shape": "square",
+          "friction": 1,
+          "mass": 2,
+          "restitution": 0
+        }
+      }
     ]
   }
 }

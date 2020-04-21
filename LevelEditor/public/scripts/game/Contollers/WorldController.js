@@ -15,6 +15,8 @@ export const SCALE = 100;
 export default class WorldController {
   constructor(levelList) {
     // World gravity
+    this.reseting = false;
+    this.ammo = 0;
     this.currentLevel = 0;
     this.levelList = levelList;
     this.collidables = [];
@@ -62,8 +64,10 @@ export default class WorldController {
 
   initialize() {
     this.createLevelObjects();
-    this.setUpDrawing();   
+    this.setUpDrawing();
     this.createShotCount();
+    this.setUpDrawing();
+    this.running = true;
   }
 
   addBulletToWorld(event) {
@@ -100,9 +104,11 @@ export default class WorldController {
   createLevelObjects() {
     const {
       catapult: { pos: { x, y } },
-      entityLists: { collidableList = [], targetList = [] }
+      entityLists: { collidableList = [], targetList = [] },
+      ammo
     } = this.levelData[this.currentLevel];
 
+    this.ammo = ammo;
     const data = {
       pos: { x, y },
     };
@@ -150,6 +156,7 @@ export default class WorldController {
   }
 
   shoot(impulseVector) {
+    this.ammo--;
     this.catapult.shoot(impulseVector);
     this.updateShotCount();
   }
@@ -168,9 +175,20 @@ export default class WorldController {
   }
 
   update() {
-    if (!this.targets.length && this.currentScore && !this.cleaning) {
-      this.cleaning = true;
+    if (!this.targets.length && this.running && !this.reseting) {
+      this.reseting = true;
       this.currentLevel++;
+      this.clearLevel();
+      if (this.levelList.length <= this.currentLevel) {
+        cancelAnimationFrame(this.requestedAnimation);
+        this.update();
+        return;
+      }
+      this.createLevelObjects();
+    }
+
+    if (this.ammo < 0 && this.running && !this.reseting) {
+      this.reseting = true;
       this.clearLevel();
       this.createLevelObjects();
       this.createShotCount();
@@ -182,6 +200,8 @@ export default class WorldController {
 
     this.collidables.forEach(collidable => collidable.render());
     this.targets.forEach(target => target.render());
+    this.reseting = false;
+    this.requestedAnimation = requestAnimationFrame(() => this.update());
   }
 
   createShotCount()
@@ -210,168 +230,3 @@ export default class WorldController {
   }
 
 }
-
-const levelData = {
-  userid: 'pg18alex',
-  id: 0,
-  name: 'asdf',
-  ammo: 15,
-  catapult: {
-    id: 0,
-    pos: {
-      x: 20,
-      y: 650
-    }
-  },
-  entityLists: {
-    collidableList: [
-      {
-        id: 0,
-        pos: {
-          x: 1200,
-          y: 700
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 5,
-          restitution: 0
-        }
-      },
-      {
-        id: 0,
-        pos: {
-          x: 1200,
-          y: 600
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 5,
-          restitution: 0
-        }
-      },
-      {
-        id: 0,
-        pos: {
-          x: 1200,
-          y: 500
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 5,
-          restitution: 0
-        }
-      },
-      {
-        id: 0,
-        pos: {
-          x: 1200,
-          y: 400
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 200,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 5,
-          restitution: 0
-        }
-      },
-      {
-        id: 0,
-        pos: {
-          x: 1500,
-          y: 700
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 5,
-          restitution: 0
-        }
-      },
-      {
-        id: 0,
-        pos: {
-          x: 1500,
-          y: 600
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 5,
-          restitution: 0
-        }
-      },
-      {
-        id: 0,
-        pos: {
-          x: 1500,
-          y: 500
-        },
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'crate-one.png',
-          shape: 'square',
-          friction: 1,
-          mass: 5,
-          restitution: 0
-        }
-      },
-    ],
-    targetList: [
-      {
-        id: 0,
-        pos: {
-          x: 1400,
-          y: 500
-        },
-        value: 100,
-        entity: {
-          type: 0,
-          name: 'asdf',
-          height: 50,
-          width: 50,
-          texture: 'bird.jpg',
-          shape: 'square',
-          friction: 1,
-          mass: 2,
-          restitution: 0
-        }
-      }
-    ]
-  }
-};

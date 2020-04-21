@@ -78,7 +78,5 @@ export default class Game {
   
   update() {
     this.world.update();
-
-    this.requestedAnimation = requestAnimationFrame(() => this.update());
   }
 }
