@@ -7,7 +7,7 @@ export default class DragAndDropHandler{
 
     }
 
-    addDraggableHandlers( $elementList) {
+    addDraggableHandlers( $elementList, gameObject) {
 
         $elementList
             .on("dragstart", event => {
@@ -15,7 +15,8 @@ export default class DragAndDropHandler{
                 let dragData = {
                     dx: event.offsetX,
                     dy: event.offsetY,
-                    id: `#${event.target.id}`
+                    id: `#${event.target.id}`,
+                    gameObject: gameObject
                 };
 
                 this.storeData( event, dragData );
@@ -79,7 +80,7 @@ export default class DragAndDropHandler{
                 
                 $editor.append( element );
                         
-                dropCB( element, isPlaced, position );
+                dropCB( element, isPlaced, position, data.gameObject );
             }
             
             return false;
