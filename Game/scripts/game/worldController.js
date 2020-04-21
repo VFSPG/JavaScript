@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Jonathan Dean, All Rights Reserved
+// Copyright (C) 2020 Jonathan Dean and Alejandro, All Rights Reserved
 'use strict';
 
 import Physics from '../libs/Physics.js';
@@ -147,11 +147,6 @@ export default class WorldController {
             this.maxAmmo--;
             $("#ammo").html(this.maxAmmo.toString());
             let gameObject = new GameObject (false, this.world, item, true, vector);
-            
-            if (this.maxAmmo <= 0) {
-                
-                this.layout.openRestartScreen();
-            }
             this.bullet = true;
         }
     }
@@ -170,21 +165,14 @@ export default class WorldController {
                 {
                     this.listOfDestruction.push(bodyA);
                     this.listTarget.pop();
+
                     $("#targets").html((this.listTarget.length).toString());
-                    if (this.listTarget.length <= 0) {
-                        this.layout.openContinueScreen();
-                    }
                 }
 
                 if(bodyB.GetUserData().details.entity.type == "target" && bodyA.GetUserData().buttet == true)
                 {
                     this.listOfDestruction.push(bodyB);
-                    this.listTarget.pop();
-
-
-                    if (this.listTarget.length <= 0) {
-                        this.layout.openContinueScreen();
-                    }
+                    this.listTarget.pop();                   
                 }
             }
         };

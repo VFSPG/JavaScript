@@ -1,0 +1,59 @@
+{
+    "id": "level00",
+    "name": "level00",
+    "background": "airadventurelevel4.png",
+    "ammo": "10",
+    "one_star": "10",
+    "two_stars": "100",
+    "three_stars": "200",
+    "cannon": {
+        "id": "cannon",
+        "pos": {
+            "x": 124,
+            "y": 531
+        }
+    },
+    "collidableLists": {
+        "obstacleList": [
+            {
+                "id": "obstacle-6",
+                "pos": {
+                    "x": 1022,
+                    "y": 432
+                },
+                "entity": {
+                    "type": "obstacle",
+                    "name": "crate",
+                    "height": "5",
+                    "width": "5",
+                    "texture": "crate-one.png",
+                    "shape": "block",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            }
+        ],
+        "targetList": [
+            {
+                "id": "target-4",
+                "pos": {
+                    "x": 1042,
+                    "y": 366
+                },
+                "entity": {
+                    "type": "target",
+                    "name": "bird",
+                    "height": "1",
+                    "width": "1",
+                    "texture": "bird.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "50",
+                    "restitution": "0",
+                    "value": "100"
+                }
+            }
+        ]
+    }
+}

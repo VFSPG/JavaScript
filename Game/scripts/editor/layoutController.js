@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Jonathan Dean, All Rights Reserved
+// Copyright (C) 2020 Jonathan Dean and Alejandro, All Rights Reserved
 'use strict';
 
 // Pixel to meters proportion

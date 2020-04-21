@@ -82,6 +82,7 @@ export default class ClientLoad {
             })
     }
 
+    // Load user from server 
     loadUser(username) {
         return new Promise( (resolve, reject) => {
             $.post(`user/get_user/pg18Jonathan/${username}`)
@@ -101,6 +102,7 @@ export default class ClientLoad {
         });
     }
 
+    // Save user data with levels to server
     async saveUser (username) {
         let allLevels = await this.loadAllLevel(true);
         allLevels = allLevels.payload;
@@ -128,6 +130,31 @@ export default class ClientLoad {
             .then((res) => {
                 resolve(JSON.parse(res));
             })
+        });
+    }
+
+    loadUsers() {
+        return new Promise( (resolve, reject) => {
+            $.post('user/get_user_list/pg18jonathan')
+            .then( response => {
+                // Parse the data then create every item 
+                let res = JSON.parse(response);
+                // Get only the keys for now. Keys = name of the level
+                let username = Object.keys(res.payload);
+                let $parentElement = $('#player-list');
+                
+                // Clear the option to avoid repetition
+                $parentElement.children().not(':first').remove();
+
+                // Add the element to the select level
+                $.map(username, (item) => {
+                    let $newObject = $(`<option value="${item}">${item}</option>`);
+                    $parentElement.append($newObject);
+                }); 
+
+                resolve(res);
+            })
+            .catch (error => reject(error))
         });
     }
 }

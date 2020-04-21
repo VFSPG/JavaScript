@@ -1,8 +1,8 @@
-// Copyright (C) 2020 Jonathan Dean, All Rights Reserved
+// Copyright (C) 2020 Jonathan Dean and Alejandro, All Rights Reserved
 'use strict';
 
 import Physics from "../libs/Physics.js";
-
+import LayoutController from './gameLayoutController.js';
 export default class GameObject {
 
     constructor (isStatic, world, details, bullet, velocity) {
@@ -14,6 +14,7 @@ export default class GameObject {
         this.timeAlive = 0;
         this.destroyed = false;
         this.body = this.create (); 
+        this.layout = new LayoutController();
     }
 
     create () {
@@ -92,10 +93,16 @@ export default class GameObject {
         {
             this.timeAlive += deltaTime;
 
-            if(this.timeAlive > 5 && !this.destroyed){
+            if(this.timeAlive > 3 && !this.destroyed){
                 this.destroyed = true;
                 worldC.listOfDestruction.push(this.body.GetBody());
                 worldC.bullet = false;
+                if (worldC.listTarget.length <= 0) {
+                    this.layout.openContinueScreen();
+                }
+                if (worldC.maxAmmo <= 0) {
+                    this.layout.openRestartScreen();
+                }
             }
         }
     }

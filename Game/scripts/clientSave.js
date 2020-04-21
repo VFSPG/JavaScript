@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Jonathan Dean, All Rights Reserved
+// Copyright (C) 2020 Jonathan Dean and Alejandro, All Rights Reserved
 'use strict';
 
 import Collidable from './collidable.js'
@@ -119,5 +119,21 @@ export default class ClientSave {
         })
         .catch( error => console.log( error )); 
         this.clientLoad.loadAllLevel();
+    }
+
+    // Save user game levels passed to the server
+    saveUserInfo (data) {
+        let dataToSave = {
+            "userid": "pg18jonathan",
+            "username": data.name,
+            "payload" : JSON.stringify(data)
+        }
+
+        return new Promise( (resolve, reject) => {
+            $.post(`user/save/pg18Jonathan/${data.name}`, dataToSave)
+            .then((res) => {
+                resolve(JSON.parse(res));
+            })
+        });
     }
 }
