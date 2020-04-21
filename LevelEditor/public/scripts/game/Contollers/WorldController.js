@@ -22,6 +22,7 @@ export default class WorldController {
     this.catapult = {};
     this.context = document.getElementById('canvas').getContext('2d');
     this.currentScore = 0;
+    this.shotCount = 0;
     const gravity = new Physics.Vec2(0, Physics.GRAVITY);
 
     this.model = new Physics.World(gravity, true);
@@ -31,6 +32,7 @@ export default class WorldController {
     $(document).on('scoreBird', (event) => this.scoreBird(event));
     this.setBoundaries();
     this.setLevelData();
+
   }
 
   setLevelData() {
@@ -60,7 +62,8 @@ export default class WorldController {
 
   initialize() {
     this.createLevelObjects();
-    this.setUpDrawing();
+    this.setUpDrawing();   
+    this.createShotCount();
   }
 
   addBulletToWorld(event) {
@@ -148,6 +151,7 @@ export default class WorldController {
 
   shoot(impulseVector) {
     this.catapult.shoot(impulseVector);
+    this.updateShotCount();
   }
 
   clearLevel() {
@@ -169,6 +173,7 @@ export default class WorldController {
       this.currentLevel++;
       this.clearLevel();
       this.createLevelObjects();
+      this.createShotCount();
     }
 
     this.model.Step(1 / 30, 10, 10);
@@ -178,6 +183,32 @@ export default class WorldController {
     this.collidables.forEach(collidable => collidable.render());
     this.targets.forEach(target => target.render());
   }
+
+  createShotCount()
+  {
+      let $ShotCount = $('#shot-container');
+      const { ammo } = this.levelData[this.currentLevel];
+      this.shotCount = ammo;
+
+      if($ShotCount.has("p"))
+      {
+        $ShotCount.text(`Shot Count: ${ammo}`);
+      }else{
+        //If there's no children create a new children
+        $ShotCount.append(`<p>Shot Count: ${ammo}</p>`);
+      }
+
+     
+  }
+
+  updateShotCount()
+  {
+    let $ShotCount = $('#shot-container');
+    this.shotCount--;
+
+    $ShotCount.text(`Shot Count: ${this.shotCount}`);
+  }
+
 }
 
 const levelData = {

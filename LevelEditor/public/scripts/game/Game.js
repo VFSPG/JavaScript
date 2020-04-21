@@ -14,7 +14,9 @@ export default class Game {
         userid: 'pg18alex'
       }
     ];
+
     this.setUIHandlers();
+
   }
 
   run() {
@@ -73,7 +75,7 @@ export default class Game {
       this.world.shoot(impulse);
     }
   }
-
+  
   update() {
     this.world.update();
 
