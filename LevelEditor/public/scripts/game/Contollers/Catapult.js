@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Pedro Avelino, Alejandro Güereca
 'use strict';
 
 import GameObject from './GameObject.js';
@@ -10,6 +11,7 @@ const WIDTH = 80;
 const TEXTURE = 'catapult.png';
 const SHAPE = 'square';
 
+// Catapult instance, has a default size, texture, and shape
 export default class Catapult extends GameObject {
   constructor(params, world) {
     params.entity = {

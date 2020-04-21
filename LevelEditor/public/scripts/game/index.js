@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Alejandro Guereca Valdivia
+// Copyright (C) 2020 Pedro Avelino, Alejandro Güereca
 'use strict';
 
 import Game from './Game.js';

@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Pedro Avelino
+// Copyright (C) 2020 Pedro Avelino, Alejandro Güereca
 'use strict';
 
 import Physics from '../lib/Physics.js';

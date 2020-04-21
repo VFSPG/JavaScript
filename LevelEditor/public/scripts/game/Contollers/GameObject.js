@@ -1,3 +1,4 @@
+// Copyright (C) 2020 Pedro Avelino, Alejandro Güereca
 'use strict';
 import Physics from '../lib/Physics.js';
 import { SCALE, texturesImagesPath } from './WorldController.js';
