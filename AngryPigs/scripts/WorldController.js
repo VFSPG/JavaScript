@@ -2,29 +2,28 @@
 'use strict';
 
 import Physics from "./lib/Physics.js";
+import GameObject from "./GameObject.js";
 
 export const world_pixel_width = 1280;
 export const world_pixel_height = 720;
+const the_other_ratio = 4.2;
 
 export default class WorldController {
 
     constructor() {
 
         let gravity = new Physics.Vec2(0, Physics.GRAVITY);
-        this.$view = $('#level-screen');
         this.context = document.getElementById("level-screen").getContext("2d");
         this.world = new Physics.World(gravity);
         this.createBoundaries();
+
+        this.objects = [];
 
         // Listen for collections
         //this.addListeners();
     }
 
-    addListeners() { }
-
     createBoundaries() {
-
-        // Create rigibody definition
 
         // Create fixture definition
         var fixDef = new Physics.FixtureDef();
@@ -37,10 +36,10 @@ export default class WorldController {
         var bodyDef = new Physics.BodyDef();
         bodyDef.type = Physics.Body.b2_staticBody;
         fixDef.shape = new Physics.PolygonShape();
-        fixDef.shape.SetAsBox(15 / 2, 0.1);
+        fixDef.shape.SetAsBox(300 / (2 * Physics.WORLD_SCALE), 0.1);
 
         //creates bottom
-        bodyDef.position.Set(300 / (2 * Physics.WORLD_SCALE), 150 / (Physics.WORLD_SCALE));
+        bodyDef.position.Set(300 / (2 * Physics.WORLD_SCALE), 300 / (2 * Physics.WORLD_SCALE));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
 
         //creates top
@@ -48,78 +47,81 @@ export default class WorldController {
         this.world.CreateBody(bodyDef).CreateFixture(fixDef)
 
         //change the shape to the sides
-        fixDef.shape.SetAsBox(0.1, 7.5 / 2);
+        fixDef.shape.SetAsBox(0.1, 150 / (2 * Physics.WORLD_SCALE));
+
+        //creates left side
         bodyDef.position.Set(0, 150 / (2 * Physics.WORLD_SCALE));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
+
+        //creates right side
         bodyDef.position.Set(300 / (Physics.WORLD_SCALE), 150 / (2 * Physics.WORLD_SCALE));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
 
 
         //create some objects
         bodyDef.type = Physics.Body.b2_dynamicBody;
-        for (var i = 0; i < 10; ++i) {
-            if (Math.random() > 0.5) {
-                fixDef.shape = new Physics.PolygonShape();
-                fixDef.shape.SetAsBox(
-                    Math.random() + 0.1 //half width
-                    , Math.random() + 0.1 //half height
-                );
-            } else {
-                fixDef.shape = new Physics.CircleShape(
-                    Math.random() + 0.1 //radius
-                );
-            }
-            bodyDef.position.x = Math.random() * 10;
-            bodyDef.position.y = Math.random() * 10;
-            this.world.CreateBody(bodyDef).CreateFixture(fixDef);
+        for (var i = 0; i < 3; ++i) {
+            var on = new GameObject(this.world);
+            //this.objects.push(on);
         }
 
+        this.setUpDebugger();
+    }
 
-        // create a fixed circle - this will have an image in it
-        // create basic circle
-        var bodyDef = new Physics.BodyDef();
-        var fixDef = new Physics.FixtureDef();
-        fixDef.density = .5;
-        fixDef.friction = 0.1;
-        fixDef.restitution = 0.2;
+    addObject(entity) {
 
-        bodyDef.type = Physics.Body.b2_dynamicBody;
-        var scale = Math.random() + 0.1;
-        fixDef.shape = new Physics.CircleShape(
-            Math.random() + 0.1 //radius
-        );
+    }
 
-        bodyDef.position.x = Math.random() * 10;
-        bodyDef.position.y = Math.random() * 10;
-        var data = {
-            imgsrc: "images/objects/green-bird.png",
-            imgsize: 16,
-            bodysize: scale
-        }
-        bodyDef.userData = data;
-        this.world.CreateBody(bodyDef).CreateFixture(fixDef);
-
+    setUpDebugger() {
 
         var debugDraw = new Physics.DebugDraw();
-        debugDraw.SetSprite(this.context);
+        debugDraw.SetSprite(document.getElementById("level-screen").getContext("2d"));
         debugDraw.SetDrawScale(Physics.WORLD_SCALE);
         debugDraw.SetFillAlpha(0.3);
         debugDraw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
         this.world.SetDebugDraw(debugDraw);
-
     }
 
     update(deltaTime) {
-
-        //console.log(deltaTime);
-
         this.world.Step(1 / 60, 10, 10);
-        this.world.DrawDebugData();
         this.world.ClearForces();
     }
 
     render(deltaTime) {
 
-        //console.log(deltaTime);
+        $(".game-object").remove();
+        this.world.DrawDebugData();
+
+        var node = this.world.GetBodyList();
+
+        while (node) {
+
+            var b = node;
+            // Draw the dynamic objects
+            if (b.GetType() == Physics.Body.b2_dynamicBody) {
+
+                var position = b.GetPosition();
+
+                if (b.m_userData && b.m_userData.imgsrc) {
+
+
+                    var temp = $("<img></img>");
+                    temp.addClass("game-object");
+                    temp.attr("src", b.m_userData.imgsrc);
+                    temp.css("width", b.m_userData.imgsize);
+                    temp.css("height", b.m_userData.imgsize);
+                    temp.css("top", position.y*Physics.WORLD_SCALE);
+                    temp.css("left", position.x* Physics.WORLD_SCALE);
+
+                    var trans = "rotate(" + b.GetAngle()*Physics.RAD_2_DEG + "deg)";
+                    temp.css("transform", trans);
+
+                    $("#level-background").append(temp);
+
+                }
+            }
+
+            node = node.GetNext();
+        }
     }
 }

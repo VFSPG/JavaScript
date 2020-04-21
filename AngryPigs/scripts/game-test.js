@@ -110,21 +110,43 @@ export default class Game {
 
         //change the background
         let imageName = "url(../images/backgrounds/" + this.currentLevel.backgroud + ")";
-        $("#level-screen").css("background-image", imageName);  
+        $("#level-background").css("background-image", imageName);  
 
         //creates the catapult and places it
-        //var catapult = $("<div></div>");
-        //catapult.addClass("game-object");
-        //catapult.attr('id', 'catapult');
-        //catapult.css("top",this.currentLevel.catapult.pos.y);
-        //catapult.css("left",this.currentLevel.catapult.pos.x);
-        //$( "#level-screen" ).append(catapult);
+        var catapult = $("<div></div>");
+        catapult.addClass("game-object");
+        catapult.attr('id', 'catapult');
+        catapult.css("top",this.currentLevel.catapult.pos.y);
+        catapult.css("left",this.currentLevel.catapult.pos.x);
+        $( "#level-background" ).append(catapult);
 
         //creates collidables and targets
         //this.renderCollidables();
-        //this.renderTargets();
+        this.renderTargets();
     }
 
+        //renders all the collidables of the level
+        renderTargets(){
+
+            var list = this.currentLevel.entityLists.targetList;
+    
+            for(var i=0; i < list.length; i++ ){
+    
+                let object = list[i];
+    
+                 var temp = $("<img></img>");
+                 temp.addClass("game-object");    
+                 temp.attr("src",object.entity.texture);
+                 temp.css("width",object.entity.width);
+                 temp.css("height",object.entity.height);
+    
+                 temp.css("top",object.pos.y);
+                 temp.css("left",object.pos.x);
+    
+                 $( "#level-background" ).append(temp);     
+                 
+            }
+        }
 
 
 }
