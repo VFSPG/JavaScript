@@ -1,1 +1,197 @@
-{"userid":"pg18alex","id":"0","name":"perrito","ammo":"15","catapult":{"id":"0","pos":{"x":"20","y":"550"}},"entityLists":{"collidableList":[{"id":"0","pos":{"x":"648","y":"160"},"entity":{"type":"0","name":"qwer","height":"70","width":"70","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}},{"id":"0","pos":{"x":"663","y":"502"},"entity":{"type":"0","name":"asdf`","height":"50","width":"50","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}},{"id":"0","pos":{"x":"665","y":"401"},"entity":{"type":"0","name":"asdf`","height":"50","width":"50","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}},{"id":"0","pos":{"x":"664","y":"303"},"entity":{"type":"0","name":"asdf`","height":"50","width":"50","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}},{"id":"0","pos":{"x":"1143","y":"493"},"entity":{"type":"0","name":"asdf`","height":"50","width":"50","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}},{"id":"0","pos":{"x":"895","y":"601"},"entity":{"type":"0","name":"asdf`","height":"50","width":"50","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}},{"id":"0","pos":{"x":"999","y":"594"},"entity":{"type":"","name":"target","height":"50","width":"50","texture":"images/bird.jpeg","shape":"square","friction":"NaN","mass":"50","restitution":"NaN"}},{"id":"0","pos":{"x":"920","y":"499"},"entity":{"type":"0","name":"asdf`","height":"50","width":"50","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}},{"id":"0","pos":{"x":"957","y":"401"},"entity":{"type":"0","name":"asdf`","height":"50","width":"50","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}},{"id":"0","pos":{"x":"1066","y":"392"},"entity":{"type":"0","name":"asdf`","height":"50","width":"50","texture":"crate-one.png","shape":"square","friction":"1","mass":"90","restitution":"0"}}]}}
+{
+    "userid": "pg18alex",
+    "id": "0",
+    "name": "perrito",
+    "ammo": "15",
+    "catapult": {
+        "id": "0",
+        "pos": {
+            "x": "20",
+            "y": "550"
+        }
+    },
+    "entityLists": {
+        "collidableList": [
+            {
+                "id": "0",
+                "pos": {
+                    "x": "648",
+                    "y": "160"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "qwer",
+                    "height": "70",
+                    "width": "70",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "663",
+                    "y": "502"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "asdf`",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "665",
+                    "y": "401"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "asdf`",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "664",
+                    "y": "303"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "asdf`",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "1143",
+                    "y": "493"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "asdf`",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "895",
+                    "y": "601"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "asdf`",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "999",
+                    "y": "594"
+                },
+                "entity": {
+                    "type": "",
+                    "name": "target",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "bird.jpg",
+                    "shape": "square",
+                    "friction": "NaN",
+                    "mass": "50",
+                    "restitution": "NaN"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "920",
+                    "y": "499"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "asdf`",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "957",
+                    "y": "401"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "asdf`",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            },
+            {
+                "id": "0",
+                "pos": {
+                    "x": "1066",
+                    "y": "392"
+                },
+                "entity": {
+                    "type": "0",
+                    "name": "asdf`",
+                    "height": "50",
+                    "width": "50",
+                    "texture": "crate-one.png",
+                    "shape": "square",
+                    "friction": "1",
+                    "mass": "90",
+                    "restitution": "0"
+                }
+            }
+        ]
+    }
+}
