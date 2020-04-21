@@ -86,7 +86,7 @@ export default class GameObject {
         context.restore();
     }
 
-    update(deltaTime, list)
+    update(deltaTime, worldC)
     {
         if(this.bullet)
         {
@@ -94,7 +94,8 @@ export default class GameObject {
 
             if(this.timeAlive > 5 && !this.destroyed){
                 this.destroyed = true;
-                list.push(this.body.GetBody());
+                worldC.listOfDestruction.push(this.body.GetBody());
+                worldC.bullet = false;
             }
         }
     }

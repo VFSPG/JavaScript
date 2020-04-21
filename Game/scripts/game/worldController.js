@@ -17,6 +17,7 @@ export default class WorldController {
         this.listOfDestruction = [];
         this.collision();
         this.maxAmmo = 0;
+        this.bullet = false;
         this.listTarget = [];
 
         this.catapult = {
@@ -65,7 +66,7 @@ export default class WorldController {
         let obj = this.world.GetBodyList();
         while(obj) {
             let body = obj.GetUserData();
-            if(body) {  body.update(deltaTime, this.listOfDestruction); }
+            if(body) {  body.update(deltaTime, this); }
             obj = obj.GetNext();
         }
     }
@@ -140,9 +141,10 @@ export default class WorldController {
             }
         }
         
-        if(this.maxAmmo > 0){
+        if(this.maxAmmo > 0 && !this.bullet){
             this.maxAmmo--;
             let gameObject = new GameObject (false, this.world, item, true, vector);
+            this.bullet = true;
         }
     }
 
