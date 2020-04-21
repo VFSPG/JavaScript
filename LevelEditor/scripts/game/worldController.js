@@ -7,6 +7,7 @@ import LoadHandler from '../loadhandler.js'
 import Level from './level.js'
 import GameObject from './worldobjects/gameobject.js'
 import MainMenu from './gamemanagement/mainmenu.js'
+import Cannon from './worldobjects/cannon.js'
 
 const GRAVITY = Physics.GRAVITY
 export default class worldController {
@@ -23,6 +24,7 @@ export default class worldController {
         this.aBody = new Physics.BodyDef;
         this.level = new Level();
         this.createBoundaries();
+        this.cannon;
 
         this.addListeners();
         this.mainMenu = new MainMenu();
@@ -54,9 +56,13 @@ export default class worldController {
                 else{
                     gameObject.create(this.model,this.aBody,this.circleFixture, "Circle");
                 }
-                
+
+                if( gameObject.tag == "cannon" ) {
+
+                    this.cannon = new Cannon( gameObject );
+                }
+
                 this.level.content.gameObjects.push(gameObject);
-                
             }
             
         }, element => {

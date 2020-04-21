@@ -104,17 +104,17 @@ export default class App {
 
             for ( let i = 0; i < promises.length; i++ ) {
 
-                promises[i].then( id => {
+                promises[i].then( data => {
 
-                    let element = $(`#${id}`);
-                    this.dragAndDropHandler.addDraggableHandlers( element );
+                    let element = $(`#${data.id}`);
+                    this.dragAndDropHandler.addDraggableHandlers( element, data.gameObject );
                 });
             }
         });
     }
 
     initializeDragAndDrop() {
-        this.dragAndDropHandler.addDroppableHandlers( ( element, isPlaced, position ) => {
+        this.dragAndDropHandler.addDroppableHandlers( ( element, isPlaced, position, GO ) => {
 
             if ( isPlaced ) {
 
@@ -125,10 +125,15 @@ export default class App {
 
                 let gameObject = new GameObject();
                 gameObject.transform.position = position;
+                gameObject.name = GO.name;
+                gameObject.tag = GO.tag;
+                gameObject.physicsStats = { shape: GO.selectedShape,
+                                            friction: GO.friction,
+                                            restitution: GO.restitution};
                 gameObject.id = element.attr("id");
                 gameObject.sprite = element.attr("src");
-                gameObject.transform.scale.x = element.attr("width");
-                gameObject.transform.scale.y = element.attr("height");
+                gameObject.transform.scale.x = element.width();
+                gameObject.transform.scale.y = element.height();
 
                 //Add jquery handlers here
                 this.dragAndDropHandler.addNewDraggables( element, pos => {

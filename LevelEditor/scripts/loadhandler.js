@@ -143,7 +143,7 @@ export default class LoadHandler{
 
                 $('#asset-container').append(element);
     
-                resolve(id);
+                resolve({id: id, gameObject: gameObject});
             });
         });
     }
