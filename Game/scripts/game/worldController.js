@@ -3,11 +3,13 @@
 
 import Physics from '../libs/Physics.js';
 import GameObject from './gameObject.js';
+import LayoutController from './gameLayoutController.js';
 
 export default class WorldController {
     constructor () {
         let gravity = new Physics.Vec2(0, Physics.GRAVITY);
 
+        this.layout = new LayoutController();
         this.$view = $('#game-screen');
 
         this.world = new Physics.World(gravity, true);
@@ -130,9 +132,9 @@ export default class WorldController {
             entity: {
                 type: "bullet",
                 name: "bullet",
-                height: 2,
-                width: 2,
-                texture: "bird.png",
+                height: 1,
+                width: 1,
+                texture: "bullet.png",
                 shape: "circle",
                 friction: 0.5,
                 mass: 80,
@@ -142,7 +144,12 @@ export default class WorldController {
         
         if(this.maxAmmo > 0){
             this.maxAmmo--;
+            $("#ammo").html(this.maxAmmo.toString());
             let gameObject = new GameObject (false, this.world, item, true, vector);
+            if (this.maxAmmo <= 0) {
+                
+                this.layout.openRestartScreen();
+            }
         }
     }
 
@@ -153,16 +160,6 @@ export default class WorldController {
         this.listener.BeginContact = (contact)=> {
             let bodyA = contact.GetFixtureA().GetBody(),
             bodyB = contact.GetFixtureB().GetBody();
-
-            // console.log("+++++++++++++++++++");
-            
-            // console.log("body A");                                           
-            // console.log(bodyA.GetUserData());                                
-            
-            // console.log("body B");
-            // console.log(bodyB.GetUserData());
-            
-            // console.log("+++++++++++++++++++");
             
             if (bodyA.GetUserData() != null && bodyB.GetUserData() != null) 
             {
@@ -170,14 +167,21 @@ export default class WorldController {
                 {
                     this.listOfDestruction.push(bodyA);
                     this.listTarget.pop();
-                    console.log(this.listTarget.length);
+                    $("#targets").html((this.listTarget.length).toString());
+                    if (this.listTarget.length <= 0) {
+                        this.layout.openContinueScreen();
+                    }
                 }
 
                 if(bodyB.GetUserData().details.entity.type == "target" && bodyA.GetUserData().buttet == true)
                 {
                     this.listOfDestruction.push(bodyB);
                     this.listTarget.pop();
-                    console.log(this.listTarget.length);
+
+
+                    if (this.listTarget.length <= 0) {
+                        this.layout.openContinueScreen();
+                    }
                 }
             }
         };
@@ -188,14 +192,35 @@ export default class WorldController {
     createBoudaries() {
 
         let groundBoundingBox = {
-            x: this.$view[0].width  / Physics.WORLD_SCALE,
-            y: this.$view[0].height / Physics.WORLD_SCALE,
+            x: (this.$view[0].width / Physics.WORLD_SCALE) / 2,
+            y: (this.$view[0].height / Physics.WORLD_SCALE),
             width: this.$view[0].width / Physics.WORLD_SCALE,
-            height: 2
+            height: 0.5
         }
-        // let leftSideWall = this.createWall(aBody, aFixture, boundingBox)
-        // let rightSideWall = this.createWall(aBody, aFixture, boundingBox)
-        // let topSideWall = this.createWall(aBody, aFixture, boundingBox)
+
+        let topBoundingBox = {
+            x: (this.$view[0].width / Physics.WORLD_SCALE) / 2,
+            y: 0,
+            width: this.$view[0].width / Physics.WORLD_SCALE,
+            height: 0.5
+        }
+
+        let leftBoundingBox = {
+            x: 0,
+            y: (this.$view[0].height / Physics.WORLD_SCALE)/2,
+            width: 0.5,
+            height: this.$view[0].height / Physics.WORLD_SCALE,
+        }
+
+        let rightBoundingBox = {
+            x: this.$view[0].width  / Physics.WORLD_SCALE,
+            y: (this.$view[0].height / Physics.WORLD_SCALE)/2,
+            width: 0.5,
+            height: this.$view[0].height / Physics.WORLD_SCALE,
+        }
+        let leftSideWall = this.createWall(leftBoundingBox)
+        let rightSideWall = this.createWall(rightBoundingBox)
+        let topSideWall = this.createWall(topBoundingBox)
         let bottomSideWall = this.createWall(groundBoundingBox)
     }
 
@@ -210,10 +235,10 @@ export default class WorldController {
         aFixture.density = 1;
         aFixture.friction = 0.5;
         aFixture.shape = new Physics.PolygonShape();
-        aFixture.shape.SetAsBox(boundingBox.width, 0.5);
+        aFixture.shape.SetAsBox(boundingBox.width, boundingBox.height);
         
-        aBody.position.x = 16;
-        aBody.position.y = 18;
+        aBody.position.x = boundingBox.x;
+        aBody.position.y = boundingBox.y;
 
         this.world.CreateBody(aBody).CreateFixture(aFixture);
         

@@ -28,12 +28,18 @@ export default class Game {
             this.startGame();
         })
 
+        $('#restart-game-btn').on('click', () =>{
+            this.restartGame();
+        })
+
+        $('#start-game-btn').on('click', () =>{
+            this.startGame();
+        })
+
         this.layout.closeLevelSelection();
 
         this.layout.closeRestartScreen();
         this.layout.closeContinueScreen();
-
-       // this.worldController.drawDebug();
     }
 
     // Load level
@@ -64,6 +70,14 @@ export default class Game {
         }
     }
 
+    continueGame() {
+
+    }
+
+    restartGame() {
+
+    }
+
     loadLevelInfo(data) {
         this.worldController.clearWorld();
         
@@ -89,11 +103,12 @@ export default class Game {
         $.map(data.collidableLists.obstacleList, (item) => {
             let gameObject = new GameObject (false, this.worldController.world, item, false);
         });
-
+        
         // Targets
         $.map(data.collidableLists.targetList, (item) => {
             let gameObject = new GameObject (false, this.worldController.world, item, false);
             this.worldController.listTarget.push(gameObject);
+            $("#targets").html((this.worldController.listTarget.length).toString());
         });
     }
 
