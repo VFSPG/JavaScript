@@ -22,6 +22,22 @@ export default class LayoutController {
         })
     }
 
+    openContinueScreen() {
+        $("#continue-screen").show();  
+    }
+
+    closeContinueScreen() {
+        $("#continue-screen").hide();
+    }
+
+    openRestartScreen() {
+        $("#restart-screen").show();  
+    }
+
+    closeRestartScreen() {
+        $("#restart-screen").hide();
+    }
+
     openLevelSelection() {
         $("#level-select-screen").show();  
     }

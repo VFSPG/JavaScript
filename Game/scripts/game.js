@@ -27,7 +27,11 @@ export default class Game {
         $('#start-game-btn').on('click', () =>{
             this.startGame();
         })
+
         this.layout.closeLevelSelection();
+
+        this.layout.closeRestartScreen();
+        this.layout.closeContinueScreen();
 
        // this.worldController.drawDebug();
     }
@@ -80,7 +84,7 @@ export default class Game {
             height:100,
             width:120
         }
-        
+
         // Collidables
         $.map(data.collidableLists.obstacleList, (item) => {
             let gameObject = new GameObject (false, this.worldController.world, item, false);
@@ -97,11 +101,6 @@ export default class Game {
         // Physics here
         this.worldController.update(detalTime);    
     
-    }
-
-    // Do render stuff
-    render( deltaTime ) {
-        //this.worldController.render();
     }
 
     run(timestep = 0) {

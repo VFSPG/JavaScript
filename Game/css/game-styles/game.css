@@ -67,12 +67,17 @@
     background-color: transparent;
 }
 
-.start-game {
+.start-game, .continue-game, .restart-game {
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 22;   
 }
+
+#restart-screen, #continue-screen {
+    z-index: 22;
+}
+
 
 .base-info {
     display: flex;

@@ -74,7 +74,6 @@ export default class WorldController {
         let image = new Image();
         let context = this.$view[0].getContext('2d');
         image.src = `images/canon.png`;
-        console.log(this.catapult)
         context.drawImage(image,
             this.catapult.pos.x, this.catapult.pos.y, this.catapult.width, this.catapult.height);
     }
