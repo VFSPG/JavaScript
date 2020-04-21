@@ -238,8 +238,27 @@ select {
   width: 270px;
   height: 120px;
   margin-left: 30%;
-  background-color: #eca2a2;
+  background-color: #827591;
   border-color: black;
   border-style: solid;
   border-radius: 10px;
+  text-align: center;
+  font-size: 40px;
+  color: black;
+}
+
+#win-screen{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  flex-direction: column;
+  background-color: #2D4770;
+  font-size: xx-large;
+  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
 }
