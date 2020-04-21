@@ -48,6 +48,9 @@ export default class worldController {
                 
             }
             
+        }, element => {
+
+            //Añadale las físicas acá
         });
 
         
