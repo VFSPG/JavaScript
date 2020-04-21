@@ -32,7 +32,7 @@ export default class DragAndDropHandler{
             scroll: false,
             stop: (event, ui) => {
                 if (this.checkValidMove(ui.position.left, ui.position.top)) {
-                    let pos = {x: ui.position.left, y: ui.position.top}
+                    let pos = {left: ui.position.left, top: ui.position.top}
                     this.setPositionTo($newElement,pos)
                     updatePosition(pos);
                 }
