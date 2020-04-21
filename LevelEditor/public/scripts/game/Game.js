@@ -4,15 +4,17 @@ import WorldController from './Contollers/WorldController.js';
 
 export default class Game {
   constructor() {
-    this.currentLevelIndex = 0;
     this.leveData = [
       {
         name: 'asdf',
         userid: 'pg18alex'
+      },
+      {
+        name: 'perrito',
+        userid: 'pg18alex'
       }
     ];
     this.setUIHandlers();
-    // $(document).on('nextLevel', () => this.loadGame());
   }
 
   run() {
@@ -20,38 +22,14 @@ export default class Game {
     this.update();
   }
 
+
   setUIHandlers() {
     $('#start-game-buttom').on('click', event => this.loadGame(event));
   }
 
-  loadLevel(params) {
-    const { name, userid } = params;
-
-    $.post(`/api/level/load/${userid}`, { fileName: name })
-      .then( responseData => {
-        const { payload: { levelData } } = responseData;
-
-        this.world = new WorldController();
-        this.world.setLevelData(levelData);
-        $('#loading-screen').css('display', 'none');
-        $('#game').css('display', 'block');
-        this.world.initialize();
-        this.run();
-      })
-      .catch(error => {
-        console.log(error);
-        alert('We couldnt load the requested level, wooops');
-      });
-  }
-
   loadGame() {
-    $('#main-screen').css('display', 'none');
-    $('#loading-screen').css('display', 'flex');
-
-    const levelData = this.leveData[this.currentLevelIndex];
-
-    this.currentLevelIndex++;
-    this.loadLevel(levelData);
+    this.world = new WorldController(this.leveData);
+    this.run();
   }
 
   setMouseHandlers() {

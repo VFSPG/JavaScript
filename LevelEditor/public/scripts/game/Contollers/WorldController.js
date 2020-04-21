@@ -13,9 +13,12 @@ export const texturesImagesPath = '../../../images/textures';
 export const SCALE = 100;
 
 export default class WorldController {
-  constructor() {
+  constructor(levelList) {
     // World gravity
-    this.levelData = levelData;
+    this.levelList = levelList;
+    this.collidables = [];
+    this.targets = [];
+    this.catapult = {};
     this.context = document.getElementById('canvas').getContext('2d');
     this.currentScore = 0;
     const gravity = new Physics.Vec2(0, Physics.GRAVITY);
@@ -26,10 +29,28 @@ export default class WorldController {
     $(document).on('destroyedBullet', (event) => this.removeBulletFromWorld(event));
     $(document).on('scoreBird', (event) => this.scoreBird(event));
     this.setBoundaries();
+    this.setLevelData();
   }
 
-  setLevelData(levelData) {
-    this.levelData = levelData;
+  setLevelData() {
+    this.clearLevel();
+    const { name, userid } = this.levelList[this.currentLevelIndex];
+
+    
+    this.currentLevelIndex++;
+    $.post(`/api/level/load/${userid}`, { fileName: name })
+      .then( responseData => {
+        const { payload: { levelData } } = responseData;
+
+        $('#loading-screen').css('display', 'none');
+        $('#game').css('display', 'block');
+        this.levelData = levelData;
+        this.initialize();
+      })
+      .catch(error => {
+        console.log(error);
+        alert('We couldnt load the requested level, wooops');
+      });
   }
 
   initialize() {
@@ -66,7 +87,6 @@ export default class WorldController {
       $(bird.objectRepresentation).remove();
       this.targets.splice(tarkIndex, 1);
     }
-
   }
 
   createLevelObjects() {
@@ -125,21 +145,20 @@ export default class WorldController {
     this.catapult.shoot(impulseVector);
   }
 
-  update() {
-    if (!this.targets.length) {
-      this.collidables.forEach(collidable => collidable.suicide());
-      this.targets.forEach(target => target.suicide());
+  clearLevel() {
+    this.collidables.forEach(collidable => collidable.suicide());
+    this.targets.forEach(target => target.suicide());
 
-      if (this.catapult.suicide) {
-        this.catapult.suicide();
-      }
-
-      this.catapult = {};
-      this.collidables = [];
-      this.targets = [];
-      // const event = new CustomEvent('nextLevel');
-      // document.dispatchEvent(event);
+    if (this.catapult.suicide) {
+      this.catapult.suicide();
     }
+
+    this.catapult = {};
+    this.collidables = [];
+    this.targets = [];
+  }
+
+  update() {
 
     this.model.Step(1 / 30, 10, 10);
     this.model.ClearForces();
