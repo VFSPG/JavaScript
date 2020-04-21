@@ -14,7 +14,6 @@ export default class WorldController {
     constructor() {
 
         this.objects = [];
-        this.ammo ={};
 
         let gravity = new Physics.Vec2(0, Physics.GRAVITY);
         this.world = new Physics.World(gravity);
@@ -80,7 +79,13 @@ export default class WorldController {
 
     addObject(object) {
 
-        var on = new GameObject(this.world, object);
+        var on = new GameObject(this.world, object, false, this.objects.length);
+        this.objects.push(on);
+    }
+
+    addTarget(object) {
+
+        var on = new GameObject(this.world, object, true, this.objects.length);
         this.objects.push(on);
     }
 
@@ -110,11 +115,19 @@ export default class WorldController {
         $(".game-object").remove();
 
         //uncomment this to see the debug data
-        //this.world.DrawDebugData();
+        this.world.DrawDebugData();
 
         for(var i =0; i < this.objects.length; i++){
 
-            this.objects[i].render();
+            var destroy = this.objects[i].render(this.world);
+
+            if(destroy){
+
+                console.log(destroy);
+                console.log(this.objects[destroy]);
+                //here i destry the object that i youched
+               //this.objects.splice(destroy);
+            }
         }
     }
 }

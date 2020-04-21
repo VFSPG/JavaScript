@@ -5,7 +5,7 @@ import Physics from "./lib/Physics.js";
 
 export default class GameObject {
 
-    constructor(world, object) {
+    constructor(world, object, isTarget, id) {
 
         // Create fixture definition
         var fixDef = new Physics.FixtureDef();
@@ -37,7 +37,9 @@ export default class GameObject {
         var data = {
             imgsrc: object.entity.texture,
             imgWidth: object.entity.width,
-            imgHeight: object.entity.height
+            imgHeight: object.entity.height,
+            isTarget: isTarget,
+            id: id,
         }
         bodyDef.userData = data;
 
