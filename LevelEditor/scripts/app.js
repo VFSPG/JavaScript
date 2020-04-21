@@ -132,8 +132,8 @@ export default class App {
                                             restitution: GO.restitution};
                 gameObject.id = element.attr("id");
                 gameObject.sprite = element.attr("src");
-                gameObject.transform.scale.x = element.attr("width");
-                gameObject.transform.scale.y = element.attr("height");
+                gameObject.transform.scale.x = element.width();
+                gameObject.transform.scale.y = element.height();
 
                 //Add jquery handlers here
                 this.dragAndDropHandler.addNewDraggables( element, pos => {
