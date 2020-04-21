@@ -12,11 +12,14 @@ const GRAVITY = Physics.GRAVITY
 export default class worldController {
 
     constructor() {
-        this.gVector = new Physics.Vec2(0,GRAVITY)
+        this.gVector = new Physics.Vec2(GRAVITY,GRAVITY)
         this.world = new Physics.World(this.gVector)
         this.$view = $('#game-display')
         this.model = new Physics.World(this.gVector, true)
         this.aFixture = new Physics.FixtureDef;
+        this.circleFixture = new Physics.FixtureDef;
+        this.aFixture.shape = new Physics.PolygonShape;
+        this.circleFixture.shape = new Physics.CircleShape;
         this.aBody = new Physics.BodyDef;
         this.level = new Level();
         this.createBoundaries();
@@ -45,8 +48,13 @@ export default class worldController {
                 gameObject.sprite = data.sprite;
 
                 this.aBody.type = Physics.Body.b2_dynamicBody;
-                this.aFixture.shape = new Physics.PolygonShape;
-                gameObject.create(this.model,this.aBody,this.aFixture);
+                if (gameObject.physicsStats.shape == "AABB") {
+                    gameObject.create(this.model,this.aBody,this.aFixture, "AABB");
+                }
+                else{
+                    gameObject.create(this.model,this.aBody,this.circleFixture, "Circle");
+                }
+                
                 this.level.content.gameObjects.push(gameObject);
                 
             }
@@ -104,7 +112,7 @@ export default class worldController {
 
     render() {
         for (let gameObject of this.level.content.gameObjects) {
-            gameObject.render();
+            gameObject.render(Physics.RAD_2_DEG);
         }
     }
 }

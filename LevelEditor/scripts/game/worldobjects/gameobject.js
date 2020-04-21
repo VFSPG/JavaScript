@@ -26,12 +26,22 @@ export default class GameObject {
         
     }
 
-    create(model, body, fixture) {
+    create(model, body, fixture, shape) {
 
-        fixture.shape.SetAsBox((100 / this.worldScale) / 2, (100 / this.worldScale) / 2);
+        if (shape == "AABB") {
+            fixture.shape.SetAsBox((100 / this.worldScale) / 2, (100 / this.worldScale) / 2);
+        }
+        else{
+            fixture.shape.SetRadius((100 / this.worldScale) / 2);
+        }
         body.position.Set(this.transform.position.left / this.worldScale, this.transform.position.top / this.worldScale);
-        this.worldBody = model.CreateBody(body);
-        this.worldBody.CreateFixture(fixture);
+        try {
+            this.worldBody = model.CreateBody(body);
+            this.worldBody.CreateFixture(fixture);
+        } catch (error) {
+            console.log("Unknown error")
+        }
+       
         
     }
 
@@ -41,8 +51,10 @@ export default class GameObject {
         }
     }
 
-    render() {
+    render(radToDegree) {
         if (this.worldBody != undefined) {
+            let angle = this.worldBody.GetAngle()
+            this.$view.css('transform', `rotate(${angle*radToDegree}deg)`)
             this.$view.css('top', this.worldBody.GetPosition().y * this.worldScale)
             this.$view.css('left', this.worldBody.GetPosition().x * this.worldScale)
         }
