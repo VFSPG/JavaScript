@@ -9,13 +9,24 @@
   <title>Angry Pigs</title>
 </head>
 <body>
-  <div id="wrapper">
-    <div id="editor" class="frame">
+  <div id="main-screen">
+    <h1>Angry Pigs</h1>
+    <div id="start-game-buttom" class="button">
+      <span id="start-buttom">Start</span>
     </div>
   </div>
-  <canvas id="canvas" width="1800" height="800" style="background-color:#333333;" >
-    <div id="editor"></div>
-  </canvas>
+  <div id="loading-screen">
+    <div class="loader"></div>
+  </div>
+  <div id="game">
+    <div id="wrapper">
+      <div id="editor" class="frame">
+      </div>
+    </div>
+    <canvas id="canvas" width="1800" height="800" style="background-color:#333333;" >
+      <div id="editor"></div>
+    </canvas>
+  </div>
   <script type="module" src="scripts/game/index.js"></script>
 </body>
 </html>

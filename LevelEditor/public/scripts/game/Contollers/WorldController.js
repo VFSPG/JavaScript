@@ -12,9 +12,10 @@ export const texturesImagesPath = '../../../images/textures';
 
 export const SCALE = 100;
 
-class WorldController {
-  constructor() {
+export default class WorldController {
+  constructor(levelData) {
     // World gravity
+    this.levelData = levelData;
     this.context = document.getElementById('canvas').getContext('2d');
     this.currentScore = 0;
     const gravity = new Physics.Vec2(0, Physics.GRAVITY);
@@ -53,7 +54,6 @@ class WorldController {
     const { detail: bird } = event;
     const tarkIndex = this.targets.indexOf(bird);
 
-    // Remove it based in the index
     if (tarkIndex > -1) {
       this.currentScore += bird.value;
       this.model.DestroyBody(bird.rigidbody);
@@ -67,8 +67,7 @@ class WorldController {
     const {
       catapult: { pos: { x, y } },
       entityLists: { collidableList = [], targetList = [] }
-    } = levelData;
-
+    } = this.levelData;
 
     const data = {
       pos: { x, y },
@@ -298,6 +297,3 @@ const levelData = {
     ]
   }
 };
-
-
-export default new WorldController();

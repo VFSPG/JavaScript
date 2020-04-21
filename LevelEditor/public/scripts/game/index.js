@@ -6,7 +6,6 @@ import Game from './Game.js';
 // MAIN
 (function Main() {
   $(document).ready(() => {
-
-    Game.run();
+    new Game();
   });
 })();

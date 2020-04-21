@@ -2,11 +2,46 @@
 
 import WorldController from './Contollers/WorldController.js';
 
-class Game {
+export default class Game {
+  constructor() {
+    this.leveData = [
+      {
+        name: 'asdf',
+        userid: 'pg18alex'
+      }
+    ];
+    this.setUIHandlers();
+  }
+
   run() {
-    this.world = WorldController;
     this.setMouseHandlers();
     this.update();
+  }
+
+  setUIHandlers() {
+    $('#start-game-buttom').on('click', event => this.loadGame(event));
+  }
+
+  loadGame() {
+    $('#main-screen').css('display', 'none');
+    $('#loading-screen').css('display', 'flex');
+
+    const [ levelData ] = this.leveData;
+    const { name, userid } = levelData;
+
+    $.post(`/api/level/load/${userid}`, { fileName: name })
+      .then( responseData => {
+        const { payload: { levelData } } = responseData;
+
+        this.world = new WorldController(levelData);
+        $('#loading-screen').css('display', 'none');
+        $('#game').css('display', 'block');
+        this.run();
+      })
+      .catch(error => {
+        console.log(error);
+        alert('We couldnt load the requested level, wooops');
+      });
   }
 
   setMouseHandlers() {
@@ -57,5 +92,3 @@ class Game {
     requestAnimationFrame(() => this.update());
   }
 }
-
-export default new Game();
