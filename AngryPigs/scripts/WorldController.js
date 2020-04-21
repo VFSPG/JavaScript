@@ -6,21 +6,16 @@ import GameObject from "./GameObject.js";
 
 export const world_pixel_width = 1280;
 export const world_pixel_height = 720;
-const the_other_ratio = 4.2;
+export const bottom_line = 4;
 
 export default class WorldController {
 
     constructor() {
 
+        this.objects = [];
         let gravity = new Physics.Vec2(0, Physics.GRAVITY);
-        this.context = document.getElementById("level-screen").getContext("2d");
         this.world = new Physics.World(gravity);
         this.createBoundaries();
-
-        this.objects = [];
-
-        // Listen for collections
-        //this.addListeners();
     }
 
     createBoundaries() {
@@ -36,47 +31,41 @@ export default class WorldController {
         var bodyDef = new Physics.BodyDef();
         bodyDef.type = Physics.Body.b2_staticBody;
         fixDef.shape = new Physics.PolygonShape();
-        fixDef.shape.SetAsBox(300 / (2 * Physics.WORLD_SCALE), 0.1);
+        fixDef.shape.SetAsBox(world_pixel_width / (2 * Physics.WORLD_SCALE), 0.1);
 
         //creates bottom
-        bodyDef.position.Set(300 / (2 * Physics.WORLD_SCALE), 300 / (2 * Physics.WORLD_SCALE));
+        bodyDef.position.Set(world_pixel_width / (2 * Physics.WORLD_SCALE), (world_pixel_height/Physics.WORLD_SCALE)-bottom_line);
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
 
         //creates top
-        bodyDef.position.Set(300 / (2 * Physics.WORLD_SCALE), 0);
+        bodyDef.position.Set(world_pixel_width / (2 * Physics.WORLD_SCALE), 0);
         this.world.CreateBody(bodyDef).CreateFixture(fixDef)
 
         //change the shape to the sides
-        fixDef.shape.SetAsBox(0.1, 150 / (2 * Physics.WORLD_SCALE));
+        fixDef.shape.SetAsBox(0.1, world_pixel_height / (2 * Physics.WORLD_SCALE));
 
         //creates left side
-        bodyDef.position.Set(0, 150 / (2 * Physics.WORLD_SCALE));
+        bodyDef.position.Set(0, world_pixel_height / (2 * Physics.WORLD_SCALE));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
 
         //creates right side
-        bodyDef.position.Set(300 / (Physics.WORLD_SCALE), 150 / (2 * Physics.WORLD_SCALE));
+        bodyDef.position.Set(world_pixel_width / (Physics.WORLD_SCALE), world_pixel_height / (2 * Physics.WORLD_SCALE));
         this.world.CreateBody(bodyDef).CreateFixture(fixDef);
-
-
-        //create some objects
-        bodyDef.type = Physics.Body.b2_dynamicBody;
-        for (var i = 0; i < 3; ++i) {
-            var on = new GameObject(this.world);
-            //this.objects.push(on);
-        }
 
         this.setUpDebugger();
     }
 
-    addObject(entity) {
+    addObject(object) {
 
+        var on = new GameObject(this.world, object);
+        this.objects.push(on);
     }
 
     setUpDebugger() {
 
         var debugDraw = new Physics.DebugDraw();
         debugDraw.SetSprite(document.getElementById("level-screen").getContext("2d"));
-        debugDraw.SetDrawScale(Physics.WORLD_SCALE);
+        debugDraw.SetDrawScale(4.3);
         debugDraw.SetFillAlpha(0.3);
         debugDraw.SetFlags(Physics.DebugDraw.e_shapeBit | Physics.DebugDraw.e_jointBit);
         this.world.SetDebugDraw(debugDraw);
@@ -92,36 +81,9 @@ export default class WorldController {
         $(".game-object").remove();
         this.world.DrawDebugData();
 
-        var node = this.world.GetBodyList();
+        for(var i =0; i < this.objects.length; i++){
 
-        while (node) {
-
-            var b = node;
-            // Draw the dynamic objects
-            if (b.GetType() == Physics.Body.b2_dynamicBody) {
-
-                var position = b.GetPosition();
-
-                if (b.m_userData && b.m_userData.imgsrc) {
-
-
-                    var temp = $("<img></img>");
-                    temp.addClass("game-object");
-                    temp.attr("src", b.m_userData.imgsrc);
-                    temp.css("width", b.m_userData.imgsize);
-                    temp.css("height", b.m_userData.imgsize);
-                    temp.css("top", position.y*Physics.WORLD_SCALE);
-                    temp.css("left", position.x* Physics.WORLD_SCALE);
-
-                    var trans = "rotate(" + b.GetAngle()*Physics.RAD_2_DEG + "deg)";
-                    temp.css("transform", trans);
-
-                    $("#level-background").append(temp);
-
-                }
-            }
-
-            node = node.GetNext();
+            this.objects[i].render();
         }
     }
 }

@@ -120,32 +120,27 @@ export default class Game {
         catapult.css("left",this.currentLevel.catapult.pos.x);
         $( "#level-background" ).append(catapult);
 
-        //creates collidables and targets
-        //this.renderCollidables();
-        this.renderTargets();
+        this.renderObjects();
     }
 
         //renders all the collidables of the level
-        renderTargets(){
+        renderObjects(){
 
-            var list = this.currentLevel.entityLists.targetList;
-    
-            for(var i=0; i < list.length; i++ ){
-    
-                let object = list[i];
-    
-                 var temp = $("<img></img>");
-                 temp.addClass("game-object");    
-                 temp.attr("src",object.entity.texture);
-                 temp.css("width",object.entity.width);
-                 temp.css("height",object.entity.height);
-    
-                 temp.css("top",object.pos.y);
-                 temp.css("left",object.pos.x);
-    
-                 $( "#level-background" ).append(temp);     
-                 
+            var listO = this.currentLevel.entityLists.collidableList;
+            for(var i=0; i < listO.length; i++ ){
+
+                this.world.addObject(listO[i])
             }
+            
+            
+            var listT = this.currentLevel.entityLists.targetList;
+    
+            for(var i=0; i < listT.length; i++ ){
+    
+                this.world.addObject(listT[i]);
+            }
+
+            
         }
 
 
