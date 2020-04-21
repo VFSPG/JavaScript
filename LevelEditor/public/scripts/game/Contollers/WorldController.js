@@ -35,6 +35,7 @@ export default class WorldController {
 
   setLevelData() {
     this.clearLevel();
+    $('#loading-screen').css('display', 'flex');
 
     Promise.all(this.levelList.map(levelData => {
       const { name, userid } = levelData;
@@ -44,7 +45,6 @@ export default class WorldController {
           const { payload: { levelData } } = responseData;
 
           $('#loading-screen').css('display', 'none');
-          $('#game').css('display', 'block');
           return levelData;
         })
         .catch(error => {
@@ -52,6 +52,7 @@ export default class WorldController {
           alert('We couldnt load the requested level, wooops');
         });
     })).then(levelData => {
+      $('#game').css('display', 'block');
       this.levelData = levelData;
       this.initialize();
     });
