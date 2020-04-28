@@ -43,6 +43,9 @@ body{
     padding-bottom: 1%;
 }
 
+#change-user-btn{
+    display: none;
+}
 /*levels styles*/
 
 #levels{
@@ -244,10 +247,6 @@ form div{
     border-radius: 25px;
 }
 
-#save-button{
-    display: none;
-}
-
 #object-visualization > img{
 
     margin: 5%;
@@ -353,6 +352,19 @@ form div{
 
     background: #fff;
     margin: 2%;
+}
+
+#object-form{
+    margin-bottom: 5%;
+}
+
+.object-btn{
+
+    margin-left:2%;
+    padding:2%;
+    background: #d80026;
+    border-radius: 25px;
+
 }
 
 

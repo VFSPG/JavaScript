@@ -1,7 +1,7 @@
 // Copyright (C) 2020 Scott Henshae
 'use strict';
 
-class Entity {
+class Object {
 
     constructor() {
         this.type = 0;
@@ -12,7 +12,7 @@ class Entity {
         this.shape = "square";
         
         this.friction = 1;
-        this.mass = 90;
+        this.mass = 20;
         this.restitution = 0;
     }
 }
@@ -21,7 +21,7 @@ class Collidable {
 
     constructor() {
         this.id = 0;
-        this.entity = new Entity();
+        this.entity = new Object();
     }
 }
 
@@ -39,7 +39,7 @@ class Level {
         {
             this.id = id;
             this.name = name;
-            this.ammo = 15;
+            this.ammo = 7;
             this.backgroud = "default-level.png";
             this.starOne = 0;
             this.starTwo = 10;
@@ -57,4 +57,4 @@ class Level {
     }
 }
 
-export { Entity, Level};
+export { Object, Level};
