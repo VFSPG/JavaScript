@@ -87,6 +87,9 @@ export default class Game {
         let imageName = "url(../images/backgrounds/" + this.currentLevel.backgroud + ")";
         $("#level-background").css("background-image", imageName);
 
+        //puts the ammo count
+        $("#ammo-count").html("x" + this.currentLevel.ammo);
+
         //creates the catapult and places it
         var catapult = $("<div></div>");
         catapult.attr('id', 'catapult');
@@ -142,6 +145,7 @@ export default class Game {
             this.world.shoot(x,y);
 
             this.ammoCount++;
+            $("#ammo-count").html("x" + (this.currentLevel.ammo - this.ammoCount));
         }
 
 
