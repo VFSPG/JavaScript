@@ -27,6 +27,9 @@ export default class Game {
 
         //manage the events of the keyboard
         $(document).on('keypress', event => this.handdleKeyPress(event));
+
+        //hides the modal
+        $('#ok-modal').on('click', event => location.reload());
     }
 
     //gets the list of levels by id
@@ -123,20 +126,32 @@ export default class Game {
 
     update(deltaTime) {
 
-        this.world.update(deltaTime);
+        if(this.world.targetsGotten==this.currentLevel.entityLists.targetList.length){
+
+            $("#modal-wrapper").show();
+            $("#modal-tittle").html("YOU WON");
+        }
+        else if(this.ammoCount == this.currentLevel.ammo){
+            $("#modal-wrapper").show();
+            $("#modal-tittle").html("NO AMMO LEFT");
+        }
+        else{
+            this.world.update(deltaTime);
+        }
+
     }
 
     render(deltaTime) {
 
         this.world.render(deltaTime);
 
-        if(this.world.score>this.currentLevel.starOne){
+        if(this.world.targetsGotten>this.currentLevel.starOne){
             $("#starOne").css("color", "yellow");
         }
-        if(this.world.score>this.currentLevel.starTwo){
+        if(this.world.targetsGotten>this.currentLevel.starTwo){
             $("#starTwo").css("color", "yellow");
         }
-        if(this.world.score>this.currentLevel.starThree){
+        if(this.world.targetsGotten>this.currentLevel.starThree){
             $("#starThree").css("color", "yellow");
         }
     }
@@ -173,13 +188,14 @@ export default class Game {
         if ( event.which == 32 ) {
             this.shoot(event);
         }
-        else if(event.which == 115 ){
 
-            console.log(this.angle)
+        //changes angle of shoot on s
+        else if(event.which == 115 ){
             this.angle++;
             var trans = "translate(-50%, -50%) rotate(" + (this.angle)+ "deg)";
             $("#catapult").css("transform", trans);
         }
+        //changes angle of shoot on w
         else if(event.which == 119 ){
 
             this.angle--;

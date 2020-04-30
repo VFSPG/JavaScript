@@ -8,7 +8,7 @@ this is a pretty bad coded game of angry pigs
 ## Synopsis
 ---------------
 this is a node web app that lets you play angry birgs big version, it also allows you to create and edit levels of the game. 
-It uses express jquery, path and http libraries in order to work properly.
+It uses Box2d, express, jquery, path and http libraries in order to work properly.
 
 
 # *** How to use ***
@@ -35,7 +35,9 @@ remember to click save in order to save a change otherwhise all changes will be 
 
 you have to the localhost:3000 route
 
-you can select a level and click on the cannon to shoot a pig
+you can select a level to play and it will show you the level of the level editor
+
+you can aim the cannon pressing the w and s keys and shoot pressing space or clicking the cannon itseld
 
 
 # *** Caveats ***
@@ -46,9 +48,6 @@ there is a lot that doesnt work just now...
 
 #In the level editor:
 
-- still can't add new objects... sorry i forgot to do that
-- you can change the userId anytime and mess everything up 
-- if you go beyond the editor space you can still drag the objects and lose them forever
 - you can't delete levels
 - the server is working syncronimusly (thats how you write that?) anyways thats bad 
 - if you put the same name as other level it will overwrite it
@@ -56,13 +55,9 @@ there is a lot that doesnt work just now...
 
 #In the game:
 
-- there is no user interface that tells you how much ammo you have left, your score or the name of the level
-- you cant change the direction of the pigs or the force
-- the birds aren't dissapearing on hit 
+- you cant change the force of the pigs
 - you can't restart or go back to select a level
 - your progress or score isn't recorded
 
 
-THINGS I WANT TO SAY:
-
-MAYBE YOU SHOULD TRY LEVEL 4
+THINGS I WANT TO SAY: I am so sorry this isn't the cleanest code i've ever written

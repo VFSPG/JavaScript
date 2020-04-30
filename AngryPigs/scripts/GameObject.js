@@ -53,6 +53,7 @@ export default class GameObject {
         this.toDestroy=false;
     }
 
+    //renders the object
     render(world) {
 
         var b = this.body;
@@ -61,6 +62,7 @@ export default class GameObject {
 
         if (b.m_userData && b.m_userData.imgsrc) {
 
+            //if the user is market to destroy then destroys it
             if(b.m_userData.toDestroy==true){
 
                 this.toDestroy=true;

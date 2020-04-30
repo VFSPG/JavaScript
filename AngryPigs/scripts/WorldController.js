@@ -15,7 +15,7 @@ export default class WorldController {
     constructor() {
 
         this.objects = [];
-        this.score=0;
+        this.targetsGotten=0;
 
         let gravity = new Physics.Vec2(0, Physics.GRAVITY);
         this.world = new Physics.World(gravity);
@@ -132,7 +132,7 @@ export default class WorldController {
 
                 if(destroy==true){
     
-                    this.score++;
+                    this.targetsGotten++;
                 }
             }
 
