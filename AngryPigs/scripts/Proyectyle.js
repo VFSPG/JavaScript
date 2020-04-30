@@ -31,6 +31,7 @@ export default class Ammo {
 
         this.body = world.CreateBody(bodyDef);
         this.fixture = this.body.CreateFixture(fixDef);
+        this.timeStopped=0;
     }
 
     addForce(xForce, yForce) {
@@ -45,46 +46,59 @@ export default class Ammo {
     render(world) {
 
         var b = this.body;
-        // Draw the dynamic objects
-        if (b.GetType() == Physics.Body.b2_dynamicBody) {
+
+        this.checkTimeStopped(world);
+
+        if (b.m_userData && b.m_userData.imgsrc) {
 
             var position = b.GetPosition();
 
-            if (b.m_userData && b.m_userData.imgsrc) {
+            var temp = $("<img></img>");
+            temp.addClass("game-object");
+            temp.attr("src", b.m_userData.imgsrc);
+            temp.css("width", b.m_userData.imgWidth);
+            temp.css("height", b.m_userData.imgHeight);
+            temp.css("top", (position.y * Physics.WORLD_SCALE) - (b.m_userData.imgHeight / 2));
+            temp.css("left", (position.x * Physics.WORLD_SCALE) - (b.m_userData.imgWidth / 2));
+
+            var trans = "rotate(" + b.GetAngle() * Physics.RAD_2_DEG + "deg)";
+            temp.css("transform", trans);
+
+            $("#level-background").append(temp);
 
 
-                var temp = $("<img></img>");
-                temp.addClass("game-object");
-                temp.attr("src", b.m_userData.imgsrc);
-                temp.css("width", b.m_userData.imgWidth);
-                temp.css("height", b.m_userData.imgHeight);
-                temp.css("top", (position.y * Physics.WORLD_SCALE) - (b.m_userData.imgHeight / 2));
-                temp.css("left", (position.x * Physics.WORLD_SCALE) - (b.m_userData.imgWidth / 2));
+            //checks for collitions
+            var edge = b.GetContactList();
+            while (edge) {
 
-                var trans = "rotate(" + b.GetAngle() * Physics.RAD_2_DEG + "deg)";
-                temp.css("transform", trans);
+                var other = edge.other;
+                if (other.m_userData) {
 
-                $("#level-background").append(temp);
+                    if(other.m_userData.isTarget){
 
-
-                //checks for collitions
-                var edge = b.GetContactList();
-                while (edge) {
-
-                    var other = edge.other;
-                    if (other.m_userData) {
-
-                        if(other.m_userData.isTarget){
-
-                            //world.DestroyBody(other);
-                            return other.m_userData.id;
-                        }
-                        break;
+                        return true;
                     }
-                    edge = edge.next;
+                    break;
                 }
-
+                edge = edge.next;
             }
+
+        }
+    }
+
+    checkTimeStopped(world){
+
+        if(this.body.m_linearVelocity.x<=0.3 && this.body.m_linearVelocity.y <=0.3){
+
+            this.timeStopped++;
+        }
+        else{
+            this.timeStopped=0;
+        }
+
+        if(this.timeStopped>60){
+
+            //world.DestroyBody(this.body);
         }
     }
 }

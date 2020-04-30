@@ -30,7 +30,6 @@ export default class GameObject {
             fixDef.shape.SetAsBox( object.entity.width/(2*Physics.WORLD_SCALE), object.entity.height/(2*Physics.WORLD_SCALE));
         }
 
-        //i know i have to do something here
         bodyDef.position.x = object.pos.x/Physics.WORLD_SCALE;
         bodyDef.position.y = object.pos.y/Physics.WORLD_SCALE;
 
@@ -40,6 +39,7 @@ export default class GameObject {
             imgHeight: object.entity.height,
             isTarget: isTarget,
             id: id,
+            isVisible:true
         }
         bodyDef.userData = data;
 
@@ -50,28 +50,37 @@ export default class GameObject {
     render() {
 
         var b = this.body;
-        // Draw the dynamic objects
-        if (b.GetType() == Physics.Body.b2_dynamicBody) {
 
-            var position = b.GetPosition();
+        var position = b.GetPosition();
 
-            if (b.m_userData && b.m_userData.imgsrc) {
+        if (b.m_userData && b.m_userData.imgsrc && b.m_userData.isVisible) {
 
 
-                var temp = $("<img></img>");
-                temp.addClass("game-object");
-                temp.attr("src", b.m_userData.imgsrc);
-                temp.css("width", b.m_userData.imgWidth);
-                temp.css("height", b.m_userData.imgHeight);
-                temp.css("top", (position.y * Physics.WORLD_SCALE)-( b.m_userData.imgHeight/2));
-                temp.css("left", (position.x * Physics.WORLD_SCALE)-( b.m_userData.imgWidth/2));
+            var temp = $("<img></img>");
+            temp.addClass("game-object");
+            temp.attr("src", b.m_userData.imgsrc);
 
-                var trans = "rotate(" + b.GetAngle() * Physics.RAD_2_DEG + "deg)";
-                temp.css("transform", trans);
-
-                $("#level-background").append(temp);
-
+            var id =""
+            if(b.m_userData.isTarget){
+                id="target-"+b.m_userData.id;
             }
+            else{
+                id="collidable-"+b.m_userData.id;
+            }
+
+            temp.attr('id',id);
+
+
+            temp.css("width", b.m_userData.imgWidth);
+            temp.css("height", b.m_userData.imgHeight);
+            temp.css("top", (position.y * Physics.WORLD_SCALE)-( b.m_userData.imgHeight/2));
+            temp.css("left", (position.x * Physics.WORLD_SCALE)-( b.m_userData.imgWidth/2));
+
+            var trans = "rotate(" + b.GetAngle() * Physics.RAD_2_DEG + "deg)";
+            temp.css("transform", trans);
+
+            $("#level-background").append(temp);
+
         }
     }
 }

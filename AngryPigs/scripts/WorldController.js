@@ -14,6 +14,7 @@ export default class WorldController {
     constructor() {
 
         this.objects = [];
+        this.score=0;
 
         let gravity = new Physics.Vec2(0, Physics.GRAVITY);
         this.world = new Physics.World(gravity);
@@ -123,6 +124,7 @@ export default class WorldController {
 
             if(destroy){
 
+                this.score++;
                 console.log(destroy);
                 console.log(this.objects[destroy]);
                 //here i destry the object that i youched

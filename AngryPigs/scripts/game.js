@@ -72,7 +72,7 @@ export default class Game {
                 $("#levels").hide();
                 $("#game").show();
                 this.currentLevel = responseData.payload.level;
-                this.renderLevel();
+                this.createLevel();
                 this.run();
             })
             .catch(error => {
@@ -81,7 +81,7 @@ export default class Game {
             });
     }
 
-    renderLevel() {
+    createLevel() {
 
         //change the background
         let imageName = "url(../images/backgrounds/" + this.currentLevel.backgroud + ")";
@@ -100,11 +100,11 @@ export default class Game {
         //adds a rigidbody to the catapult
         this.world.addCatapult(this.currentLevel.catapult.pos.x, this.currentLevel.catapult.pos.y);
 
-        this.renderObjects();
+        this.createObjects();
     }
 
     //renders all the collidables of the level
-    renderObjects() {
+    createObjects() {
 
         var listO = this.currentLevel.entityLists.collidableList;
         for (var i = 0; i < listO.length; i++) { this.world.addObject(listO[i])}
@@ -124,6 +124,16 @@ export default class Game {
     render(deltaTime) {
 
         this.world.render(deltaTime);
+
+        if(this.world.score>this.currentLevel.starOne){
+            $("#starOne").css("color", "yellow");
+        }
+        if(this.world.score>this.currentLevel.starTwo){
+            $("#starTwo").css("color", "yellow");
+        }
+        if(this.world.score>this.currentLevel.starThree){
+            $("#starThree").css("color", "yellow");
+        }
     }
 
     run(timestep = 0) {
