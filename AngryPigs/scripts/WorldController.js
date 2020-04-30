@@ -115,21 +115,25 @@ export default class WorldController {
 
         $(".game-object").remove();
 
+
         //uncomment this to see the debug data
         //this.world.DrawDebugData();
 
         for(var i =0; i < this.objects.length; i++){
 
-            var destroy = this.objects[i].render(this.world);
-
-            if(destroy){
-
-                this.score++;
-                console.log(destroy);
-                console.log(this.objects[destroy]);
-                //here i destry the object that i youched
-               //this.objects.splice(destroy);
+            if(this.objects[i].toDestroy==true){
+                console.log("as");
             }
+            else{
+
+                var destroy = this.objects[i].render(this.world);
+
+                if(destroy==true){
+    
+                    this.score++;
+                }
+            }
+
         }
     }
 }

@@ -32,6 +32,7 @@ export default class Ammo {
         this.body = world.CreateBody(bodyDef);
         this.fixture = this.body.CreateFixture(fixDef);
         this.timeStopped=0;
+        this.toDestroy=false;
     }
 
     addForce(xForce, yForce) {
@@ -76,6 +77,7 @@ export default class Ammo {
 
                     if(other.m_userData.isTarget){
 
+                        other.m_userData.toDestroy=true;
                         return true;
                     }
                     break;
@@ -96,9 +98,10 @@ export default class Ammo {
             this.timeStopped=0;
         }
 
-        if(this.timeStopped>60){
+        if(this.timeStopped>90){
 
-            //world.DestroyBody(this.body);
+            this.toDestroy=true;
+            world.DestroyBody(this.body);
         }
     }
 }

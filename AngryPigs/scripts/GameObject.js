@@ -33,53 +33,66 @@ export default class GameObject {
         bodyDef.position.x = object.pos.x/Physics.WORLD_SCALE;
         bodyDef.position.y = object.pos.y/Physics.WORLD_SCALE;
 
+        //create the data of the object
         var data = {
             imgsrc: object.entity.texture,
             imgWidth: object.entity.width,
             imgHeight: object.entity.height,
             isTarget: isTarget,
             id: id,
-            isVisible:true
+            toDestroy:false
         }
         bodyDef.userData = data;
 
+        //saves the reference of the body
         this.body = world.CreateBody(bodyDef);
         this.body.CreateFixture(fixDef);
+
+
+        //
+        this.toDestroy=false;
     }
 
-    render() {
+    render(world) {
 
         var b = this.body;
 
         var position = b.GetPosition();
 
-        if (b.m_userData && b.m_userData.imgsrc && b.m_userData.isVisible) {
+        if (b.m_userData && b.m_userData.imgsrc) {
 
+            if(b.m_userData.toDestroy==true){
 
-            var temp = $("<img></img>");
-            temp.addClass("game-object");
-            temp.attr("src", b.m_userData.imgsrc);
-
-            var id =""
-            if(b.m_userData.isTarget){
-                id="target-"+b.m_userData.id;
+                this.toDestroy=true;
+                world.DestroyBody(b);
             }
             else{
-                id="collidable-"+b.m_userData.id;
+
+                var temp = $("<img></img>");
+                temp.addClass("game-object");
+                temp.attr("src", b.m_userData.imgsrc);
+    
+                var id =""
+                if(b.m_userData.isTarget){
+                    id="target-"+b.m_userData.id;
+                }
+                else{
+                    id="collidable-"+b.m_userData.id;
+                }
+    
+                temp.attr('id',id);
+    
+    
+                temp.css("width", b.m_userData.imgWidth);
+                temp.css("height", b.m_userData.imgHeight);
+                temp.css("top", (position.y * Physics.WORLD_SCALE)-( b.m_userData.imgHeight/2));
+                temp.css("left", (position.x * Physics.WORLD_SCALE)-( b.m_userData.imgWidth/2));
+    
+                var trans = "rotate(" + b.GetAngle() * Physics.RAD_2_DEG + "deg)";
+                temp.css("transform", trans);
+    
+                $("#level-background").append(temp);
             }
-
-            temp.attr('id',id);
-
-
-            temp.css("width", b.m_userData.imgWidth);
-            temp.css("height", b.m_userData.imgHeight);
-            temp.css("top", (position.y * Physics.WORLD_SCALE)-( b.m_userData.imgHeight/2));
-            temp.css("left", (position.x * Physics.WORLD_SCALE)-( b.m_userData.imgWidth/2));
-
-            var trans = "rotate(" + b.GetAngle() * Physics.RAD_2_DEG + "deg)";
-            temp.css("transform", trans);
-
-            $("#level-background").append(temp);
 
         }
     }

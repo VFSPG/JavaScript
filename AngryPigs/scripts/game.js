@@ -150,7 +150,7 @@ export default class Game {
 
         if(this.ammoCount < this.currentLevel.ammo){
 
-            let x = $("#catapult").position().left + $("#catapult").width() -10;
+            let x = $("#catapult").position().left + $("#catapult").width() -20;
             let y = $("#catapult").position().top +20;
             this.world.shoot(x,y);
 
