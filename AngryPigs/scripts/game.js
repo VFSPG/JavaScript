@@ -14,14 +14,19 @@ export default class Game {
         this.ammoCount=0;
         this.score=0;
 
+        this.angle=0;
+
         // Event handlers to load stuff
-        $('#btn_play').on('click', Event => this.loadLevels());
+        $('#btn_play').on('click', event => this.loadLevels());
 
         //select a level
         $(document).on("click", ".level-list-item", e => this.selectLevel(e));
 
         //shoot
         $(document).on("click", "#catapult" , event => this.shoot(event));
+
+        //manage the events of the keyboard
+        $(document).on('keypress', event => this.handdleKeyPress(event));
     }
 
     //gets the list of levels by id
@@ -150,15 +155,37 @@ export default class Game {
 
         if(this.ammoCount < this.currentLevel.ammo){
 
-            let x = $("#catapult").position().left + $("#catapult").width() -20;
-            let y = $("#catapult").position().top +20;
-            this.world.shoot(x,y);
+            let x = this.currentLevel.catapult.pos.x;
+            let y = this.currentLevel.catapult.pos.y;
+            this.world.shoot(x,y, this.angle-40);
 
             this.ammoCount++;
             $("#ammo-count").html("x" + (this.currentLevel.ammo - this.ammoCount));
         }
 
 
+    }
+
+
+    handdleKeyPress(event){
+
+        //shoot on space
+        if ( event.which == 32 ) {
+            this.shoot(event);
+        }
+        else if(event.which == 115 ){
+
+            console.log(this.angle)
+            this.angle++;
+            var trans = "translate(-50%, -50%) rotate(" + (this.angle)+ "deg)";
+            $("#catapult").css("transform", trans);
+        }
+        else if(event.which == 119 ){
+
+            this.angle--;
+            var trans = "translate(-50%, -50%) rotate(" + (this.angle)+ "deg)";
+            $("#catapult").css("transform", trans);
+        }
     }
 
 }

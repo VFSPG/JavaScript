@@ -8,6 +8,7 @@ import Proyectyle from "./Proyectyle.js";
 export const world_pixel_width = 1280;
 export const world_pixel_height = 720;
 export const bottom_line = 4;
+export const proyectileForce=100;
 
 export default class WorldController {
 
@@ -75,7 +76,7 @@ export default class WorldController {
 
         //creates bottom
         bodyDef.position.Set(x / (Physics.WORLD_SCALE), (y/Physics.WORLD_SCALE));
-        this.world.CreateBody(bodyDef).CreateFixture(fixDef);
+        //this.world.CreateBody(bodyDef).CreateFixture(fixDef);
     }
 
     addObject(object) {
@@ -90,9 +91,13 @@ export default class WorldController {
         this.objects.push(on);
     }
 
-    shoot(x,y){
+    shoot(x,y, angle){
         var on = new Proyectyle(this.world, x,y);
-        on.addForce(100,-100);
+
+        var forceX = Math.cos(angle*Physics.DEG_2_RAD)*proyectileForce;
+        var forceY = Math.sin(angle*Physics.DEG_2_RAD)*proyectileForce;
+
+        on.addForce(forceX,forceY);
         this.objects.push(on);
     }
 
@@ -121,10 +126,7 @@ export default class WorldController {
 
         for(var i =0; i < this.objects.length; i++){
 
-            if(this.objects[i].toDestroy==true){
-                console.log("as");
-            }
-            else{
+            if(this.objects[i].toDestroy!=true){
 
                 var destroy = this.objects[i].render(this.world);
 
