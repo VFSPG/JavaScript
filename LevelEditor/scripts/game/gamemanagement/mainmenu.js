@@ -9,6 +9,14 @@ export default class MainMenu {
 
         this.loadHandler = new LoadHandler();
 
+        this.playedLevels = 0;
+        this.levelCount = 0;
+        this.levelNames;
+        this.getLevelNames( levelNames => {
+            this.levelNames = levelNames;
+            this.levelCount = this.levelNames.length;
+        } );
+
         this.initializeButtons();
     }
 
@@ -16,30 +24,60 @@ export default class MainMenu {
 
         $('#play-button').on('click', event => {
 
-            $('#popUpWindow').toggleClass('hide');
         });
     }
 
     initializeLoadEvents( levelCB ) {
 
-        this.loadHandler.setLevelOptions();
+        event.preventDefault();
+        $('#popUpWindow').toggleClass('hide');
+        $('#play-button').toggleClass('hide');
 
-        $('#load-level-form').on('submit', event => {
+        this.loadHandler.loadLevel( content => {
 
-            event.preventDefault();
-            $('#popUpWindow').toggleClass('hide');
-            $('#play-button').toggleClass('hide');
+            levelCB( content );
 
-            this.loadHandler.loadLevel( content => {
+            this.loadHandler.loadBackground( content.background );
+            this.loadHandler.loadGameObjects( content.gameObjects, element => {
 
-                levelCB( content );
-
-                this.loadHandler.loadBackground( content.background );
-                this.loadHandler.loadGameObjects( content.gameObjects, element => {
-
-                    element.removeAttr('draggable');
-                });
+                element.removeAttr('draggable');
             });
         });
+    }
+    getLevelNames( levelNames ){
+
+        $.post('/api/get_level_list', { userid: 'Levels', extLength: -5 })
+        .then( result => {
+            
+            let data = JSON.parse( result );
+            if( data.error <= 0) {
+
+                levelNames( data.payload );
+            }
+            else {
+                
+                //notify error
+            }
+        });
+    }
+
+    loadNextLevel( level ) {
+        let levelName = this.levelNames[this.levelCount];
+
+        let params = { userid: 'Data/Levels', name: levelName, type: 'Level'}
+        $.post('/api/load', params)
+        .then( result => {
+            
+            if( result.error <= 0 ) {
+
+                level( result.payload );
+            }
+            else {
+
+                console.log( result );
+            }
+        })
+
+        this.playedLevels++;
     }
 }

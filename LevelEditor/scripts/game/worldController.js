@@ -89,7 +89,7 @@ export default class worldController {
 
             if (gameObject.id == id) {
                 
-                return id;
+                return gameObject;
             }
         }
     }
