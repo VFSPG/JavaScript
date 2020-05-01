@@ -6,11 +6,12 @@ import GameObject from './gameobject.js';
 
 export default class Cannon {
     
-
+    //Constructor of class Cannon
     constructor( gameObject, bulletCB ) {
 
         this.cannonGO = gameObject;
-
+        
+        //Add click event for shooting
         $('#game-display').on('click', event => {
 
             this.shootTowards( { x: event.offsetX, y: event.offsetY }, bulletCB );
@@ -20,6 +21,7 @@ export default class Cannon {
         this.bulletCount = 0;
     }
 
+    //Creates a bullet and launches it towards the mouse direction
     shootTowards( position, bulletCB ) {
 
         let bullet = this.generateBody( bulletCB )
@@ -33,6 +35,7 @@ export default class Cannon {
         this.addForce(bullet, targetPos, direction );
     }
 
+    //Creates the physics body and image of the bullet.
     generateBody( bulletCB ) {
 
         let cannon = $(`#${this.cannonGO.id}`);
@@ -58,6 +61,7 @@ export default class Cannon {
         return gameObject;
     }
 
+    //Applies a force to the bullet given a direction and start position
     addForce( bullet, position , direction ) {
 
         bullet.worldBody.ApplyImpulse(direction, position);

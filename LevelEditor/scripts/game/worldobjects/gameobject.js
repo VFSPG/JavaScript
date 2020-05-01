@@ -3,7 +3,6 @@
 
 import Transform from './transform.js';
 import CollisionDetector from './collisiondetector.js';
-import Physics from '../../lib/Physics.js';
 
 export default class GameObject {
 
@@ -25,8 +24,7 @@ export default class GameObject {
         this.collisionDetector = new CollisionDetector(this.transform.position, this.transform.scale);
         this.worldBody;
         this.canBeRendered = false;
-        this.force = 10;
-        this.upVector = new Physics.Vec2(0,-Physics.GRAVITY * this.force);
+
         this.collideWithBoundary = false;
     }
 
@@ -47,13 +45,13 @@ export default class GameObject {
         
     }
 
-    update() {
+    update(upVector) {
         if (this.$view == undefined) {
             this.$view = $(`#${this.id}`);
         }
         if (this.tag == "enemy") {
 
-            this.worldBody.ApplyForce(this.upVector, this.worldBody.GetPosition());
+            this.worldBody.ApplyForce(upVector, this.worldBody.GetPosition());
             let contactList = this.worldBody.GetContactList();
             if (contactList != null && contactList.other.GetType() == 0 && this.collideWithBoundary == false) {
                 //Set flag for no more collisions
