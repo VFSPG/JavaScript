@@ -11,13 +11,21 @@ export default class LoadHandler{
 
     setLevelOptions() {
 
+        this.getLevelNames( levelNames => {
+
+            this.fillSelectWithOptions( '#level-to-load', levelNames );
+        });
+    }
+
+    getLevelNames( levelNames ) {
+
         $.post('/api/get_level_list', { userid: 'Levels', extLength: -5 })
         .then( result => {
             
             let data = JSON.parse( result );
             if( data.error <= 0) {
 
-                this.fillSelectWithOptions( '#level-to-load', data.payload );
+                levelNames( data.payload );
             }
             else {
                 
@@ -28,13 +36,21 @@ export default class LoadHandler{
 
     setBackgroundOptions() {
 
+        this.getBackgroundNames( names => {
+
+            this.fillSelectWithOptions( '#background-to-load', names );
+        });
+    }
+
+    getBackgroundNames( backgroungNames ) {
+
         $.post('/api/get_object_list', { userid: 'Images/Backgrounds', extLength: -4 })
         .then ( result => {
 
             let data = JSON.parse( result );
             if( data.error <= 0) {
 
-                this.fillSelectWithOptions( '#background-to-load', data.payload );
+                backgroungNames( data.payload );
             }
             else {
                 
@@ -45,13 +61,21 @@ export default class LoadHandler{
 
     setGameObjectOptions() {
 
+        this.getGameObjectNames( names => {
+
+            this.fillSelectWithOptions( '#game-object-sprite', names );
+        });
+    }
+
+    getGameObjectNames( GONames ) {
+
         $.post('/api/get_object_list', { userid: 'Images/Sprites', extLength: -4 })
         .then ( result => {
 
             let data = JSON.parse( result );
             if( data.error <= 0) {
 
-                this.fillSelectWithOptions( '#game-object-sprite', data.payload );
+                GONames( data.payload );
             }
             else {
                 //notify
@@ -71,25 +95,30 @@ export default class LoadHandler{
         }
     }
 
-    loadLevel( loadLevelCB ) {
-
-        let selectedLevel = $('#level-to-load').children('option:selected').text();
-
-        let params = { userid: 'Data/Levels', name: selectedLevel, type: 'Level'}
+    getLevelData( content, levelName ) {
+        
+        let params = { userid: 'Data/Levels', name: levelName, type: 'Level'}
         $.post('/api/load', params)
         .then( result => {
             
             if( result.error <= 0 ) {
 
-                loadLevelCB( result.payload );
+                content( result.payload );
             }
             else {
 
                 console.log( result );
             }
         })
-        .fail( error => {
+    }
 
+    loadLevel( loadLevelCB ) {
+
+        let selectedLevel = $('#level-to-load').children('option:selected').text();
+
+        this.getLevelData( ( content, selectedLevel ) => {
+
+            loadLevelCB( content );
         });
     }
 

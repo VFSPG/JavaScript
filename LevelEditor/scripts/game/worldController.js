@@ -39,7 +39,7 @@ export default class worldController {
     loadLevelListener() {
         this.mainMenu = new MainMenu();
 
-        this.mainMenu.initializeLoadEvents(content => this.loadLevelParameters(content));
+        this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
     }
 
     getGameObjectBy(id) {
