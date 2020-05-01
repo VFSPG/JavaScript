@@ -26,7 +26,7 @@ export default class Game
         }
     }
 
-    run(deltaTime = 0){
+    run(deltaTime = 1/30){
         this.update(deltaTime)
         this.render(deltaTime)
 

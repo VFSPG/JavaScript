@@ -15,7 +15,9 @@ export default class worldController {
     constructor() {
         this.gVector = new Physics.Vec2(0,GRAVITY)
         this.world = new Physics.World(this.gVector)
+
         this.$view = $('#game-display')
+
         this.model = new Physics.World(this.gVector, true)
         this.aFixture = new Physics.FixtureDef;
         this.circleFixture = new Physics.FixtureDef;
@@ -23,12 +25,14 @@ export default class worldController {
         this.circleFixture.shape = new Physics.CircleShape;
         this.aFixture.density = this.circleFixture.density = 1
         this.aBody = new Physics.BodyDef;
+
         this.level = new Level();
+        this.levelEnemies = 0;
         this.createBoundaries();
         this.cannon;
 
-        this.addListeners();
         this.mainMenu;
+        this.loadingNextLevel = false;
         this.loadLevelListener();
     }
 
@@ -68,7 +72,9 @@ export default class worldController {
                     });
                 }
                 else {
-                    
+
+                    if (gameObject.tag == "enemy") 
+                        this.levelEnemies++;
                     if (gameObject.physicsStats.shape == "AABB") {
                         gameObject.create(this.model,this.aBody,this.aFixture, "AABB");
                     }
@@ -112,17 +118,20 @@ export default class worldController {
         return temp;
     }
 
-    addListeners() {
-
-    }
-
     update(delta) {
-
-        this.model.Step(1/30,3,3);
+        let deadEnemies = 0;
+        this.model.Step(delta,3,3);
         this.model.ClearForces();
         for (let gameObject of this.level.content.gameObjects) {
 
             gameObject.update();
+            if(gameObject.collideWithBoundary) 
+                deadEnemies++;
+        }
+        if (deadEnemies == this.levelEnemies && this.levelEnemies != 0 && !this.loadingNextLevel) {
+            console.log("Next Level");
+            this.loadingNextLevel = true;
+            this.mainMenu.loadNextLevel(); 
         }
     }
 
