@@ -28,6 +28,7 @@ export default class worldController {
         this.circleFixture.shape = new Physics.CircleShape;
         this.aFixture.density = this.circleFixture.density = 1
         this.aBody = new Physics.BodyDef;
+        this.force = 10;
 
         //Level variables to keep track of player progress
         this.level = new Level();
@@ -39,6 +40,7 @@ export default class worldController {
         this.mainMenu;
         this.loadingNextLevel = false;
         this.loadLevelListener();
+        this.upVector = new Physics.Vec2(0,-Physics.GRAVITY * this.force);
     }
 
     //Loads the level passed on by parameter
@@ -139,7 +141,7 @@ export default class worldController {
         this.model.ClearForces();
         for (let gameObject of this.level.content.gameObjects) {
 
-            gameObject.update();
+            gameObject.update(this.upVector);
             if (gameObject.collideWithBoundary)
                 deadEnemies++;
         }
@@ -147,7 +149,7 @@ export default class worldController {
         if (deadEnemies == this.levelEnemies && this.levelEnemies != 0 && !this.loadingNextLevel) {
             console.log("Next Level");
             this.loadingNextLevel = true;
-            this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
+            //this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
         }
     }
 
