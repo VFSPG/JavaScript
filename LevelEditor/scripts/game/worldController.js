@@ -8,16 +8,19 @@ import Level from './level.js'
 import GameObject from './worldobjects/gameobject.js'
 import MainMenu from './gamemanagement/mainmenu.js'
 import Cannon from './worldobjects/cannon.js'
-
+//Get the contant gravity from the physics library
 const GRAVITY = Physics.GRAVITY
 export default class worldController {
 
+    //Constructor of the world that manages the updates and render of everything
     constructor() {
+        //Create the physics world with the gravity vector
         this.gVector = new Physics.Vec2(0, GRAVITY)
         this.world = new Physics.World(this.gVector)
 
         this.$view = $('#game-display')
 
+        //Basic variables for physics bodies for different gameobjects. They get reused
         this.model = new Physics.World(this.gVector, true)
         this.aFixture = new Physics.FixtureDef;
         this.circleFixture = new Physics.FixtureDef;
@@ -26,22 +29,26 @@ export default class worldController {
         this.aFixture.density = this.circleFixture.density = 1
         this.aBody = new Physics.BodyDef;
 
+        //Level variables to keep track of player progress
         this.level = new Level();
         this.levelEnemies = 0;
         this.createBoundaries();
         this.cannon;
 
+        //Handling menu and listeners
         this.mainMenu;
         this.loadingNextLevel = false;
         this.loadLevelListener();
     }
 
+    //Loads the level passed on by parameter
     loadLevelListener() {
         this.mainMenu = new MainMenu();
 
         this.mainMenu.initializeLoadEvents(content => this.loadLevelParameters(content));
     }
 
+    //Return gameobject based on the the ID
     getGameObjectBy(id) {
 
         for (let gameObject of this.level.content.gameObjects) {
@@ -53,6 +60,7 @@ export default class worldController {
         }
     }
 
+    //Creates the boundaries of the physics world given the world edge position
     createBoundaries() {
 
         this.aFixture.shape = new Physics.PolygonShape;
@@ -63,6 +71,7 @@ export default class worldController {
         let bottomWall = this.createWall({ x: 5, y: 30, width: 50, height: 1 })
     }
 
+    //Creates the physics properties of the boundaries
     createWall(boundingBox) {
         this.aFixture.shape.SetAsBox(boundingBox.width, boundingBox.height)
         this.aBody.position.Set(boundingBox.x, boundingBox.y)
@@ -71,6 +80,7 @@ export default class worldController {
         return temp;
     }
 
+    //Loads level parameters and gameobjects into the world
     loadLevelParameters(content) {
         this.level.content = { ...content };
         this.level.content.gameObjects = new Array();
@@ -89,6 +99,7 @@ export default class worldController {
         }
     }
 
+    //Add physics porperties to the gameobject based on the data passed by parameter
     loadGameObjectPhysics(gameObject, data)
     {
         gameObject.physicsStats.friction = data.physicsStats.friction;
@@ -97,7 +108,7 @@ export default class worldController {
         gameObject.sprite = data.sprite;
 
         this.aBody.type = Physics.Body.b2_dynamicBody;
-
+        //Create physics bodies depending on the tags given on the level editor
         if (gameObject.tag == "cannon") {
 
             this.cannon = new Cannon(gameObject, bullet => {
@@ -121,6 +132,7 @@ export default class worldController {
         this.level.content.gameObjects.push(gameObject);
     }
 
+    //Updates all gameobjects every frame
     update(delta) {
         let deadEnemies = 0;
         this.model.Step(delta, 3, 3);
@@ -131,6 +143,7 @@ export default class worldController {
             if (gameObject.collideWithBoundary)
                 deadEnemies++;
         }
+        //Check for level complete condition
         if (deadEnemies == this.levelEnemies && this.levelEnemies != 0 && !this.loadingNextLevel) {
             console.log("Next Level");
             this.loadingNextLevel = true;
@@ -139,7 +152,7 @@ export default class worldController {
     }
 
     
-
+    //Draws the objects every frame
     render() {
         for (let gameObject of this.level.content.gameObjects) {
             gameObject.render(Physics.RAD_2_DEG);
