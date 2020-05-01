@@ -27,8 +27,7 @@ export default class GameObject {
         this.canBeRendered = false;
         this.force = 10;
         this.upVector = new Physics.Vec2(0,-Physics.GRAVITY * this.force);
-        
-        
+        this.collideWithBoundary = false;
     }
 
     create(model, body, fixture, shape) {
@@ -56,11 +55,11 @@ export default class GameObject {
 
             this.worldBody.ApplyForce(this.upVector, this.worldBody.GetPosition());
             let contactList = this.worldBody.GetContactList();
-            if (contactList != null && contactList.other.GetType() == 0) {
-                console.log("pego");
+            if (contactList != null && contactList.other.GetType() == 0 && this.collideWithBoundary == false) {
+                //Set flag for no more collisions
+                this.collideWithBoundary = true;
             }
         }
-        
     }
 
     render(radToDegree) {
@@ -71,6 +70,5 @@ export default class GameObject {
             this.$view.css('left', this.worldBody.GetPosition().x * this.worldScale);
             this.$view.css('transform', `rotate(${angle*radToDegree}deg)`);
         }
-
     }
 }
