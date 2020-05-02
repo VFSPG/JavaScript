@@ -45,6 +45,15 @@ export default class GameObject {
         
     }
 
+    destroy() {
+
+        //sorry for this :(
+        if(this.id.includes('bullet')) {
+
+            $(`#${ this.id }`).remove();
+        }
+    }
+
     //Depending of the type of GameObject(based on its tag), a behaviour is added to it
     update(upVector) {
         if (this.$view == undefined) {

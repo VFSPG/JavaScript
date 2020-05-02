@@ -34,12 +34,14 @@ export default class worldController {
         this.aBody = new Physics.BodyDef;
         this.staticBody = new Physics.BodyDef;
         this.force = 10;
+        this.gameFinished = false;
 
         //Level variables to keep track of player progress
         this.level = new Level();
         this.levelEnemies = 0;
         this.createBoundaries();
         this.cannon;
+        this.shotCount = 0;
 
         this.upVector = new Physics.Vec2(0, -Physics.GRAVITY * this.force);
 
@@ -54,8 +56,7 @@ export default class worldController {
 
         this.mainMenu = new MainMenu();
 
-        this.mainMenu.initializePlayButton(content => this.loadLevelParameters(content))
-        //this.mainMenu.loadNextLevel(content => this.loadLevelParameters( content ));
+        this.mainMenu.initializePlayButton(content => this.loadLevelParameters(content));
     }
 
     //Return gameobject based on the the ID
@@ -101,6 +102,13 @@ export default class worldController {
                 this.model.DestroyBody(deletable);
             }
         }
+
+        for(let gameObject of this.level.content.gameObjects) {
+
+            gameObject.destroy();
+        }
+
+        this.shotCount = 0;
         this.levelEnemies = 0;
         this.level.content = { ...content };
         this.level.content.gameObjects = new Array();
@@ -135,8 +143,21 @@ export default class worldController {
 
             this.cannon = new Cannon(gameObject, bullet => {
 
-                this.level.content.gameObjects.push(bullet);
-                bullet.create(this.model, this.aBody, this.circleFixture, "Circle");
+                this.shotCount++;
+                if(this.shotCount > this.level.content.ammo) {
+
+                    if(!this.gameFinished) {
+
+                        this.mainMenu.showPlayAgain();
+                        this.gameFinished = true;
+                    }
+                }
+                else{
+    
+                    this.level.content.gameObjects.push(bullet);
+                    bullet.create(this.model, this.aBody, this.circleFixture, "Circle");
+                }
+
             });
         }
         else {
@@ -156,20 +177,24 @@ export default class worldController {
 
     //Updates all gameobjects every frame
     update(delta) {
-        let deadEnemies = 0;
-        this.model.Step(delta, 3, 3);
-        this.model.ClearForces();
-        for (let gameObject of this.level.content.gameObjects) {
 
-            gameObject.update(this.upVector);
-            if (gameObject.collideWithBoundary)
-                deadEnemies++;
-        }
-        //Check for level complete condition
-        if (deadEnemies == this.levelEnemies && this.levelEnemies != 0 && !this.loadingNextLevel) {
+        if(!this.gameFinished) {
 
-            this.loadingNextLevel = true;
-            this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
+            let deadEnemies = 0;
+            this.model.Step(delta, 3, 3);
+            this.model.ClearForces();
+            for (let gameObject of this.level.content.gameObjects) {
+    
+                gameObject.update(this.upVector);
+                if (gameObject.collideWithBoundary)
+                    deadEnemies++;
+            }
+            //Check for level complete condition
+            if (deadEnemies == this.levelEnemies && this.levelEnemies != 0 && !this.loadingNextLevel) {
+    
+                this.loadingNextLevel = true;
+                this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
+            }
         }
     }
 

@@ -34,6 +34,17 @@ export default class MainMenu {
         });
     }
 
+    showPlayAgain(){
+        
+        let playButton = $('#play-button');
+        playButton.unbind();
+        playButton.toggleClass('hide');
+        playButton.on('click', event => {
+
+            location.reload();
+        });
+    }
+
     //Loads the next level on the 'database'
     loadNextLevel( content ) {
 
@@ -53,6 +64,10 @@ export default class MainMenu {
                 content( result );
                 this.playedLevels++;
             });
+        }
+        else{
+
+            this.showPlayAgain();
         }
     }
 }

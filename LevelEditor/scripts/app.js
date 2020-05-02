@@ -99,8 +99,10 @@ export default class App {
                 //Setting GameObjects
                 this.loadHandler.loadGameObjects( this.level.content.gameObjects, element => {
 
-                    //Add jquery handlers here
-                    this.dragAndDropHandler.addDraggableHandlers( element );
+                    this.dragAndDropHandler.addNewDraggables( element, pos => {
+                        let gameObject = this.getGameObjectWith( element.attr("id"));
+                        gameObject.transform.position = pos;
+                    });
                 });
             })
             .catch( error => {
@@ -162,11 +164,10 @@ export default class App {
                 gameObject.transform.scale.x = element.width();
                 gameObject.transform.scale.y = element.height();
 
-                //Add jquery handlers here
                 this.dragAndDropHandler.addNewDraggables( element, pos => {
                     let gameObject = this.getGameObjectWith( element.attr("id"));
                     gameObject.transform.position = pos;
-                } );
+                });
                 
                 this.level.content.gameObjects.push( gameObject );
             }

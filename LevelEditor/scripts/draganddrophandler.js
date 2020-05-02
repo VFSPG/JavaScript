@@ -51,7 +51,6 @@ export default class DragAndDropHandler{
         let $editor = $("#game-display");
 
         $editor.on("dragenter", event => { 
-
             event.preventDefault();
         })
         .on("dragover", event => {
