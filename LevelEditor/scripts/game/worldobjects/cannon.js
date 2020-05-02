@@ -5,16 +5,18 @@ import Physics from '../../lib/Physics.js'
 import GameObject from './gameobject.js';
 
 export default class Cannon {
-    
+
     //Constructor of class Cannon
-    constructor( gameObject, bulletCB ) {
+    constructor(gameObject, bulletCB) {
 
         this.cannonGO = gameObject;
-        
+
         //Add click event for shooting
+
+        $('#game-display').unbind();
         $('#game-display').on('click', event => {
 
-            this.shootTowards( { x: event.offsetX, y: event.offsetY }, bulletCB );
+            this.shootTowards({ x: event.offsetX, y: event.offsetY }, bulletCB);
         });
 
         this.force = 100;
@@ -22,21 +24,21 @@ export default class Cannon {
     }
 
     //Creates a bullet and launches it towards the mouse direction
-    shootTowards( position, bulletCB ) {
+    shootTowards(position, bulletCB) {
 
-        let bullet = this.generateBody( bulletCB )
+        let bullet = this.generateBody(bulletCB)
 
         let cannon = $(`#${this.cannonGO.id}`);
         let pos = { left: cannon.offset().left, top: cannon.offset().top };
 
-        let direction = new Physics.Vec2( (position.x - pos.left) * this.force / Physics.WORLD_SCALE, 
-                                            (position.y - pos.top) * this.force / Physics.WORLD_SCALE);
+        let direction = new Physics.Vec2((position.x - pos.left) * this.force / Physics.WORLD_SCALE,
+            (position.y - pos.top) * this.force / Physics.WORLD_SCALE);
         let targetPos = new Physics.Vec2(pos.left / Physics.WORLD_SCALE, pos.top / Physics.WORLD_SCALE);
-        this.addForce(bullet, targetPos, direction );
+        this.addForce(bullet, targetPos, direction);
     }
 
     //Creates the physics body and image of the bullet.
-    generateBody( bulletCB ) {
+    generateBody(bulletCB) {
 
         let cannon = $(`#${this.cannonGO.id}`);
 
@@ -52,9 +54,9 @@ export default class Cannon {
         gameObject.physicsStats.friction = 0.5;
         gameObject.physicsStats.restitution = 0.5;
 
-        $('#game-display').append( data );
+        $('#game-display').append(data);
 
-        bulletCB( gameObject );
+        bulletCB(gameObject);
 
         this.bulletCount++;
 
@@ -62,7 +64,7 @@ export default class Cannon {
     }
 
     //Applies a force to the bullet given a direction and start position
-    addForce( bullet, position , direction ) {
+    addForce(bullet, position, direction) {
 
         bullet.worldBody.ApplyImpulse(direction, position);
     }
