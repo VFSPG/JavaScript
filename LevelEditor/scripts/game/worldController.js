@@ -15,19 +15,24 @@ export default class worldController {
     //Constructor of the world that manages the updates and render of everything
     constructor() {
         //Create the physics world with the gravity vector
-        this.gVector = new Physics.Vec2(0, GRAVITY)
-        this.world = new Physics.World(this.gVector)
+        this.gVector = new Physics.Vec2(0, GRAVITY);
 
-        this.$view = $('#game-display')
+        this.$view = $('#game-display');
 
         //Basic variables for physics bodies for different gameobjects. They get reused
         this.model = new Physics.World(this.gVector, true)
+
         this.aFixture = new Physics.FixtureDef;
-        this.circleFixture = new Physics.FixtureDef;
         this.aFixture.shape = new Physics.PolygonShape;
+
+        this.circleFixture = new Physics.FixtureDef;
         this.circleFixture.shape = new Physics.CircleShape;
-        this.aFixture.density = this.circleFixture.density = 1
+
+        this.staticFixture = new Physics.FixtureDef;
+        this.staticFixture.shape = new Physics.PolygonShape;
+        this.aFixture.density = this.circleFixture.density = this.staticFixture.density = 1;
         this.aBody = new Physics.BodyDef;
+        this.staticBody = new Physics.BodyDef;
         this.force = 10;
 
         //Level variables to keep track of player progress
@@ -36,8 +41,8 @@ export default class worldController {
         this.createBoundaries();
         this.cannon;
 
-        this.upVector = new Physics.Vec2(0,-Physics.GRAVITY * this.force);
-        
+        this.upVector = new Physics.Vec2(0, -Physics.GRAVITY * this.force);
+
         //Handling menu and listeners
         this.mainMenu;
         this.loadingNextLevel = false;
@@ -49,7 +54,7 @@ export default class worldController {
 
         this.mainMenu = new MainMenu();
 
-        this.mainMenu.initializePlayButton( content => this.loadLevelParameters( content ))
+        this.mainMenu.initializePlayButton(content => this.loadLevelParameters(content))
         //this.mainMenu.loadNextLevel(content => this.loadLevelParameters( content ));
     }
 
@@ -59,7 +64,7 @@ export default class worldController {
         for (let gameObject of this.level.content.gameObjects) {
 
             if (gameObject.id == id) {
-                
+
                 return gameObject;
             }
         }
@@ -68,8 +73,8 @@ export default class worldController {
     //Creates the boundaries of the physics world given the world edge position
     createBoundaries() {
 
-        this.aFixture.shape = new Physics.PolygonShape;
-        this.aBody.type = Physics.Body.b2_staticBody;
+        this.staticFixture.shape = new Physics.PolygonShape;
+        this.staticBody.type = Physics.Body.b2_staticBody;
         let rightWall = this.createWall({ x: 46, y: 15, width: 1, height: 50 })
         let leftWall = this.createWall({ x: -1, y: 15, width: 1, height: 50 })
         let topWall = this.createWall({ x: 5, y: -1, width: 50, height: 1 })
@@ -78,15 +83,25 @@ export default class worldController {
 
     //Creates the physics properties of the boundaries
     createWall(boundingBox) {
-        this.aFixture.shape.SetAsBox(boundingBox.width, boundingBox.height)
-        this.aBody.position.Set(boundingBox.x, boundingBox.y)
-        let temp = this.model.CreateBody(this.aBody);
-        temp.CreateFixture(this.aFixture);
+        this.staticFixture.shape.SetAsBox(boundingBox.width, boundingBox.height)
+        this.staticBody.position.Set(boundingBox.x, boundingBox.y)
+        let temp = this.model.CreateBody(this.staticBody);
+        temp.CreateFixture(this.staticFixture);
         return temp;
     }
 
     //Loads level parameters and gameobjects into the world
     loadLevelParameters(content) {
+        
+        let iterator = this.model.GetBodyList();
+        while (iterator.GetNext() != null) {
+            let deletable = iterator;
+            iterator = iterator.GetNext();
+            if (deletable.GetType() != 0) {
+                this.model.DestroyBody(deletable);
+            }
+        }
+        this.levelEnemies = 0;
         this.level.content = { ...content };
         this.level.content.gameObjects = new Array();
 
@@ -100,13 +115,15 @@ export default class worldController {
             gameObject.transform.position.top = data.transform.position.top;
             gameObject.transform.scale.x = data.transform.scale.x;
             gameObject.transform.scale.y = data.transform.scale.y;
-            this.loadGameObjectPhysics(gameObject , data);
+            this.loadGameObjectPhysics(gameObject, data);
         }
+
+        this.loadingNextLevel = false;
+
     }
 
     //Add physics porperties to the gameobject based on the data passed by parameter
-    loadGameObjectPhysics(gameObject, data)
-    {
+    loadGameObjectPhysics(gameObject, data) {
         gameObject.physicsStats.friction = data.physicsStats.friction;
         gameObject.physicsStats.restitution = data.physicsStats.restitution;
         gameObject.physicsStats.shape = data.physicsStats.shape;
@@ -150,13 +167,13 @@ export default class worldController {
         }
         //Check for level complete condition
         if (deadEnemies == this.levelEnemies && this.levelEnemies != 0 && !this.loadingNextLevel) {
-            console.log("Next Level");
+
             this.loadingNextLevel = true;
             this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
         }
     }
 
-    
+
     //Draws the objects every frame
     render() {
         for (let gameObject of this.level.content.gameObjects) {
