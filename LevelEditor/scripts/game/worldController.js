@@ -36,18 +36,21 @@ export default class worldController {
         this.createBoundaries();
         this.cannon;
 
+        this.upVector = new Physics.Vec2(0,-Physics.GRAVITY * this.force);
+        
         //Handling menu and listeners
         this.mainMenu;
         this.loadingNextLevel = false;
         this.loadLevelListener();
-        this.upVector = new Physics.Vec2(0,-Physics.GRAVITY * this.force);
     }
 
     //Loads the level passed on by parameter
     loadLevelListener() {
+
         this.mainMenu = new MainMenu();
 
-        this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
+        this.mainMenu.initializePlayButton( content => this.loadLevelParameters( content ))
+        //this.mainMenu.loadNextLevel(content => this.loadLevelParameters( content ));
     }
 
     //Return gameobject based on the the ID
@@ -149,7 +152,7 @@ export default class worldController {
         if (deadEnemies == this.levelEnemies && this.levelEnemies != 0 && !this.loadingNextLevel) {
             console.log("Next Level");
             this.loadingNextLevel = true;
-            //this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
+            this.mainMenu.loadNextLevel(content => this.loadLevelParameters(content));
         }
     }
 

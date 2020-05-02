@@ -11,75 +11,100 @@ export default class LoadHandler{
 
     setLevelOptions() {
 
-        this.getLevelNames( levelNames => {
-
+        this.getLevelNames()
+        .then( levelNames => {
+            
             this.fillSelectWithOptions( '#level-to-load', levelNames );
-        });
+        })
+        .catch( error => {
+
+            console.log( error );
+        })
     }
 
-    getLevelNames( levelNames ) {
+    getLevelNames() {
 
-        $.post('/api/get_level_list', { userid: 'Levels', extLength: -5 })
-        .then( result => {
-            
-            let data = JSON.parse( result );
-            if( data.error <= 0) {
+        return new Promise( (resolve, reject) => {
 
-                levelNames( data.payload );
-            }
-            else {
+            $.post('/api/get_level_list', { userid: 'Levels', extLength: -5 })
+            .then( result => {
                 
-                //notify
-            }
+                let data = JSON.parse( result );
+                if( data.error <= 0) {
+    
+                    resolve(data.payload);
+                }
+                else {
+                    
+                    reject( data.error )
+                }
+            });
         });
     }
 
     setBackgroundOptions() {
 
-        this.getBackgroundNames( names => {
-
+        this.getBackgroundNames()
+        .then( names => {
+            
             this.fillSelectWithOptions( '#background-to-load', names );
+        })
+        .catch( error => {
+
+            console.log(error);
         });
     }
 
-    getBackgroundNames( backgroungNames ) {
+    getBackgroundNames() {
 
-        $.post('/api/get_object_list', { userid: 'Images/Backgrounds', extLength: -4 })
-        .then ( result => {
+        return new Promise( ( resolve, reject ) => {
 
-            let data = JSON.parse( result );
-            if( data.error <= 0) {
-
-                backgroungNames( data.payload );
-            }
-            else {
-                
-                //notify
-            }
+            $.post('/api/get_object_list', { userid: 'Images/Backgrounds', extLength: -4 })
+            .then ( result => {
+    
+                let data = JSON.parse( result );
+                if( data.error <= 0) {
+    
+                    resolve( data.payload );
+                }
+                else {
+                    
+                    reject( data.error );
+                }
+            });
         });
     }
 
     setGameObjectOptions() {
 
-        this.getGameObjectNames( names => {
+        this.getGameObjectNames()
+        .then( names => {
+            
+            this.fillSelectWithOptions( '#game-object-sprite', names )
+        })
+        .catch( error => {
 
-            this.fillSelectWithOptions( '#game-object-sprite', names );
+            console.log(error);
         });
     }
 
-    getGameObjectNames( GONames ) {
+    getGameObjectNames() {
 
-        $.post('/api/get_object_list', { userid: 'Images/Sprites', extLength: -4 })
-        .then ( result => {
+        return new Promise( ( resolve, reject ) => {
 
-            let data = JSON.parse( result );
-            if( data.error <= 0) {
+            $.post('/api/get_object_list', { userid: 'Images/Sprites', extLength: -4 })
+            .then ( result => {
 
-                GONames( data.payload );
-            }
-            else {
-                //notify
-            }
+                let data = JSON.parse( result );
+                if( data.error <= 0) {
+
+                    resolve( data.payload );
+                }
+                else {
+
+                    reject( data.error );
+                }
+            });
         });
     }
 
@@ -95,30 +120,38 @@ export default class LoadHandler{
         }
     }
 
-    getLevelData( content, levelName ) {
+    getLevelData( levelName ) {
         
-        let params = { userid: 'Data/Levels', name: levelName, type: 'Level'}
-        $.post('/api/load', params)
-        .then( result => {
-            
-            if( result.error <= 0 ) {
+        return new Promise( ( resolve, reject ) => {
 
-                content( result.payload );
-            }
-            else {
-
-                console.log( result );
-            }
-        })
+            let params = { userid: 'Data/Levels', name: levelName, type: 'Level'}
+            $.post('/api/load', params)
+            .then( result => {
+                
+                if( result.error <= 0 ) {
+    
+                    resolve( result.payload );
+                }
+                else {
+    
+                    reject( result.error );
+                }
+            });
+        });
     }
 
     loadLevel( loadLevelCB ) {
 
         let selectedLevel = $('#level-to-load').children('option:selected').text();
 
-        this.getLevelData( ( content, selectedLevel ) => {
+        this.getLevelData( selectedLevel )
+        .then( data => {
+            
+            loadLevelCB( data );
+        })
+        .catch( error => {
 
-            loadLevelCB( content );
+            console.log(error);
         });
     }
 

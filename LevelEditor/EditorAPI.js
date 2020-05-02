@@ -15,89 +15,116 @@ const Router = Express.Router();
 
 Router.post('/get_level_list/:userid?', ( request, response ) => {
     
+    //Getting requirements
     let params = { ...request.params, ...request.query, ...request.body };
-    let fileStream = new FileStream();
     let path = `./GameContent/Data/${ params.userid }`;
+    
+    let fileStream = new FileStream();
 
     fileStream.directoryExists( path )
     .then( exists => {
 
+        //Checking if the required directory exists
         if ( exists ) {
 
+            //Sending through a chained promise all the file names on...
+            //... the directory.
             return fileStream.getFilesAt( path );
         }
+        //Sending error if the directory doesn't exist
         else { response.send( JSON.stringify( { error: 101 } ) )}
     })
     .then( files => {
 
         let levels = [];
 
+        //Storing pairs of file name with no extension and with the extension
         for ( let i = 0; i < files.length; i++ ) {
 
             let file = files[i];
 
+            //extLength defines the length of the extension, just in case...
+            //... we would be handling different extensions
             levels.push( { name: file.slice(0, params.extLength), fileName: file } );
         }
 
+        //Sending back the result
         let result = { payload: levels, error: 0 };
         response.send( JSON.stringify( result ) );
     })
+    //Sending back an error if something wrong happened during the process
     .catch( error => response.send( JSON.stringify( error ) ) )
 });
 
 Router.post('/get_object_list/:userid?', ( request, response ) => {
 
+    //Getting requirements
     let params = { ...request.params, ...request.query, ...request.body };
-    let fileStream = new FileStream();
     let path = `./GameContent/${ params.userid }`;
+
+    let fileStream = new FileStream();
 
     fileStream.directoryExists( path )
     .then( exists => {
 
+        //Checking if the required directory exists
         if ( exists ) {
 
+            //Sending through a chained promise all the file names on...
+            //... the directory.
             return fileStream.getFilesAt( path );
         }
+        //Sending error if the directory doesn't exist
         else { response.send( JSON.stringify( { error: 101 } ) )}
     })
     .then( files => {
 
         let levels = [];
 
+        //Storing pairs of file name with no extension and with the extension
         for ( let i = 0; i < files.length; i++ ) {
 
             let file = files[i];
 
+            //extLength defines the length of the extension, just in case...
+            //... we would be handling different extensions
             levels.push( { name: file.slice(0, params.extLength), fileName: file } );
         }
 
+        //Sending back the result
         let result = { payload: levels, error: 0 };
         response.send( JSON.stringify( result ) );
     })
+    //Sending back an error if something wrong happened during the process
     .catch( error => response.send( JSON.stringify( error ) ) )
 });
 
 Router.post('/save/:userid?', ( request, response ) => {
             
-        let params = { ...request.params, ...request.query, ...request.body };
-        let path = `./GameContent/Data/${ params.userid }`;
-        let fileStream = new FileStream();
-        
-        let fileDirectory = `${path}/${params.name}.json`;
+    //Getting requirements
+    let params = { ...request.params, ...request.query, ...request.body };
+    let path = `./GameContent/Data/${ params.userid }`;
+    
+    let fileStream = new FileStream();
+    
+    let fileDirectory = `${path}/${params.name}.json`;
 
-        fileStream.directoryExists( path )
-        .then( exists => {
+    fileStream.directoryExists( path )
+    .then( exists => {
 
-            if ( exists ) {
+        //Checking if the required directory exists
+        if ( exists ) {
 
-                fs.writeFile( fileDirectory , params.payload, err => {
-                    //TODO: Get bytes written
-                    response.send( JSON.stringify( { name: params.name, bytes: 0, error:0} ) );
-                });
-            }
-            else { response.send( JSON.stringify( { error: 101 } ))}
-        })
-        .catch( error => response.send( JSON.stringify( error ) ));
+            //If the directory exists, a new file will be created with...
+            //... the data sent.
+            fs.writeFile( fileDirectory , params.payload, err => {
+                //TODO: Get bytes written
+                response.send( JSON.stringify( { name: params.name, bytes: 0, error: 0} ) );
+            });
+        }
+        else { response.send( JSON.stringify( { error: 101 } ))}
+    })
+    .catch( error => response.send( JSON.stringify( error ) ));
 });
 
 Router.post('/load/:userid?', ( request, response ) => {

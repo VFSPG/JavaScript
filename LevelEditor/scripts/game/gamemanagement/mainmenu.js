@@ -12,72 +12,43 @@ export default class MainMenu {
         this.playedLevels = 0;
         this.levelCount = 0;
         this.levelNames;
-        this.getLevelNames( levelNames => {
+
+        this.loadHandler.getLevelNames()
+        .then(levelNames => {
+            
             this.levelNames = levelNames;
             this.levelCount = this.levelNames.length;
-        } );
-
-        this.initializeButtons();
-    }
-
-    initializeButtons() {
-
-        $('#play-button').on('click', event => {
-
         });
     }
 
-    initializeLoadEvents( levelCB ) {
+    initializePlayButton( content ) {
 
-        event.preventDefault();
-        $('#popUpWindow').toggleClass('hide');
-        $('#play-button').toggleClass('hide');
+        let playButton = $('#play-button');
+        playButton.on('click', event => {
 
-        this.loadHandler.loadLevel( content => {
+            this.loadNextLevel( content );
+            playButton.toggleClass('hide');
+        });
+    }
 
-            levelCB( content );
+    loadNextLevel( content ) {
 
-            this.loadHandler.loadBackground( content.background );
-            this.loadHandler.loadGameObjects( content.gameObjects, element => {
+        if(this.playedLevels < this.levelCount) {
 
-                element.removeAttr('draggable');
+            let levelName = this.levelNames[this.playedLevels];
+
+            this.loadHandler.getLevelData( levelName.name )
+            .then( result => {
+
+                this.loadHandler.loadBackground( result.background );
+                this.loadHandler.loadGameObjects( result.gameObjects, element => {
+    
+                    element.removeAttr('draggable');
+                });
+
+                content( result );
+                this.playedLevels++;
             });
-        });
-    }
-    getLevelNames( levelNames ){
-
-        $.post('/api/get_level_list', { userid: 'Levels', extLength: -5 })
-        .then( result => {
-            
-            let data = JSON.parse( result );
-            if( data.error <= 0) {
-
-                levelNames( data.payload );
-            }
-            else {
-                
-                //notify error
-            }
-        });
-    }
-
-    loadNextLevel( level ) {
-        let levelName = this.levelNames[this.levelCount];
-
-        let params = { userid: 'Data/Levels', name: levelName, type: 'Level'}
-        $.post('/api/load', params)
-        .then( result => {
-            
-            if( result.error <= 0 ) {
-
-                level( result.payload );
-            }
-            else {
-
-                console.log( result );
-            }
-        })
-
-        this.playedLevels++;
+        }
     }
 }

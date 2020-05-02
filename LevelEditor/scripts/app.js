@@ -174,14 +174,6 @@ export default class App {
             }
         }
     }
-
-    notifySuccess() {
-
-    }
-
-    notifyFailure() {
-
-    }
     
     gatherDataFor ( id ) {
 
