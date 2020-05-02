@@ -3,6 +3,8 @@
 'use strict';
 
 import LoadHandler from '../../loadhandler.js'
+
+//Handles the order of what's displayed on the game
 export default class MainMenu {
 
     constructor() {
@@ -21,6 +23,7 @@ export default class MainMenu {
         });
     }
 
+    //Beggining game when hitting play button
     initializePlayButton( content ) {
 
         let playButton = $('#play-button');
@@ -31,6 +34,7 @@ export default class MainMenu {
         });
     }
 
+    //Loads the next level on the 'database'
     loadNextLevel( content ) {
 
         if(this.playedLevels < this.levelCount) {

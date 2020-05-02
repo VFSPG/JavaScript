@@ -1,6 +1,8 @@
 //Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict'
 
+//This class is in charge of handling the interface on the editor, allowing...
+//... the user to utilice different tools within the editor.
 export default class UIHandler{
 
     constructor() {
@@ -20,7 +22,7 @@ export default class UIHandler{
             menu.toggleClass("assetMenuOpened");
         })
 
-        //I'm using 'function' to preserve the value of 'this' 
+        //I'm using function to preserve the value of 'this' 
         $('.barButton, .assetMenuButton').hover ( function () {
 
             $( this ).toggleClass( "buttonHoverInColor" );
@@ -41,6 +43,8 @@ export default class UIHandler{
                 }
             }
         })
+        
+        //I use a function to be able to reuse the code in different situations
         function setTabs( event ){
             
             let tabContents = $(`.${event.data.content}`);
@@ -71,6 +75,7 @@ export default class UIHandler{
         $('.loadTab').on('click' , { content: "loadContent" }, setTabs);
         $('.removeElementTab').on('click' , { content: "removeElementContent" }, setTabs);
 
+        //I use a function to be able to reuse the code in different situations
         function hidePopUp( event ){
             
             $('#popUpWindow').toggleClass('hide');

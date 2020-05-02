@@ -2,7 +2,6 @@
 'use strict'
 
 import Express from 'express'
-import FileSystem from 'fs'
 import FileStream from './filestream'
 
 
@@ -119,32 +118,39 @@ Router.post('/save/:userid?', ( request, response ) => {
             //... the data sent.
             fs.writeFile( fileDirectory , params.payload, err => {
                 //TODO: Get bytes written
+                //Sending back the result
                 response.send( JSON.stringify( { name: params.name, bytes: 0, error: 0} ) );
             });
         }
         else { response.send( JSON.stringify( { error: 101 } ))}
     })
+    //Sending back an error if something wrong happened during the process
     .catch( error => response.send( JSON.stringify( error ) ));
 });
 
 Router.post('/load/:userid?', ( request, response ) => {
 
+    //Getting requirements
     let params = { ...request.params, ...request.query, ...request.body };
     let path = `./GameContent/${ params.userid }`;
+
     let fileStream = new FileStream();
 
     let fileDirectory = `${path}/${params.name}.json`;
-    
     fileStream.directoryExists( fileDirectory )
     .then( exists => {
+        
+        //Checking if the required directory exists
         if( exists ) {
                     
             fs.readFile( fileDirectory, ( err, fileData) => {
 
-                response.send( { name: params.name, payload: JSON.parse(fileData), bytes: 0, error: 0 } );
+                //Sending back the result
+                response.send( { name: params.name, payload: JSON.parse( fileData ), bytes: 0, error: 0 } );
             });
         }
     })
+    //Sending back an error if something wrong happened during the process
     .catch( error => response.send( error ) )
 });
 

@@ -8,10 +8,12 @@ import DragAndDropHandler from './draganddrophandler.js'
 import GameObject from './game/worldobjects/gameobject.js'
 import Level from './game/level.js'
 
+//Class in charge of handling all the behaviour of the editor
 export default class App {
 
     constructor() {
 
+        //Initializing editor handlers and data
         this.level = new Level();
         this.level.content.gameObjects = new Array();
         
@@ -23,6 +25,7 @@ export default class App {
 
     run() {
 
+        //Setting up editor
         this.uiHanlder.setAssetMenuEvents();
         this.uiHanlder.intializePopUps();
         
@@ -36,8 +39,10 @@ export default class App {
         this.initializeDragAndDrop();
     }
 
+    //Initializes the diferent types of upload behaviour within the editor
     initializeUploadEvents() {
 
+        //For uploading leveles
         $('#upload-level-form').on('submit', event => {
 
             event.preventDefault();
@@ -52,15 +57,17 @@ export default class App {
             });
         });
 
+        //For uploading GameObjects
         $('#upload-game-object-form').on('submit', event => {
 
             event.preventDefault();
             let formData = this.gatherDataFor( '#upload-game-object-form' );
 
-            let selectedSprite = this.getSpriteSelected();
-            let selectedShape = this.getShapeSelected();
+            let selectedSprite = this.getOptionSelectedInDropdown('#game-object-sprite');
+            let selectedShape = this.getOptionSelectedInDropdown('#game-object-shape');
             let gameObject = { ...formData, selectedSprite, selectedShape };
 
+            //Once the GameObject is uploades, the asset menu gets updated
             this.uploadHandler.uploadGameObject( gameObject, data => {
 
                 this.loadAssets();
@@ -68,35 +75,52 @@ export default class App {
         });
     }
 
+    //Initializes the diferent types of load behaviour within the editor
     initializeLoadEvents() {
+        
+        //For loading levels
         $('#load-level-form').on('submit', event => {
 
             event.preventDefault();
-            this.loadHandler.loadLevel( data => {
+
+            let selectedLevel = $('#level-to-load').children('option:selected').text();
+
+            this.loadHandler.getLevelData( selectedLevel )
+            .then( data => {
 
                 this.level.content = data;
 
+                //Setting upload form, just to make it easier when overriding data
                 this.setFormData(data, '#upload-level-form');
 
+                //Setting background
                 this.loadHandler.loadBackground( this.level.content.background );
 
+                //Setting GameObjects
                 this.loadHandler.loadGameObjects( this.level.content.gameObjects, element => {
 
-                    this.dragAndDropHandler.addDraggableHandlers( element );
                     //Add jquery handlers here
+                    this.dragAndDropHandler.addDraggableHandlers( element );
                 });
+            })
+            .catch( error => {
+
+                console.log(error);
             });
         });
 
+        //For loading a background
         $('#load-background-form').on('submit', event => {
 
             event.preventDefault();
-
-            this.level.content.background = this.getBackgroundSelected()
+            
+            //Sets the selected option as the background
+            this.level.content.background = this.getOptionSelectedInDropdown('#background-to-load')
             this.loadHandler.loadBackground( this.level.content.background );
         });
     }
 
+    //Loads the assets from the asset menu
     loadAssets() {
 
         this.loadHandler.loadAssets()
@@ -113,7 +137,10 @@ export default class App {
         });
     }
 
+    //Sets the drag and drop from the assets and the GameObjects
     initializeDragAndDrop() {
+        
+        //With a callback defines if what to do with the GameObject
         this.dragAndDropHandler.addDroppableHandlers( ( element, isPlaced, position, GO ) => {
 
             if ( isPlaced ) {
@@ -146,35 +173,13 @@ export default class App {
         });
     }
 
-    getBackgroundSelected() {
+    //Returns the selected option of a 'select' with the specified id
+    getOptionSelectedInDropdown( id ) {
         
-        return $('#background-to-load').children('option:selected').val();
-    }
-
-    getSpriteSelected() {
-        
-        return $('#game-object-sprite').children('option:selected').val();
-    }
-
-    getShapeSelected() {
-        
-        return $('#game-object-shape').children('option:selected').val();
-    }
-
-    getGameObjectWith( id ) {
-
-        let gameObjects = this.level.content.gameObjects;
-        for ( let i = 0; i < gameObjects.length; i++ ) {
-
-            let gameObject = gameObjects[i];
-
-            if( gameObject.id == id) {
-
-                return gameObject;
-            }
-        }
+        return $( id ).children('option:selected').val();
     }
     
+    //Returns the data from the form with the specified id
     gatherDataFor ( id ) {
 
         let formData = $( id ).serializeArray();
@@ -188,7 +193,8 @@ export default class App {
 
         return levelData;
     }
-
+    
+    //Sets a form with the passed data based on its names
     setFormData ( data, id ) {
 
         let inputs = $( id ).children('input');
@@ -198,6 +204,21 @@ export default class App {
 
             let field = inputs[i];
             field.value = data[field.name]
+        }
+    }
+
+    //Returns the gameObject with the specified id
+    getGameObjectWith( id ) {
+
+        let gameObjects = this.level.content.gameObjects;
+        for ( let i = 0; i < gameObjects.length; i++ ) {
+
+            let gameObject = gameObjects[i];
+
+            if( gameObject.id == id) {
+
+                return gameObject;
+            }
         }
     }
 }

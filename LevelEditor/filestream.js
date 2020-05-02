@@ -1,9 +1,6 @@
 //Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict'
 
-import Path from 'path'
-import FileSystem from 'fs'
-
 const fs = require('fs'); 
 const path = require('path');
 

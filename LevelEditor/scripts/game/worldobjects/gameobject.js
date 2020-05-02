@@ -2,12 +2,12 @@
 'use strict'
 
 import Transform from './transform.js';
-import CollisionDetector from './collisiondetector.js';
 
 export default class GameObject {
 
     constructor(worldScale = 20) {
 
+        //Data that defines the GameObject
         this.$view;
         this.id = "";
         this.name = "";
@@ -21,13 +21,13 @@ export default class GameObject {
         }
         this.worldScale = worldScale
         this.transform = new Transform();
-        this.collisionDetector = new CollisionDetector(this.transform.position, this.transform.scale);
         this.worldBody;
         this.canBeRendered = false;
 
         this.collideWithBoundary = false;
     }
 
+    //Adds physics to GameObject
     create(model, body, fixture, shape) {
 
         fixture.friction = this.physicsStats.friction;
@@ -45,6 +45,7 @@ export default class GameObject {
         
     }
 
+    //Depending of the type of GameObject(based on its tag), a behaviour is added to it
     update(upVector) {
         if (this.$view == undefined) {
             this.$view = $(`#${this.id}`);
@@ -60,6 +61,7 @@ export default class GameObject {
         }
     }
 
+    //Sets the rotation of the gameObject based on the physics
     render(radToDegree) {
         if (this.canBeRendered == true) {
             let angle = this.worldBody.GetAngle();

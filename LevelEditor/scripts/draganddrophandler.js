@@ -7,6 +7,7 @@ export default class DragAndDropHandler{
 
     }
 
+    //Adds the base darggables to an element
     addDraggableHandlers( $elementList, gameObject) {
 
         $elementList
@@ -24,6 +25,8 @@ export default class DragAndDropHandler{
             })
     }
 
+    //Adds the JQuery draggables to an element.
+    //This draggables are used when the GameObject is already placed.
     addNewDraggables( $newElement, updatePosition)
     {
         $newElement.draggable({
@@ -41,6 +44,8 @@ export default class DragAndDropHandler{
         })
     }
 
+    //Adds the droppables to the game display.
+    //Returns data in the callback
     addDroppableHandlers( dropCB ) {
         
         let $editor = $("#game-display");
@@ -70,12 +75,15 @@ export default class DragAndDropHandler{
 
             if( isPlaced ){
 
+                //If it's placed, it means the element is alredy a GameObject and not an Asset...
+                //... so, the position must be updated
                 this.setPositionTo( droppedElement, position );
                 
                 dropCB( droppedElement, isPlaced, position );
             }
             else {
 
+                //If it's not placed, the element is an asset and must become a gameObject
                 let element = this.generateNewElement( droppedElement, $editor, position );
                 
                 $editor.append( element );
@@ -87,16 +95,18 @@ export default class DragAndDropHandler{
         });
     }
        
-
+    //Saves data through the drag and drop
     storeData( event, data ) {
         event.originalEvent.dataTransfer.setData("text/plain", JSON.stringify( data ) );
     }
 
+    //Returns the stored data
     eventData( event ) {
         let dataString = event.originalEvent.dataTransfer.getData("text/plain");
         return JSON.parse( dataString );
     }
 
+    //Returns the position of the GameObject
     offsetPosition( event, data ) {
         return {
             left: event.offsetX - data.dx,
@@ -104,6 +114,7 @@ export default class DragAndDropHandler{
         }
     }
 
+    //Creates a new element in for the game display
     generateNewElement( $oldElement, parent, position ) {
         
         let element = $oldElement.clone();
@@ -120,12 +131,14 @@ export default class DragAndDropHandler{
         return element;
     }
 
+    //Sets the position of an element
     setPositionTo( element,  position ) {
 
         element.css("top", position.top);
         element.css("left", position.left);
     }
 
+    //Verifying if the elemnt can be placed in a specific position
     checkValidMove(offsetX, offsetY, width, height) {
 
         let gameDisplay = $('#game-display');

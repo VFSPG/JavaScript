@@ -1,14 +1,14 @@
 //Copyright (C) 2020, Nicolas Morales Escobar. All rights reserved.
 'use strict'
 
-import DragAndDropHandler from './draganddrophandler.js'
-
+//Class in charge of loading everything and setting it on the screen
 export default class LoadHandler{
 
     constructor() {
 
     }
 
+    //Sets the options of the level 'select'
     setLevelOptions() {
 
         this.getLevelNames()
@@ -22,6 +22,9 @@ export default class LoadHandler{
         })
     }
 
+    //Returns the name of all the levels via a promise.
+    //If the data is invalid, the promise will reject the error...
+    //... thrown by the server.
     getLevelNames() {
 
         return new Promise( (resolve, reject) => {
@@ -42,6 +45,7 @@ export default class LoadHandler{
         });
     }
 
+    //Sets the options of the backgrounds 'select'
     setBackgroundOptions() {
 
         this.getBackgroundNames()
@@ -55,6 +59,9 @@ export default class LoadHandler{
         });
     }
 
+    //Returns the name of all the backgrounds via a promise.
+    //If the data is invalid, the promise will reject the error...
+    //... thrown by the server.
     getBackgroundNames() {
 
         return new Promise( ( resolve, reject ) => {
@@ -75,6 +82,7 @@ export default class LoadHandler{
         });
     }
 
+    //Sets the options of the GameObjects 'select'
     setGameObjectOptions() {
 
         this.getGameObjectNames()
@@ -88,6 +96,9 @@ export default class LoadHandler{
         });
     }
 
+    //Returns the name of all the GameObjects via a promise.
+    //If the data is invalid, the promise will reject the error...
+    //... thrown by the server.
     getGameObjectNames() {
 
         return new Promise( ( resolve, reject ) => {
@@ -108,6 +119,7 @@ export default class LoadHandler{
         });
     }
 
+    //Fills the select with the specified id, withe the data passed
     fillSelectWithOptions( id, options ) {
         
         let select = $( id );
@@ -120,6 +132,9 @@ export default class LoadHandler{
         }
     }
 
+    //Returns the content of a saved level.
+    //If the data is invalid, the promise will reject the error...
+    //... thrown by the server.
     getLevelData( levelName ) {
         
         return new Promise( ( resolve, reject ) => {
@@ -140,21 +155,6 @@ export default class LoadHandler{
         });
     }
 
-    loadLevel( loadLevelCB ) {
-
-        let selectedLevel = $('#level-to-load').children('option:selected').text();
-
-        this.getLevelData( selectedLevel )
-        .then( data => {
-            
-            loadLevelCB( data );
-        })
-        .catch( error => {
-
-            console.log(error);
-        });
-    }
-
     loadBackground( name ) {
 
         let gameDisplay = $('#game-display');
@@ -164,6 +164,7 @@ export default class LoadHandler{
         gameDisplay.css('background-size', '100% 100%');
     }
 
+    //Returns a promise which resolve an array of promises
     loadAssets() {
 
         return new Promise( (resolve, reject) => {
@@ -176,6 +177,7 @@ export default class LoadHandler{
 
                 let promises = new Array();
     
+                //Storing promises
                 for ( let i = 0; i < list.length; i++ ) {
     
                     let pair = list[i];
@@ -188,6 +190,8 @@ export default class LoadHandler{
         });
     }
 
+    //Returns a promise which resolve an object with the id of...
+    //... the elemnt in the DOM and an object with the data of a gameObject.
     loadAsset ( name ) {
 
         return new Promise( (resolve, reject) => {
@@ -210,6 +214,9 @@ export default class LoadHandler{
         });
     }
 
+    //Sets in the game display a new element with the data from the...
+    //... passed GameObject.
+    //Returns the a JQuery element through a callback
     loadGameObjects( gameObjects, createdGO ) {
 
         $('.placed').remove();
